@@ -13,13 +13,55 @@ class PinViewModel : ViewModel() {
     fun onAction(action: CreatePinActions) {
         when(action) {
             is CreatePinActions.OnPinNumberEntered -> {
-                if(createPinState.value.createPinList.count() < 5) {
-                    _createPinState.update { createPinState ->
-                        createPinState.copy(
-                            createPinList = createPinState.createPinList + action.pinNumber
-                        )
+                when(createPinState.value.pinMode) {
+                    PinMode.CREATE -> {
+                        if(createPinState.value.createPinList.count() < 5) {
+                            _createPinState.update { createPinState ->
+                                createPinState.copy(
+                                    createPinList = createPinState.createPinList + action.pinNumber
+                                )
+                            }
+
+                            println("PIN Entered ${createPinState.value.createPinList}")
+
+                            if(createPinState.value.createPinList.count() == 5) {
+                                println("Change mode to repeat ${createPinState.value.createPinList}")
+                                _createPinState.update { createPinState ->
+                                    createPinState.copy(
+                                        secretPin = createPinState.createPinList,
+                                        createPinList = emptyList(),
+                                        pinMode = PinMode.REPEAT
+                                    )
+                                }
+                            }
+                        }
                     }
-                    println("PIN Entered ${createPinState.value.createPinList}")
+
+                    PinMode.REPEAT -> {
+                        if (createPinState.value.createPinList.count() < 5) {
+                            println("Secret PIN ${createPinState.value.secretPin}")
+                            println("Entered repeated PIN ${action.pinNumber}")
+
+                            _createPinState.update { createPinState ->
+                                createPinState.copy(
+                                    createPinList = createPinState.createPinList + action.pinNumber
+                                )
+                            }
+
+                            if(createPinState.value.createPinList.count() == 5) {
+                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.createPinList)
+                                println("Valid repeated PIN $hasValidPinNumbers")
+
+                                _createPinState.update { createPinState ->
+                                    createPinState.copy(
+                                        secretPin = createPinState.createPinList,
+                                        createPinList = emptyList(),
+                                        isValidPin = hasValidPinNumbers
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -35,4 +77,26 @@ class PinViewModel : ViewModel() {
             }
         }
     }
+}
+
+fun pinEntryValid(secretPin: List<KeyButtons>, repeatedPin: List<KeyButtons>): Boolean {
+    var hasEnteredValidPin = true
+
+    secretPin.forEachIndexed { index, pinNumber ->
+        if(pinNumber != repeatedPin[index]) {
+            hasEnteredValidPin = false
+            return@forEachIndexed
+        }
+    }
+
+    return hasEnteredValidPin
+}
+
+private fun PinViewModel.isValidPinEntered(pinNumber: KeyButtons): Boolean {
+    val repeatedPinList = createPinState.value.createPinList + pinNumber
+
+    val isValid =
+        createPinState.value.secretPin[repeatedPinList.count() - 1] == repeatedPinList[repeatedPinList.count() - 1]
+
+    return isValid
 }

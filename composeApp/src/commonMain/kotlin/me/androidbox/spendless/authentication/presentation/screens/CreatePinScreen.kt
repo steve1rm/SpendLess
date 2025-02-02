@@ -1,9 +1,13 @@
 package me.androidbox.spendless.authentication.presentation.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -16,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
@@ -42,7 +47,7 @@ fun CreatePinScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-
+                            /* Navigate back pin mode create -> registration screen  , mode repeat -> create pin screen */
                         }
                     ) {
                         Icon(
@@ -56,9 +61,11 @@ fun CreatePinScreen(
                 elevation = 0.dp
             )
         },
-        content = {
+        content = { paddingValues ->
             Column(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(paddingValues),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -71,7 +78,7 @@ fun CreatePinScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Create PIN",
+                    text = createPinState.pinMode.title,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.W600,
                     color = OnSurface)
@@ -79,7 +86,7 @@ fun CreatePinScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Use your PIN to login into your account",
+                    text = createPinState.pinMode.subTitle,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W400,
                     color = OnSurfaceVariant
@@ -106,6 +113,22 @@ fun CreatePinScreen(
                         }
                         else {
                             onAction(CreatePinActions.OnPinNumberEntered(keyButton))
+                        }
+                    }
+                )
+
+                AnimatedVisibility(
+                    visible = createPinState.isValidPin,
+                    content = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(height = 72.dp).background(color = Color.Red),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Pins don't match, Try again",
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
                 )
