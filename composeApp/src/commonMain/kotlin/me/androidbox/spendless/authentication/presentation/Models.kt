@@ -12,5 +12,5 @@ enum class KeyButtons(val key: String = "") {
     EIGHT("8"),
     NINE("9"),
     ZERO("0"),
-    BACKSPACE()
+    DELETE()
 }

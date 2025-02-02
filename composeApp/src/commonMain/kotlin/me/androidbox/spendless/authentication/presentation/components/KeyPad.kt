@@ -102,7 +102,7 @@ fun KeyPad(
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
-            BackspaceKey { key ->
+            DeleteKey { key ->
                 onKeyClicked(key)
             }
         }
@@ -132,21 +132,21 @@ fun DigitKey(modifier: Modifier = Modifier, digit: KeyButtons, onKeyClicked: (Ke
 }
 
 @Composable
-fun BackspaceKey(modifier: Modifier = Modifier, onKeyClicked: (KeyButtons) -> Unit) {
+fun DeleteKey(modifier: Modifier = Modifier, onKeyClicked: (KeyButtons) -> Unit) {
     Box(
         modifier = modifier
             .size(size = 108.dp)
             .clip(RoundedCornerShape(size = 32.dp))
             .background(color = PrimaryFixed.copy(0.3f))
             .clickable {
-                onKeyClicked(KeyButtons.BACKSPACE)
+                onKeyClicked(KeyButtons.DELETE)
             },
         contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = modifier.size(size = 40.dp),
             imageVector = vectorResource(resource = Res.drawable.backspace),
-            contentDescription = "Backspace",
+            contentDescription = "Delete",
             tint = OnPrimaryFixed
         )
     }

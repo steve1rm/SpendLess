@@ -6,16 +6,20 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.spendless.authentication.presentation.KeyButtons
-import me.androidbox.spendless.authentication.presentation.components.BackspaceKey
+import me.androidbox.spendless.authentication.presentation.components.DeleteKey
 import me.androidbox.spendless.authentication.presentation.components.DigitKey
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
+import me.androidbox.spendless.authentication.presentation.components.PinDots
+import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            App()
+            CreatePinScreen { keyButton ->
+                println("Create Pin $keyButton")
+            }
         }
     }
 }
@@ -24,6 +28,27 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     App()
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun CreatePinPreview() {
+    CreatePinScreen(
+        onKeyEntered = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PinDotsPreview() {
+    PinDots(
+        isFirstDotEnabled = true,
+        isSecondDotEnabled = true,
+        isThirdDotEnabled = true,
+        isFourthDotEnabled = true,
+        isFifthDotEnabled = true
+    )
 }
 
 @Preview(showBackground = true)
@@ -43,5 +68,5 @@ fun KeyPreview() {
 @Preview
 @Composable
 fun BackspaceKeyPreview() {
-    BackspaceKey {}
+    DeleteKey {}
 }
