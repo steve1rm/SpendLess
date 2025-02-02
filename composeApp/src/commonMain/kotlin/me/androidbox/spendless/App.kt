@@ -2,6 +2,7 @@ package me.androidbox.spendless
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -27,12 +28,12 @@ fun App() {
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
+                    val pinState by pinViewModel.createPinState.collectAsStateWithLifecycle()
 
                     CreatePinScreen(
-                        listOfPinNumbers = listOf(3, 5, 9, 4, 1)
-                    ) { keyButton ->
-                        println("Create Pin $keyButton")
-                    }
+                        createPinState = pinState,
+                        onAction = pinViewModel::onAction
+                    )
                 }
             }
         }

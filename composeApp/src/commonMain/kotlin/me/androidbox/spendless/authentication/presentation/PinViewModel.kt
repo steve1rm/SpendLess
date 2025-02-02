@@ -19,8 +19,10 @@ class PinViewModel : ViewModel() {
                             createPinList = createPinState.createPinList + action.pinNumber
                         )
                     }
+                    println("PIN Entered ${createPinState.value.createPinList}")
                 }
             }
+
             CreatePinActions.OnDeletePressed -> {
                 _createPinState.update { createPinState ->
                     createPinState.copy(

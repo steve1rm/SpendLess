@@ -30,31 +30,31 @@ fun PinDots(
         Box(
             modifier
                 .size(18.dp)
-                .background(color = if(isFirstDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
+                .background(color = if(!isFirstDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
         )
 
         Box(
             modifier
                 .size(18.dp)
-                .background(color = if(isSecondDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
+                .background(color = if(!isSecondDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
         )
 
         Box(
             modifier
                 .size(18.dp)
-                .background(color = if(isThirdDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
+                .background(color = if(!isThirdDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
         )
 
         Box(
             modifier
                 .size(18.dp)
-                .background(color = if(isFourthDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
+                .background(color = if(!isFourthDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
         )
 
         Box(
             modifier
                 .size(18.dp)
-                .background(color = if(isFifthDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
+                .background(color = if(!isFifthDotEnabled) Primary else OnBackground.copy(alpha = 0.12f), CircleShape)
         )
     }
 }

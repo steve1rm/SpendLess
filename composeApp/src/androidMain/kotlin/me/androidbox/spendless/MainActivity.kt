@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.KeyButtons
 import me.androidbox.spendless.authentication.presentation.components.DeleteKey
 import me.androidbox.spendless.authentication.presentation.components.DigitKey
@@ -33,8 +34,8 @@ fun AppAndroidPreview() {
 @Composable
 fun CreatePinPreview() {
     CreatePinScreen(
-        listOfPinNumbers = listOf(),
-        onKeyEntered = {}
+        createPinState = CreatePinState(),
+        onAction = {}
     )
 }
 
