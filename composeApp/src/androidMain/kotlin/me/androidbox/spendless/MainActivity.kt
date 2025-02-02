@@ -17,9 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            CreatePinScreen { keyButton ->
-                println("Create Pin $keyButton")
-            }
+           App()
         }
     }
 }
@@ -35,6 +33,7 @@ fun AppAndroidPreview() {
 @Composable
 fun CreatePinPreview() {
     CreatePinScreen(
+        listOfPinNumbers = listOf(),
         onKeyEntered = {}
     )
 }
