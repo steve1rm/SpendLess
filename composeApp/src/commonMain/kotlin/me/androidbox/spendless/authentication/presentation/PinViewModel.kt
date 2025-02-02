@@ -13,7 +13,7 @@ class PinViewModel : ViewModel() {
     fun onAction(action: CreatePinActions) {
         when(action) {
             is CreatePinActions.OnPinNumberEntered -> {
-                if(_createPinState.value.createPinList.count() < 5) {
+                if(createPinState.value.createPinList.count() < 5) {
                     _createPinState.update { createPinState ->
                         createPinState.copy(
                             createPinList = createPinState.createPinList + action.pinNumber
@@ -24,10 +24,13 @@ class PinViewModel : ViewModel() {
             }
 
             CreatePinActions.OnDeletePressed -> {
-                _createPinState.update { createPinState ->
-                    createPinState.copy(
-                        createPinList = createPinState.createPinList.dropLast(1)
-                    )
+                if(createPinState.value.createPinList.isNotEmpty()) {
+                    _createPinState.update { createPinState ->
+                        createPinState.copy(
+                            createPinList = createPinState.createPinList.dropLast(1)
+                        )
+                    }
+                    println("PIN Entered ${createPinState.value.createPinList}")
                 }
             }
         }

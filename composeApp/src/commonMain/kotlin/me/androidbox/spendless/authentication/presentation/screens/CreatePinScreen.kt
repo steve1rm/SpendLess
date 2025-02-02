@@ -44,8 +44,13 @@ fun CreatePinScreen(
                 )
 
                 KeyPad(
-                    onKeyClicked = { keyButtons ->
-                        onAction(CreatePinActions.OnPinNumberEntered(keyButtons))
+                    onKeyClicked = { keyButton ->
+                        if(keyButton == KeyButtons.DELETE) {
+                            onAction(CreatePinActions.OnDeletePressed)
+                        }
+                        else {
+                            onAction(CreatePinActions.OnPinNumberEntered(keyButton))
+                        }
                     }
                 )
             }
