@@ -35,15 +35,15 @@ fun App() {
 
                     ObserveAsEvents(pinViewModel.pinChannel) { createPinEvents ->
                         when (createPinEvents) {
-                            is CreatePinEvents.IncorrectPinEvent -> {
+                            is CreatePinEvents.PinEntryEvent -> {
                                 println("ObserveEvent ${createPinEvents.isValid}")
 
                                 if (createPinEvents.isValid) {
                                     /** Navigate to the onboarding screen valid pin */
                                     println("Navigate to onboarding")
                                 } else {
-                                    /** Show red banner invalid repeated pin */
-                                    pinViewModel.onAction(CreatePinActions.OnShowRedBanner(true))
+                                    /** Show red banner if user has entered an incorrect pin  */
+                                    pinViewModel.onAction(CreatePinActions.ShouldShowRedBanner(showBanner = true))
                                 }
                             }
                         }

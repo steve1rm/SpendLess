@@ -44,11 +44,11 @@ fun CreatePinScreen(
     onAction: (action: CreatePinActions) -> Unit
 ) {
 
-    LaunchedEffect(createPinState.isValidated) {
-        if(createPinState.isValidated) {
-            onAction(CreatePinActions.OnShowRedBanner(true))
+    LaunchedEffect(createPinState.isValidPin) {
+        if(createPinState.isValidPin) {
+            onAction(CreatePinActions.ShouldShowRedBanner(true))
             delay(3_000L)
-            onAction(CreatePinActions.OnShowRedBanner(false))
+            onAction(CreatePinActions.ShouldShowRedBanner(false))
         }
     }
 
@@ -135,7 +135,7 @@ fun CreatePinScreen(
 
                 AnimatedVisibility(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    visible = createPinState.isValidated,
+                    visible = createPinState.isValidPin,
                     content = {
                         Box(
                             modifier = Modifier.fillMaxWidth().height(height = 72.dp)

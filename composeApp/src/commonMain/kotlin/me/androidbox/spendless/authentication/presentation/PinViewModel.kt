@@ -67,7 +67,7 @@ class PinViewModel : ViewModel() {
                                 }
 
                                 viewModelScope.launch {
-                                    _pinChannel.send(IncorrectPinEvent(isValid = hasValidPinNumbers))
+                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers))
                                 }
                             }
                         }
@@ -86,10 +86,10 @@ class PinViewModel : ViewModel() {
                 }
             }
 
-            is CreatePinActions.OnShowRedBanner -> {
+            is CreatePinActions.ShouldShowRedBanner -> {
                 _createPinState.update { createPinState ->
                     createPinState.copy(
-                        isValidated = action.showBanner
+                        isValidPin = action.showBanner
                     )
                 }
             }
