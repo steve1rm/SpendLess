@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents
 import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
@@ -33,16 +34,16 @@ fun App() {
                     val pinState by pinViewModel.createPinState.collectAsStateWithLifecycle()
 
                     ObserveAsEvents(pinViewModel.pinChannel) { createPinEvents ->
-                        when(createPinEvents) {
-                            is CreatePinEvents.HasInvalidPin -> {
+                        when (createPinEvents) {
+                            is CreatePinEvents.IncorrectPinEvent -> {
                                 println("ObserveEvent ${createPinEvents.isValid}")
 
-                                if(createPinEvents.isValid) {
+                                if (createPinEvents.isValid) {
                                     /** Navigate to the onboarding screen valid pin */
-                                    navController.navigate(route = Route.OnBoardingScreen)
-                                }
-                                else {
+                                    println("Navigate to onboarding")
+                                } else {
                                     /** Show red banner invalid repeated pin */
+                                    pinViewModel.onAction(CreatePinActions.OnShowRedBanner(true))
                                 }
                             }
                         }

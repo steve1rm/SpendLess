@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.spendless.authentication.presentation.CreatePinEvents.*
 
 class PinViewModel : ViewModel() {
 
@@ -61,13 +62,12 @@ class PinViewModel : ViewModel() {
 
                                 _createPinState.update { createPinState ->
                                     createPinState.copy(
-                                        secretPin = createPinState.createPinList,
                                         createPinList = emptyList(),
                                     )
                                 }
 
                                 viewModelScope.launch {
-                                    _pinChannel.send(CreatePinEvents.HasInvalidPin(isValid = hasValidPinNumbers))
+                                    _pinChannel.send(IncorrectPinEvent(isValid = hasValidPinNumbers))
                                 }
                             }
                         }
@@ -83,6 +83,14 @@ class PinViewModel : ViewModel() {
                         )
                     }
                     println("PIN Entered ${createPinState.value.createPinList}")
+                }
+            }
+
+            is CreatePinActions.OnShowRedBanner -> {
+                _createPinState.update { createPinState ->
+                    createPinState.copy(
+                        isValidated = action.showBanner
+                    )
                 }
             }
         }

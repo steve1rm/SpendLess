@@ -17,6 +17,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.KeyButtons
@@ -41,6 +43,15 @@ fun CreatePinScreen(
     createPinState: CreatePinState,
     onAction: (action: CreatePinActions) -> Unit
 ) {
+
+    LaunchedEffect(createPinState.isValidated) {
+        if(createPinState.isValidated) {
+            onAction(CreatePinActions.OnShowRedBanner(true))
+            delay(3_000L)
+            onAction(CreatePinActions.OnShowRedBanner(false))
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -48,7 +59,7 @@ fun CreatePinScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            /* Navigate back pin mode create -> registration screen  , mode repeat -> create pin screen */
+                            /* Navigate back: pin mode create -> registration screen, pin mode repeat -> create pin screen */
                         }
                     ) {
                         Icon(
@@ -124,7 +135,7 @@ fun CreatePinScreen(
 
                 AnimatedVisibility(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    visible = true,
+                    visible = createPinState.isValidated,
                     content = {
                         Box(
                             modifier = Modifier.fillMaxWidth().height(height = 72.dp)
