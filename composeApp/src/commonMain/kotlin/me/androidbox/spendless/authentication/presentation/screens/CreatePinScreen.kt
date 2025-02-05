@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,7 @@ import spendless.composeapp.generated.resources.createpin
 fun CreatePinScreen(
     modifier: Modifier = Modifier,
     createPinState: CreatePinState,
-    onAction: (action: CreatePinActions) -> Unit,
+    onAction: (action: CreatePinActions) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -62,66 +63,72 @@ fun CreatePinScreen(
             )
         },
         content = { paddingValues ->
-            Column(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)) {
 
-                Icon(
-                    imageVector = vectorResource(resource = Res.drawable.createpin),
-                    contentDescription = null,
-                    tint = Color.Unspecified
-                )
+                Column(
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Icon(
+                        imageVector = vectorResource(resource = Res.drawable.createpin),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
 
-                Text(
-                    text = createPinState.pinMode.title,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.W600,
-                    color = OnSurface)
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = createPinState.pinMode.title,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.W600,
+                        color = OnSurface
+                    )
 
-                Text(
-                    text = createPinState.pinMode.subTitle,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
-                    color = OnSurfaceVariant
-                )
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Spacer(modifier = Modifier.height(32.dp))
+                    Text(
+                        text = createPinState.pinMode.subTitle,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W400,
+                        color = OnSurfaceVariant
+                    )
 
-                PinDots(
-                    isFirstDotEnabled = createPinState.createPinList.count() < 1,
-                    isSecondDotEnabled = createPinState.createPinList.count() < 2,
-                    isThirdDotEnabled = createPinState.createPinList.count() < 3,
-                    isFourthDotEnabled = createPinState.createPinList.count() < 4,
-                    isFifthDotEnabled = createPinState.createPinList.count() < 5
-                )
+                    Spacer(modifier = Modifier.height(32.dp))
 
-                Spacer(
-                    modifier = Modifier.height(32.dp)
-                )
+                    PinDots(
+                        isFirstDotEnabled = createPinState.createPinList.count() < 1,
+                        isSecondDotEnabled = createPinState.createPinList.count() < 2,
+                        isThirdDotEnabled = createPinState.createPinList.count() < 3,
+                        isFourthDotEnabled = createPinState.createPinList.count() < 4,
+                        isFifthDotEnabled = createPinState.createPinList.count() < 5
+                    )
 
-                KeyPad(
-                    onKeyClicked = { keyButton ->
-                        if(keyButton == KeyButtons.DELETE) {
-                            onAction(CreatePinActions.OnDeletePressed)
+                    Spacer(
+                        modifier = Modifier.height(32.dp)
+                    )
+
+                    KeyPad(
+                        onKeyClicked = { keyButton ->
+                            if (keyButton == KeyButtons.DELETE) {
+                                onAction(CreatePinActions.OnDeletePressed)
+                            } else {
+                                onAction(CreatePinActions.OnPinNumberEntered(keyButton))
+                            }
                         }
-                        else {
-                            onAction(CreatePinActions.OnPinNumberEntered(keyButton))
-                        }
-                    }
-                )
+                    )
+                }
 
                 AnimatedVisibility(
-                    visible = createPinState.isValidPin,
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    visible = true,
                     content = {
                         Box(
-                            modifier = Modifier.fillMaxWidth().height(height = 72.dp).background(color = Color.Red),
+                            modifier = Modifier.fillMaxWidth().height(height = 72.dp)
+                                .background(color = Color.Red),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(

@@ -1,14 +1,21 @@
 package me.androidbox.spendless.authentication.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class PinViewModel : ViewModel() {
 
     private val _createPinState = MutableStateFlow<CreatePinState>(CreatePinState())
     val createPinState = _createPinState.asStateFlow()
+
+    private val _pinChannel = Channel<CreatePinEvents>()
+    val pinChannel = _pinChannel.consumeAsFlow()
 
     fun onAction(action: CreatePinActions) {
         when(action) {
@@ -56,8 +63,11 @@ class PinViewModel : ViewModel() {
                                     createPinState.copy(
                                         secretPin = createPinState.createPinList,
                                         createPinList = emptyList(),
-                                        isValidPin = hasValidPinNumbers
                                     )
+                                }
+
+                                viewModelScope.launch {
+                                    _pinChannel.send(CreatePinEvents.HasInvalidPin(isValid = hasValidPinNumbers))
                                 }
                             }
                         }

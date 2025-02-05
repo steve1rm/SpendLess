@@ -9,4 +9,7 @@ sealed interface Route {
 
     @Serializable
     data object PinCreateScreen : Route
+
+    @Serializable
+    data object OnBoardingScreen : Route
 }
