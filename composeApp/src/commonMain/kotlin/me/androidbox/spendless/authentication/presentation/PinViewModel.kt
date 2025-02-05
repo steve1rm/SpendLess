@@ -1,14 +1,19 @@
 package me.androidbox.spendless.authentication.presentation
 
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents.*
+import me.androidbox.spendless.core.presentation.countDownTimer
+import kotlin.time.Duration.Companion.seconds
 
 class PinViewModel : ViewModel() {
 
@@ -17,6 +22,18 @@ class PinViewModel : ViewModel() {
 
     private val _pinChannel = Channel<CreatePinEvents>()
     val pinChannel = _pinChannel.consumeAsFlow()
+
+    fun startCountdown() {
+        countDownTimer(30.seconds)
+            .onEach { duration ->
+                _createPinState.update { createPinState ->
+                    createPinState.copy(
+                        countdownTime = duration
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
+    }
 
     fun onAction(action: CreatePinActions) {
         when(action) {
@@ -69,6 +86,7 @@ class PinViewModel : ViewModel() {
                                 viewModelScope.launch {
                                     _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers))
                                 }
+                                startCountdown()
                             }
                         }
                     }

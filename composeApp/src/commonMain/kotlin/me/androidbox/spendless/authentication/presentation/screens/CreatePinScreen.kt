@@ -47,7 +47,7 @@ fun CreatePinScreen(
     LaunchedEffect(createPinState.isValidPin) {
         if(createPinState.isValidPin) {
             onAction(CreatePinActions.ShouldShowRedBanner(true))
-            delay(3_000L)
+            delay(2_000L)
             onAction(CreatePinActions.ShouldShowRedBanner(false))
         }
     }
@@ -93,7 +93,7 @@ fun CreatePinScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = createPinState.pinMode.title,
+                        text = createPinState.countdownTime.toString(),
                         fontSize = 28.sp,
                         fontWeight = FontWeight.W600,
                         color = OnSurface
