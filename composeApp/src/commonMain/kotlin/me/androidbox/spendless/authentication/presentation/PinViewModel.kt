@@ -1,18 +1,22 @@
 package me.androidbox.spendless.authentication.presentation
 
-import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents.*
 import me.androidbox.spendless.core.presentation.countDownTimer
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 class PinViewModel : ViewModel() {
@@ -105,12 +109,23 @@ class PinViewModel : ViewModel() {
             }
 
             is CreatePinActions.ShouldShowRedBanner -> {
-                _createPinState.update { createPinState ->
-                    createPinState.copy(
-                        isValidPin = action.showBanner
-                    )
-                }
+                showRedBannerForDuration(2.seconds)
+                    .onEach { shouldShow ->
+                        _createPinState.update { createPinState ->
+                            createPinState.copy(
+                                shouldShowRedBanner = shouldShow
+                            )
+                        }
+                    }.launchIn(viewModelScope)
             }
+        }
+    }
+
+    fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
+        return flow {
+            emit(true)
+            delay(duration)
+            emit(false)
         }
     }
 }

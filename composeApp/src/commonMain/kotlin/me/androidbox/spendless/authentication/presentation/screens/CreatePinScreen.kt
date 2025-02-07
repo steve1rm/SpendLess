@@ -44,14 +44,6 @@ fun CreatePinScreen(
     onAction: (action: CreatePinActions) -> Unit
 ) {
 
-    LaunchedEffect(createPinState.isValidPin) {
-        if(createPinState.isValidPin) {
-            onAction(CreatePinActions.ShouldShowRedBanner(true))
-            delay(2_000L)
-            onAction(CreatePinActions.ShouldShowRedBanner(false))
-        }
-    }
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -93,7 +85,7 @@ fun CreatePinScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = createPinState.countdownTime.toString(),
+                        text = createPinState.pinMode.title,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.W600,
                         color = OnSurface
@@ -135,7 +127,7 @@ fun CreatePinScreen(
 
                 AnimatedVisibility(
                     modifier = Modifier.align(Alignment.BottomCenter),
-                    visible = createPinState.isValidPin,
+                    visible = createPinState.shouldShowRedBanner,
                     content = {
                         Box(
                             modifier = Modifier.fillMaxWidth().height(height = 72.dp)
