@@ -1,6 +1,5 @@
 package me.androidbox.spendless.authentication.presentation
 
-
 enum class KeyButtons(val key: String = "") {
     ONE("1"),
     TWO("2"),
@@ -17,5 +16,6 @@ enum class KeyButtons(val key: String = "") {
 
 enum class PinMode(val title: String, val subTitle: String) {
     CREATE("Create PIN", "Use your PIN to login into your account"),
-    REPEAT("Repeat your PIN", "Enter your PIN again")
+    REPEAT("Repeat your PIN", "Enter your PIN again"),
+    AUTHENTICATION("", "")
 }

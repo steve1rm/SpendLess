@@ -19,6 +19,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.KeyButtons
+import me.androidbox.spendless.authentication.presentation.PinMode
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.core.presentation.Error
@@ -45,6 +47,10 @@ fun PinPromptScreen(
     createPinState: CreatePinState,
     onAction: (action: CreatePinActions) -> Unit
 ) {
+
+    LaunchedEffect(Unit) {
+        onAction(CreatePinActions.ShouldUpdateMode(PinMode.AUTHENTICATION))
+    }
 
     Scaffold(
         topBar = {

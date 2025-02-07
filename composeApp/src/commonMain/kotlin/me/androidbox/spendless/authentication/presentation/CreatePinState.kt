@@ -7,5 +7,6 @@ data class CreatePinState(
     val secretPin: List<KeyButtons> = emptyList<KeyButtons>(),
     val pinMode: PinMode = PinMode.CREATE,
     val shouldShowRedBanner: Boolean = false,
-    val countdownTime: Duration = Duration.ZERO
+    val countdownTime: Duration = Duration.ZERO,
+    val attempts: Int = 0
 )

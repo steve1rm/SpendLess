@@ -27,7 +27,10 @@ class PinViewModel : ViewModel() {
     private val _pinChannel = Channel<CreatePinEvents>()
     val pinChannel = _pinChannel.consumeAsFlow()
 
-    fun startCountdown() {
+    private var tryAttempts = 0
+
+    /** Maybe add this to the core presentation */
+    private fun startCountdown() {
         countDownTimer(30.seconds)
             .onEach { duration ->
                 _createPinState.update { createPinState ->
@@ -90,7 +93,46 @@ class PinViewModel : ViewModel() {
                                 viewModelScope.launch {
                                     _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers))
                                 }
-                                startCountdown()
+                            }
+                        }
+                    }
+
+                    PinMode.AUTHENTICATION -> {
+                        if (createPinState.value.createPinList.count() < 5) {
+                            _createPinState.update {
+                                it.copy(secretPin = listOf(KeyButtons.ONE, KeyButtons.TWO, KeyButtons.THREE, KeyButtons.FOUR, KeyButtons.FIVE))
+                            }
+
+                            println("Authentication Secret PIN ${createPinState.value.secretPin}")
+                            println("Authentication Entered repeated PIN ${action.pinNumber}")
+
+                            _createPinState.update { createPinState ->
+                                createPinState.copy(
+                                    createPinList = createPinState.createPinList + action.pinNumber
+                                )
+                            }
+
+                            if(createPinState.value.createPinList.count() == 5) {
+                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.createPinList)
+
+                                if(!hasValidPinNumbers) {
+                                    tryAttempts += 1
+                                }
+                                println("Authentication Valid repeated [ $tryAttempts ] PIN $hasValidPinNumbers")
+
+                                if(tryAttempts == 3) {
+                                    startCountdown()
+                                }
+
+                                _createPinState.update { createPinState ->
+                                    createPinState.copy(
+                                        createPinList = emptyList(),
+                                    )
+                                }
+
+                                viewModelScope.launch {
+                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers))
+                                }
                             }
                         }
                     }
@@ -118,10 +160,18 @@ class PinViewModel : ViewModel() {
                         }
                     }.launchIn(viewModelScope)
             }
+
+            is CreatePinActions.ShouldUpdateMode -> {
+                _createPinState.update { createPinState ->
+                    createPinState.copy(
+                        pinMode = action.pinMode
+                    )
+                }
+            }
         }
     }
 
-    fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
+    private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
         return flow {
             emit(true)
             delay(duration)

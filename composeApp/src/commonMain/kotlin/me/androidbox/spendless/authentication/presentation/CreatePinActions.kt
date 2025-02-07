@@ -4,4 +4,5 @@ sealed interface CreatePinActions {
     data class OnPinNumberEntered(val pinNumber: KeyButtons) : CreatePinActions
     data object OnDeletePressed : CreatePinActions
     data class ShouldShowRedBanner(val showBanner: Boolean): CreatePinActions
+    data class ShouldUpdateMode(val pinMode: PinMode) : CreatePinActions
 }
