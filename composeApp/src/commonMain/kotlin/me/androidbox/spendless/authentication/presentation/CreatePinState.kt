@@ -8,5 +8,6 @@ data class CreatePinState(
     val pinMode: PinMode = PinMode.CREATE,
     val shouldShowRedBanner: Boolean = false,
     val countdownTime: Duration = Duration.ZERO,
-    val attempts: Int = 0
+    val attempts: Int = 0,
+    val enableKeyPad: Boolean = true
 )

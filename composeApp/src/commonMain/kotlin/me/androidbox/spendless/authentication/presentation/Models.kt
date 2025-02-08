@@ -14,8 +14,8 @@ enum class KeyButtons(val key: String = "") {
     DELETE()
 }
 
-enum class PinMode(val title: String, val subTitle: String) {
+enum class PinMode(val title: String = "", val subTitle: String = "") {
     CREATE("Create PIN", "Use your PIN to login into your account"),
     REPEAT("Repeat your PIN", "Enter your PIN again"),
-    AUTHENTICATION("", "")
+    AUTHENTICATION
 }

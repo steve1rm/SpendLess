@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Colors
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -95,7 +93,7 @@ fun PinPromptScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = createPinState.countdownTime.toString(),
+                        text = "00:${createPinState.countdownTime.inWholeSeconds}",
                         fontSize = 28.sp,
                         fontWeight = FontWeight.W600,
                         color = OnSurface
@@ -125,6 +123,7 @@ fun PinPromptScreen(
                     )
 
                     KeyPad(
+                        disableKeyPad = createPinState.enableKeyPad,
                         onKeyClicked = { keyButton ->
                             if (keyButton == KeyButtons.DELETE) {
                                 onAction(CreatePinActions.OnDeletePressed)

@@ -43,7 +43,8 @@ fun App() {
                                     /** Navigate to the onboarding screen valid pin */
                                     println("Navigate to onboarding")
                                 } else {
-                                    /** Show red banner if user has entered an incorrect pin  */
+                                    /** Show red banner if user has entered an incorrect pin */
+                                    println("Show Red banner")
                                     pinViewModel.onAction(CreatePinActions.ShouldShowRedBanner(showBanner = true))
                                 }
                             }

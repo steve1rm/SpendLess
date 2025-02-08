@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents.*
@@ -32,11 +33,23 @@ class PinViewModel : ViewModel() {
     /** Maybe add this to the core presentation */
     private fun startCountdown() {
         countDownTimer(30.seconds)
+            .onStart {
+                println("Start Countdown Flow")
+                _createPinState.update { createPinState ->
+                    createPinState.copy(enableKeyPad = false)
+                }
+            }
             .onEach { duration ->
                 _createPinState.update { createPinState ->
                     createPinState.copy(
                         countdownTime = duration
                     )
+                }
+            }
+            .onCompletion {
+                println("End Countdown Flow")
+                _createPinState.update { createPinState ->
+                    createPinState.copy(enableKeyPad = true)
                 }
             }
             .launchIn(viewModelScope)
@@ -99,6 +112,7 @@ class PinViewModel : ViewModel() {
 
                     PinMode.AUTHENTICATION -> {
                         if (createPinState.value.createPinList.count() < 5) {
+                            /** Get this from the encrypted shared preferences */
                             _createPinState.update {
                                 it.copy(secretPin = listOf(KeyButtons.ONE, KeyButtons.TWO, KeyButtons.THREE, KeyButtons.FOUR, KeyButtons.FIVE))
                             }
@@ -117,6 +131,12 @@ class PinViewModel : ViewModel() {
 
                                 if(!hasValidPinNumbers) {
                                     tryAttempts += 1
+                                    showRedBannerForDuration(2.seconds)
+                                        .onEach { showBanner ->
+                                            _createPinState.update { createPinState ->
+                                                createPinState.copy(shouldShowRedBanner = showBanner)
+                                            }
+                                        }.launchIn(viewModelScope)
                                 }
                                 println("Authentication Valid repeated [ $tryAttempts ] PIN $hasValidPinNumbers")
 
@@ -128,10 +148,6 @@ class PinViewModel : ViewModel() {
                                     createPinState.copy(
                                         createPinList = emptyList(),
                                     )
-                                }
-
-                                viewModelScope.launch {
-                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers))
                                 }
                             }
                         }

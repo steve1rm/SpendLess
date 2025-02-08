@@ -63,7 +63,7 @@ fun KeyPadPreview() {
 @Preview(showBackground = true)
 @Composable
 fun KeyPreview() {
-    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {})
+    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {}, disableKeyPad = false)
 }
 
 @Preview
