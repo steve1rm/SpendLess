@@ -54,6 +54,7 @@ class PinViewModel : ViewModel() {
                     createPinState.copy(enableKeyPad = true,
                         authentication = Authentication.AUTHENTICATION_PROMPT)
                 }
+                tryAttempts = 0
             }
             .launchIn(viewModelScope)
     }
