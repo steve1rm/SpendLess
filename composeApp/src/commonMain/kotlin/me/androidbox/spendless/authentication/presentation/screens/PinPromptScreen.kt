@@ -21,10 +21,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.spendless.authentication.presentation.Authentication
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.KeyButtons
@@ -34,6 +39,7 @@ import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
+import me.androidbox.spendless.core.presentation.getFormattedTime
 import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.createpin
@@ -93,7 +99,7 @@ fun PinPromptScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "00:${createPinState.countdownTime.inWholeSeconds}",
+                        text = createPinState.authentication.title,
                         fontSize = 28.sp,
                         fontWeight = FontWeight.W600,
                         color = OnSurface
@@ -102,7 +108,7 @@ fun PinPromptScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = createPinState.pinMode.subTitle,
+                        text = buildAuthenticationString(createPinState),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W400,
                         color = OnSurfaceVariant
@@ -154,4 +160,33 @@ fun PinPromptScreen(
             }
         }
     )
+}
+
+
+@Composable
+private fun buildAuthenticationString(createPinState: CreatePinState): AnnotatedString {
+    val annotatedString = buildAnnotatedString {
+        this.withStyle(
+            SpanStyle()
+        ) {
+            this.append()
+            this.append(createPinState.authentication.subTitle)
+        }
+
+        if(createPinState.authentication == Authentication.AUTHENTICATION_FAILED) {
+            this.append(" ")
+
+            this.withStyle(
+                SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                )
+            ) {
+                this.append(
+                    text = getFormattedTime(createPinState.countdownTime)
+                )
+            }
+        }
+    }
+
+    return annotatedString
 }

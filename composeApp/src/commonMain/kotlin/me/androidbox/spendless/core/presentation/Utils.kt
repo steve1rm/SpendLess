@@ -8,6 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import kotlin.time.Duration
 
 @Composable
 fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
@@ -22,4 +23,15 @@ fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
             }
         }
     }
+}
+
+fun Long.pad(): String {
+    return this.toString().padStart(2, '0')
+}
+
+fun getFormattedTime(duration: Duration): String {
+    val minutes = duration.inWholeMinutes
+    val seconds = duration.inWholeSeconds % 60
+
+    return "${minutes.pad()}:${seconds.pad()}"
 }

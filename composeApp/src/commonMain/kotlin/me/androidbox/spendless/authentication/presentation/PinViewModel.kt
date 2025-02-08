@@ -31,12 +31,14 @@ class PinViewModel : ViewModel() {
     private var tryAttempts = 0
 
     /** Maybe add this to the core presentation */
-    private fun startCountdown() {
-        countDownTimer(30.seconds)
+    private fun disableKeyPadForDuration(duration: Duration = 30.seconds) {
+        countDownTimer(duration)
             .onStart {
                 println("Start Countdown Flow")
                 _createPinState.update { createPinState ->
-                    createPinState.copy(enableKeyPad = false)
+                    createPinState.copy(
+                        enableKeyPad = false,
+                        authentication = Authentication.AUTHENTICATION_FAILED)
                 }
             }
             .onEach { duration ->
@@ -49,7 +51,8 @@ class PinViewModel : ViewModel() {
             .onCompletion {
                 println("End Countdown Flow")
                 _createPinState.update { createPinState ->
-                    createPinState.copy(enableKeyPad = true)
+                    createPinState.copy(enableKeyPad = true,
+                        authentication = Authentication.AUTHENTICATION_PROMPT)
                 }
             }
             .launchIn(viewModelScope)
@@ -111,6 +114,11 @@ class PinViewModel : ViewModel() {
                     }
 
                     PinMode.AUTHENTICATION -> {
+                        _createPinState.update { createPinState ->
+                            createPinState.copy(
+                                authentication = Authentication.AUTHENTICATION_PROMPT)
+                        }
+
                         if (createPinState.value.createPinList.count() < 5) {
                             /** Get this from the encrypted shared preferences */
                             _createPinState.update {
@@ -141,7 +149,7 @@ class PinViewModel : ViewModel() {
                                 println("Authentication Valid repeated [ $tryAttempts ] PIN $hasValidPinNumbers")
 
                                 if(tryAttempts == 3) {
-                                    startCountdown()
+                                    disableKeyPadForDuration()
                                 }
 
                                 _createPinState.update { createPinState ->
