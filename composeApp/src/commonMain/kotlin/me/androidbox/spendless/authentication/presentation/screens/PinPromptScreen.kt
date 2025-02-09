@@ -117,11 +117,11 @@ fun PinPromptScreen(
                     Spacer(modifier = Modifier.height(32.dp))
 
                     PinDots(
-                        isFirstDotEnabled = createPinState.createPinList.count() < 1,
-                        isSecondDotEnabled = createPinState.createPinList.count() < 2,
-                        isThirdDotEnabled = createPinState.createPinList.count() < 3,
-                        isFourthDotEnabled = createPinState.createPinList.count() < 4,
-                        isFifthDotEnabled = createPinState.createPinList.count() < 5
+                        isFirstDotEnabled = createPinState.pinInputList.count() < 1,
+                        isSecondDotEnabled = createPinState.pinInputList.count() < 2,
+                        isThirdDotEnabled = createPinState.pinInputList.count() < 3,
+                        isFourthDotEnabled = createPinState.pinInputList.count() < 4,
+                        isFifthDotEnabled = createPinState.pinInputList.count() < 5
                     )
 
                     Spacer(

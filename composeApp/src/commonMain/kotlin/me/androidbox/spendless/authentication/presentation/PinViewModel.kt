@@ -64,21 +64,21 @@ class PinViewModel : ViewModel() {
             is CreatePinActions.OnPinNumberEntered -> {
                 when(createPinState.value.pinMode) {
                     PinMode.CREATE -> {
-                        if(createPinState.value.createPinList.count() < 5) {
+                        if(createPinState.value.pinInputList.count() < 5) {
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    createPinList = createPinState.createPinList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber
                                 )
                             }
 
-                            println("PIN Entered ${createPinState.value.createPinList}")
+                            println("PIN Entered ${createPinState.value.pinInputList}")
 
-                            if(createPinState.value.createPinList.count() == 5) {
-                                println("Change mode to repeat ${createPinState.value.createPinList}")
+                            if(createPinState.value.pinInputList.count() == 5) {
+                                println("Change mode to repeat ${createPinState.value.pinInputList}")
                                 _createPinState.update { createPinState ->
                                     createPinState.copy(
-                                        secretPin = createPinState.createPinList,
-                                        createPinList = emptyList(),
+                                        secretPin = createPinState.pinInputList,
+                                        pinInputList = emptyList(),
                                         pinMode = PinMode.REPEAT
                                     )
                                 }
@@ -87,23 +87,23 @@ class PinViewModel : ViewModel() {
                     }
 
                     PinMode.REPEAT -> {
-                        if (createPinState.value.createPinList.count() < 5) {
+                        if (createPinState.value.pinInputList.count() < 5) {
                             println("Secret PIN ${createPinState.value.secretPin}")
                             println("Entered repeated PIN ${action.pinNumber}")
 
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    createPinList = createPinState.createPinList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber
                                 )
                             }
 
-                            if(createPinState.value.createPinList.count() == 5) {
-                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.createPinList)
+                            if(createPinState.value.pinInputList.count() == 5) {
+                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.pinInputList)
                                 println("Valid repeated PIN $hasValidPinNumbers")
 
                                 _createPinState.update { createPinState ->
                                     createPinState.copy(
-                                        createPinList = emptyList(),
+                                        pinInputList = emptyList(),
                                     )
                                 }
 
@@ -120,7 +120,7 @@ class PinViewModel : ViewModel() {
                                 authentication = Authentication.AUTHENTICATION_PROMPT)
                         }
 
-                        if (createPinState.value.createPinList.count() < 5) {
+                        if (createPinState.value.pinInputList.count() < 5) {
                             /** Get this from the encrypted shared preferences */
                             _createPinState.update {
                                 it.copy(secretPin = listOf(KeyButtons.ONE, KeyButtons.TWO, KeyButtons.THREE, KeyButtons.FOUR, KeyButtons.FIVE))
@@ -131,12 +131,12 @@ class PinViewModel : ViewModel() {
 
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    createPinList = createPinState.createPinList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber
                                 )
                             }
 
-                            if(createPinState.value.createPinList.count() == 5) {
-                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.createPinList)
+                            if(createPinState.value.pinInputList.count() == 5) {
+                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.pinInputList)
 
                                 if(!hasValidPinNumbers) {
                                     tryAttempts += 1
@@ -155,7 +155,7 @@ class PinViewModel : ViewModel() {
 
                                 _createPinState.update { createPinState ->
                                     createPinState.copy(
-                                        createPinList = emptyList(),
+                                        pinInputList = emptyList(),
                                     )
                                 }
                             }
@@ -165,13 +165,13 @@ class PinViewModel : ViewModel() {
             }
 
             CreatePinActions.OnDeletePressed -> {
-                if(createPinState.value.createPinList.isNotEmpty()) {
+                if(createPinState.value.pinInputList.isNotEmpty()) {
                     _createPinState.update { createPinState ->
                         createPinState.copy(
-                            createPinList = createPinState.createPinList.dropLast(1)
+                            pinInputList = createPinState.pinInputList.dropLast(1)
                         )
                     }
-                    println("PIN Entered ${createPinState.value.createPinList}")
+                    println("PIN Entered ${createPinState.value.pinInputList}")
                 }
             }
 
@@ -195,13 +195,13 @@ class PinViewModel : ViewModel() {
             }
         }
     }
+}
 
-    private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
-        return flow {
-            emit(true)
-            delay(duration)
-            emit(false)
-        }
+private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
+    return flow {
+        emit(true)
+        delay(duration)
+        emit(false)
     }
 }
 
@@ -219,7 +219,7 @@ fun pinEntryValid(secretPin: List<KeyButtons>, repeatedPin: List<KeyButtons>): B
 }
 
 private fun PinViewModel.isValidPinEntered(pinNumber: KeyButtons): Boolean {
-    val repeatedPinList = createPinState.value.createPinList + pinNumber
+    val repeatedPinList = createPinState.value.pinInputList + pinNumber
 
     val isValid =
         createPinState.value.secretPin[repeatedPinList.count() - 1] == repeatedPinList[repeatedPinList.count() - 1]

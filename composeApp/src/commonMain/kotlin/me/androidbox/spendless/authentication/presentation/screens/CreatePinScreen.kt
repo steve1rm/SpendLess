@@ -17,7 +17,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.KeyButtons
@@ -103,11 +101,11 @@ fun CreatePinScreen(
                     Spacer(modifier = Modifier.height(32.dp))
 
                     PinDots(
-                        isFirstDotEnabled = createPinState.createPinList.count() < 1,
-                        isSecondDotEnabled = createPinState.createPinList.count() < 2,
-                        isThirdDotEnabled = createPinState.createPinList.count() < 3,
-                        isFourthDotEnabled = createPinState.createPinList.count() < 4,
-                        isFifthDotEnabled = createPinState.createPinList.count() < 5
+                        isFirstDotEnabled = createPinState.pinInputList.count() < 1,
+                        isSecondDotEnabled = createPinState.pinInputList.count() < 2,
+                        isThirdDotEnabled = createPinState.pinInputList.count() < 3,
+                        isFourthDotEnabled = createPinState.pinInputList.count() < 4,
+                        isFifthDotEnabled = createPinState.pinInputList.count() < 5
                     )
 
                     Spacer(
