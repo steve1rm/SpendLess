@@ -15,5 +15,5 @@ sealed interface Route {
 
 
     @Serializable
-    data object OnBoardingScreen : Route
+    data object PreferenceScreen : Route
 }
