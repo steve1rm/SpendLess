@@ -1,9 +1,8 @@
 package me.androidbox.spendless.onboarding.screens
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,15 +11,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRow
@@ -44,9 +40,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.SurfaceContainer
+import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 
 @Composable
 fun PreferenceScreen(
@@ -71,10 +69,14 @@ fun PreferenceScreen(
 
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .background(color = SurfaceContainer),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = "$10,382.45",
@@ -104,54 +106,10 @@ fun PreferenceScreen(
                 color = OnSurfaceVariant
             )
 
-            var selectedIndex by remember {
-                mutableStateOf(0)
-            }
+            val itemsExpenses = listOf("-$10", "($10)")
 
-            val items = listOf("5 min", "15 min", "30 min", "1 hour")
-
-            val animatedOffset by animateDpAsState(
-                targetValue = 0.dp, // This should be the selected text position
-                animationSpec = tween(durationMillis = 500)
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .background(color = Color(0xff8138FF).copy(0.08f), RoundedCornerShape(12.dp))
-                    .padding(4.dp),
-            ) {
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(
-                            RoundedCornerShape(16.dp)
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-
-                ) {
-                    items.forEachIndexed { index, item ->
-                        Text(
-                            fontWeight = FontWeight.W600,
-                            fontSize = 16.sp,
-                            text = item,
-                            color = if (selectedIndex == index) Color.Black else Color.DarkGray,
-                            modifier = Modifier
-                                .clickable { selectedIndex = index }
-                        )
-                    }
-                }
-
-                Box(
-                    modifier = Modifier
-                        .width(100.dp) // Should be the same width as the text items
-                        .height(48.dp)
-                        .background(color = Color.White, RoundedCornerShape(12.dp))
-                        .offset(x = animatedOffset, y = 0.dp),
-                )
+            ButtonPanel(itemsExpenses) { item ->
+                println(item)
             }
 
             Text(
@@ -167,6 +125,11 @@ fun PreferenceScreen(
                 fontWeight = FontWeight.W400,
                 color = OnSurfaceVariant
             )
+            val itemsDecimalSeparator = listOf("-$10", "($10)")
+
+            ButtonPanel(itemsDecimalSeparator) { item ->
+                println(item)
+            }
 
             Text(
                 text = "Thousands separator",
@@ -175,7 +138,11 @@ fun PreferenceScreen(
                 color = OnSurfaceVariant
             )
 
-            AnimatedChipSelector1()
+            val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
+
+            ButtonPanel(itemsThousandsSeparator) { item ->
+                println(item)
+            }
         }
     }
 }
