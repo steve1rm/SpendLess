@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
@@ -40,9 +41,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
+import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 
@@ -55,7 +58,7 @@ fun PreferenceScreen(
     ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(space = 16.dp),
             horizontalAlignment = Alignment.Start
         ) {
             /** Summary box */
@@ -125,7 +128,7 @@ fun PreferenceScreen(
                 fontWeight = FontWeight.W400,
                 color = OnSurfaceVariant
             )
-            val itemsDecimalSeparator = listOf("-$10", "($10)")
+            val itemsDecimalSeparator = listOf("1.00", "1,00")
 
             ButtonPanel(itemsDecimalSeparator) { item ->
                 println(item)
@@ -142,6 +145,21 @@ fun PreferenceScreen(
 
             ButtonPanel(itemsThousandsSeparator) { item ->
                 println(item)
+            }
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .background(color = Primary, shape = RoundedCornerShape(16.dp)),
+                onClick = {}
+            ) {
+                Text(
+                    text = "Save",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    color = OnPrimary
+                )
             }
         }
     }
