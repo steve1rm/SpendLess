@@ -12,13 +12,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -33,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -41,6 +50,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import me.androidbox.spendless.core.presentation.Background
+import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -48,13 +59,14 @@ import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
+import me.androidbox.spendless.onboarding.screens.components.DropDownCurrencyMenu
 
 @Composable
 fun PreferenceScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier
+        modifier = modifier.background(color = Background)
     ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -105,8 +117,8 @@ fun PreferenceScreen(
             Text(
                 text = "Expenses format",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.W400,
-                color = OnSurfaceVariant
+                fontWeight = FontWeight.W500,
+                color = OnSurface
             )
 
             val itemsExpenses = listOf("-$10", "($10)")
@@ -115,18 +127,71 @@ fun PreferenceScreen(
                 println(item)
             }
 
-            Text(
-                text = "Currency",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W400,
-                color = OnSurfaceVariant
-            )
+            var shouldShowDropDown by remember {
+                mutableStateOf(false)
+            }
+
+            val currencyList = Currency.entries.toList() // "US Dollar (USD)", "Euro (EUR)", "British Pounds Sterling (GBP)", "Japanese Yen (JPY)", "Swiss Franc (CHF)", "Canadian Dollar (CAD)", "Australian Dollar (AUD)", "Chinese Yuan Renminbi (CNY)", "Indian Rupee (INR)", "South African Rand (ZAR)", "Thai Baht (THB)")
+            var selectedCurrency by remember {
+                mutableStateOf(currencyList.first())
+            }
+
+            Box {
+                Column {
+               Text(
+                    text = "Currency",
+                   fontSize = 14.sp,
+                   fontWeight = FontWeight.W500,
+                   color = OnSurface
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .requiredHeight(48.dp)
+                        .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp))
+                        .background(color = Color.White, shape = RoundedCornerShape(16.dp))
+                        .padding(start = 12.dp, end = 10.dp)
+                        .clickable(
+                            indication = null,
+                            interactionSource = MutableInteractionSource(),
+                            onClick = {
+                                shouldShowDropDown = !shouldShowDropDown
+                            }
+                        ),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
+                    )
+
+                    Icon(
+                        imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        contentDescription = "open close dropdown"
+                    )
+                }
+                }
+
+                if(shouldShowDropDown) {
+                    DropDownCurrencyMenu(
+                        dropDownMenuItems = currencyList,
+                        onDismissed = {
+                            shouldShowDropDown = false
+                        },
+                        onMenuItemClicked = { item, index ->
+                            selectedCurrency = item
+                        }
+                    )
+                }
+            }
 
             Text(
                 text = "Decimal separator",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.W400,
-                color = OnSurfaceVariant
+                fontWeight = FontWeight.W500,
+                color = OnSurface
             )
             val itemsDecimalSeparator = listOf("1.00", "1,00")
 
@@ -137,8 +202,8 @@ fun PreferenceScreen(
             Text(
                 text = "Thousands separator",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.W400,
-                color = OnSurfaceVariant
+                fontWeight = FontWeight.W500,
+                color = OnSurface
             )
 
             val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
@@ -150,14 +215,14 @@ fun PreferenceScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
-                    .background(color = Primary, shape = RoundedCornerShape(16.dp)),
+                    .height(48.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Primary),
                 onClick = {}
             ) {
                 Text(
-                    text = "Save",
+                    text = "Start Tracking",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.W400,
+                    fontWeight = FontWeight.W600,
                     color = OnPrimary
                 )
             }

@@ -33,11 +33,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.authentication.presentation.Authentication
+import me.androidbox.spendless.core.presentation.Authentication
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
-import me.androidbox.spendless.authentication.presentation.KeyButtons
-import me.androidbox.spendless.authentication.presentation.PinMode
+import me.androidbox.spendless.core.presentation.KeyButtons
+import me.androidbox.spendless.core.presentation.PinMode
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.core.presentation.Error

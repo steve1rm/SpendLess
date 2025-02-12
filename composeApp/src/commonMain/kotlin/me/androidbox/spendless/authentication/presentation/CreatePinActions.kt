@@ -1,5 +1,8 @@
 package me.androidbox.spendless.authentication.presentation
 
+import me.androidbox.spendless.core.presentation.KeyButtons
+import me.androidbox.spendless.core.presentation.PinMode
+
 sealed interface CreatePinActions {
     data class OnPinNumberEntered(val pinNumber: KeyButtons) : CreatePinActions
     data object OnDeletePressed : CreatePinActions

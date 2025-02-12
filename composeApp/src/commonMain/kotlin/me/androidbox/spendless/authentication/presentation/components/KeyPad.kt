@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.authentication.presentation.KeyButtons
+import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import org.jetbrains.compose.resources.vectorResource

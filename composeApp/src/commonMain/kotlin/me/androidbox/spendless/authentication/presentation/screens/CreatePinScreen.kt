@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinState
-import me.androidbox.spendless.authentication.presentation.KeyButtons
+import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.core.presentation.OnSurface
