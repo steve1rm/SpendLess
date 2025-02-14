@@ -1,14 +1,13 @@
-package me.androidbox.spendless.onboarding.screens.components
+package me.androidbox.spendless.core.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,19 +16,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import me.androidbox.spendless.core.presentation.Currency
-import org.jetbrains.compose.resources.vectorResource
-import spendless.composeapp.generated.resources.Res
-import spendless.composeapp.generated.resources.logout
 
 @Composable
-fun DropDownCurrencyMenu(
+fun <T> GenericDropDownMenu(
     modifier: Modifier = Modifier,
-    dropDownMenuItems: List<Currency>,
-    onMenuItemClicked: (item: Currency, index: Int) -> Unit,
-    onDismissed: () -> Unit
+    dropDownMenuItems: List<T>,
+    onMenuItemClicked: (item: T, index: Int) -> Unit,
+    onDismissed: () -> Unit,
+    itemContent: @Composable (item: T) -> Unit
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -37,33 +34,25 @@ fun DropDownCurrencyMenu(
 
     DropdownMenu(
         modifier = modifier.fillMaxWidth(),
+        containerColor = Color.White,
+        shape = RoundedCornerShape(16.dp),
         expanded = !isExpanded,
         onDismissRequest = {
             isExpanded = false
             onDismissed()
         },
         content = {
-            dropDownMenuItems.forEachIndexed { index, currency ->
+            dropDownMenuItems.forEachIndexed { index, item ->
                 DropdownMenuItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(4.dp),
                     onClick = {
-                        onMenuItemClicked(currency, index)
+                        onMenuItemClicked(item, index)
                         onDismissed()
                     },
                     text = {
-                        DropDownItem(
-                           /* icon = {
-                                Icon(
-                                    imageVector = vectorResource(resource = Res.drawable.logout),
-                                    contentDescription = currency.title,
-                                    tint = Color.Unspecified
-                                )
-                            },*/
-                            description = currency.title,
-                            isSelected = false
-                        )
+                        itemContent(item)
                     }
                 )
             }
@@ -72,10 +61,11 @@ fun DropDownCurrencyMenu(
 }
 
 @Composable
-fun DropDownItem(
+fun GenericDropDownItem(
     modifier: Modifier = Modifier,
-    icon: (@Composable () -> Unit)? = null,
-    description: String,
+    startIcon: (@Composable () -> Unit)? = null,
+    endIcon: (@Composable () -> Unit)? = null,
+    text: String,
     isSelected: Boolean
 ) {
 
@@ -85,26 +75,26 @@ fun DropDownItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
+        /** Start Items */
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(space = 16.dp)
         ) {
-            icon?.invoke()
+            startIcon?.invoke()
 
             Text(
-                text = description
+                text = text
             )
         }
 
-        if(isSelected) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = Color(0xff00419C)
-                )
+        /** End Items */
+        if(endIcon != null) {
+            if (isSelected) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    endIcon()
+                }
             }
         }
     }

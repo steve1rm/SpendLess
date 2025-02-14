@@ -31,9 +31,9 @@ enum class Currency(val symbol: String, val title: String) {
     EURO("€", "Euro (EUR)"),
     POUND("£", "British Pound Sterling (GBP)"),
     YEN("¥", "Japanese Yen (JPY)"),
-    SWISS("CHF", "Swiss Franc (CHF)"),
-    CAD("C$", "Canadian Dollar (CAD)"),
-    AUD("A$", "Australian Dollar (AUD)"),
+ //   SWISS("CHF", "Swiss Franc (CHF)"),
+//    CAD("C$", "Canadian Dollar (CAD)"),
+ //   AUD("A$", "Australian Dollar (AUD)"),
     CNY("¥", "Chinese Yuan Renminbi (CNY)"),
     INR("₹", "Indian Rupee (INR)"),
     ZAR("R", "South African Rand (ZAR)")

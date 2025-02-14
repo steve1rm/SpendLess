@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,13 +21,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -53,13 +52,13 @@ import androidx.compose.ui.zIndex
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.OnPrimary
-import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
+import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
-import me.androidbox.spendless.onboarding.screens.components.DropDownCurrencyMenu
+import me.androidbox.spendless.core.presentation.components.GenericDropDownItem
 
 @Composable
 fun PreferenceScreen(
@@ -138,50 +137,58 @@ fun PreferenceScreen(
 
             Box {
                 Column {
-               Text(
-                    text = "Currency",
-                   fontSize = 14.sp,
-                   fontWeight = FontWeight.W500,
-                   color = OnSurface
-                )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .requiredHeight(48.dp)
-                        .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp))
-                        .background(color = Color.White, shape = RoundedCornerShape(16.dp))
-                        .padding(start = 12.dp, end = 10.dp)
-                        .clickable(
-                            indication = null,
-                            interactionSource = MutableInteractionSource(),
-                            onClick = {
-                                shouldShowDropDown = !shouldShowDropDown
-                            }
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
                     Text(
-                        modifier = Modifier,
-                        text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
+                        text = "Currency",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.W500,
+                        color = OnSurface
                     )
 
-                    Icon(
-                        imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = "open close dropdown"
-                    )
-                }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .requiredHeight(48.dp)
+                            .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp))
+                            .background(color = Color.White, shape = RoundedCornerShape(16.dp))
+                            .padding(start = 12.dp, end = 10.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = MutableInteractionSource(),
+                                onClick = {
+                                    shouldShowDropDown = !shouldShowDropDown
+                                }
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier,
+                            text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
+                        )
+
+                        Icon(
+                            imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = "open close dropdown"
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
 
                 if(shouldShowDropDown) {
-                    DropDownCurrencyMenu(
+                    GenericDropDownMenu(
                         dropDownMenuItems = currencyList,
                         onDismissed = {
                             shouldShowDropDown = false
                         },
                         onMenuItemClicked = { item, index ->
                             selectedCurrency = item
+                        },
+                        itemContent = { currency ->
+                            GenericDropDownItem(
+                                text = currency.title,
+                                isSelected = false
+                            )
                         }
                     )
                 }
