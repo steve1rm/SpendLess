@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package me.androidbox.spendless.onboarding.screens
 
 import androidx.compose.foundation.background
@@ -18,18 +20,22 @@ import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -56,185 +62,219 @@ import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
+import me.androidbox.spendless.core.presentation.components.GenericDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
-import me.androidbox.spendless.core.presentation.components.GenericDropDownItem
 
 @Composable
 fun PreferenceScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier.background(color = Background)
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(space = 16.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            /** Summary box */
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .background(color = SurfaceContainer, RoundedCornerShape(16.dp)),
-                elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
-            ) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = SurfaceContainer),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center,
+        modifier = modifier.background(color = Background),
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    IconButton(
+                        onClick = {}
                     ) {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "$10,382.45",
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.W600,
-                            color = OnSurface,
-                            textAlign = TextAlign.Center
-                        )
-
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = "spend this month",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W400,
-                            color = OnSurfaceVariant,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
-            }
-
-            /** Expense format */
-            Text(
-                text = "Expenses format",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W500,
-                color = OnSurface
-            )
-
-            val itemsExpenses = listOf("-$10", "($10)")
-
-            ButtonPanel(itemsExpenses) { item ->
-                println(item)
-            }
-
-            var shouldShowDropDown by remember {
-                mutableStateOf(false)
-            }
-
-            val currencyList = Currency.entries.toList() // "US Dollar (USD)", "Euro (EUR)", "British Pounds Sterling (GBP)", "Japanese Yen (JPY)", "Swiss Franc (CHF)", "Canadian Dollar (CAD)", "Australian Dollar (AUD)", "Chinese Yuan Renminbi (CNY)", "Indian Rupee (INR)", "South African Rand (ZAR)", "Thai Baht (THB)")
-            var selectedCurrency by remember {
-                mutableStateOf(currencyList.first())
-            }
-
-            Box {
-                Column {
-                    Text(
-                        text = "Currency",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W500,
-                        color = OnSurface
-                    )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(48.dp)
-                            .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp))
-                            .background(color = Color.White, shape = RoundedCornerShape(16.dp))
-                            .padding(start = 12.dp, end = 10.dp)
-                            .clickable(
-                                indication = null,
-                                interactionSource = MutableInteractionSource(),
-                                onClick = {
-                                    shouldShowDropDown = !shouldShowDropDown
-                                }
-                            ),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier,
-                            text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
-                        )
-
                         Icon(
-                            imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = "open close dropdown"
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Go back"
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(4.dp))
                 }
-
-                if(shouldShowDropDown) {
-                    GenericDropDownMenu(
-                        dropDownMenuItems = currencyList,
-                        onDismissed = {
-                            shouldShowDropDown = false
-                        },
-                        onMenuItemClicked = { item, index ->
-                            selectedCurrency = item
-                        },
-                        itemContent = { currency ->
-                            GenericDropDownItem(
-                                text = currency.title,
-                                isSelected = false
-                            )
-                        }
-                    )
-                }
-            }
-
-            Text(
-                text = "Decimal separator",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W500,
-                color = OnSurface
             )
-            val itemsDecimalSeparator = listOf("1.00", "1,00")
-
-            ButtonPanel(itemsDecimalSeparator) { item ->
-                println(item)
-            }
-
-            Text(
-                text = "Thousands separator",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.W500,
-                color = OnSurface
-            )
-
-            val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
-
-            ButtonPanel(itemsThousandsSeparator) { item ->
-                println(item)
-            }
-
-            Button(
+        },
+        content = { paddingValues ->
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                onClick = {}
+                    .padding(paddingValues)
+                    .padding(horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(space = 16.dp),
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Start Tracking",
-                    fontSize = 16.sp,
+                    text = "Set SpendLess\nto your preferences",
                     fontWeight = FontWeight.W600,
-                    color = OnPrimary
+                    fontSize = 28.sp,
+                    color = OnSurface,
+                    lineHeight = 32.sp
                 )
+
+                Text(
+                    text = "You can change it at anytime in the settings",
+                    fontWeight = FontWeight.W400,
+                    fontSize = 16.sp,
+                    color = OnSurfaceVariant
+                )
+
+                /** Summary box */
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .background(color = SurfaceContainer, RoundedCornerShape(16.dp)),
+                    elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp)
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = SurfaceContainer),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = "$10,382.45",
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.W600,
+                                color = OnSurface,
+                                textAlign = TextAlign.Center
+                            )
+
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = "spend this month",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.W400,
+                                color = OnSurfaceVariant,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+
+                /** Expense format */
+                Text(
+                    text = "Expenses format",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W500,
+                    color = OnSurface
+                )
+
+                val itemsExpenses = listOf("-$10", "($10)")
+
+                ButtonPanel(itemsExpenses) { item ->
+                    println(item)
+                }
+
+                var shouldShowDropDown by remember {
+                    mutableStateOf(false)
+                }
+
+                val currencyList = Currency.entries.toList() // "US Dollar (USD)", "Euro (EUR)", "British Pounds Sterling (GBP)", "Japanese Yen (JPY)", "Swiss Franc (CHF)", "Canadian Dollar (CAD)", "Australian Dollar (AUD)", "Chinese Yuan Renminbi (CNY)", "Indian Rupee (INR)", "South African Rand (ZAR)", "Thai Baht (THB)")
+                var selectedCurrency by remember {
+                    mutableStateOf(currencyList.first())
+                }
+
+                Box {
+                    Column {
+                        Text(
+                            text = "Currency",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W500,
+                            color = OnSurface
+                        )
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .requiredHeight(48.dp)
+                                .shadow(elevation = 2.dp, shape = RoundedCornerShape(16.dp))
+                                .background(color = Color.White, shape = RoundedCornerShape(16.dp))
+                                .padding(start = 12.dp, end = 10.dp)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = MutableInteractionSource(),
+                                    onClick = {
+                                        shouldShowDropDown = !shouldShowDropDown
+                                    }
+                                ),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier,
+                                text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
+                            )
+
+                            Icon(
+                                imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                contentDescription = "open close dropdown"
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+
+                    if(shouldShowDropDown) {
+                        GenericDropDownMenu(
+                            dropDownMenuItems = currencyList,
+                            onDismissed = {
+                                shouldShowDropDown = false
+                            },
+                            onMenuItemClicked = { item, index ->
+                                selectedCurrency = item
+                            },
+                            itemContent = { currency ->
+                                GenericDropDownItem(
+                                    text = currency.title,
+                                    isSelected = false
+                                )
+                            }
+                        )
+                    }
+                }
+
+                Text(
+                    text = "Decimal separator",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W500,
+                    color = OnSurface
+                )
+                val itemsDecimalSeparator = listOf("1.00", "1,00")
+
+                ButtonPanel(itemsDecimalSeparator) { item ->
+                    println(item)
+                }
+
+                Text(
+                    text = "Thousands separator",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W500,
+                    color = OnSurface
+                )
+
+                val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
+
+                ButtonPanel(itemsThousandsSeparator) { item ->
+                    println(item)
+                }
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Primary),
+                    onClick = {}
+                ) {
+                    Text(
+                        text = "Start Tracking",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W600,
+                        color = OnPrimary
+                    )
+                }
             }
         }
-    }
+    )
 }
 
 @Composable
