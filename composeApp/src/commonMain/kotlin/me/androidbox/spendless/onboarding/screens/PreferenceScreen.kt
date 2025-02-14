@@ -71,7 +71,7 @@ fun PreferenceScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier.background(color = Background),
+        modifier = modifier.background(color = Color.Green),
         topBar = {
             TopAppBar(
                 title = {},

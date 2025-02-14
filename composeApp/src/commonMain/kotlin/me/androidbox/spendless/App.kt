@@ -13,6 +13,7 @@ import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
+import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -29,7 +30,7 @@ fun App() {
             startDestination = Route.AuthenticationGraph
         ) {
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.PreferenceScreen
+                startDestination = Route.DashboardScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -69,6 +70,15 @@ fun App() {
 
                 composable<Route.PreferenceScreen> {
                     PreferenceScreen()
+                }
+
+                composable<Route.DashboardScreen> {
+                    DashboardScreen(
+                        onSettingsClicked = {
+
+                        },
+                        onAddTransaction = {}
+                    )
                 }
             }
         }

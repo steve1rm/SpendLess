@@ -12,3 +12,6 @@ val Error = Color(0xFFA4001914)
 val SurfaceContainer = Color.White
 val OnSurface = Color(0xFF1B1B1C)
 val OnSurfaceVariant = Color(0xFF44474B)
+val OnSecondaryContainer = Color(0xFF414300)
+val SecondaryFixed = Color(0xFFE5EA58)
+val SecondaryContainer = Color(0xFFD2E750)
