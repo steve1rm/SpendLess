@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSecondaryContainer
@@ -44,8 +45,10 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
+import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.settings
 
 @Composable
@@ -62,8 +65,8 @@ fun DashboardScreen(
                 drawRect(
                     Brush.radialGradient(
                         colors = listOf(Primary, OnPrimaryFixed),
-                        center = Offset(x = 400.dp.value, y = 600.dp.value),
-                        radius = 2000f
+                        center = Offset(x = 400.dp.value, y = 400.dp.value),
+                        radius = 1000f
                     )
                 )
             },
@@ -100,9 +103,11 @@ fun DashboardScreen(
         },
         content = { paddingValues ->
             Column(
-                modifier = Modifier.fillMaxWidth().padding(paddingValues)
+                modifier = Modifier.fillMaxWidth().padding(paddingValues),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                DashboardHeader()
+                DashboardHeader(modifier = Modifier.weight(1f))
+                DashboardTransactions(modifier = Modifier.weight(2f))
             }
         },
         floatingActionButton = {
@@ -126,8 +131,9 @@ fun DashboardHeader(
     modifier: Modifier = Modifier
 ) {
 
-    Column(modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
+        horizontalAlignment = Alignment.CenterHorizontally
+        ) {
         Text(
             text = "$10,382.45",
             fontSize = 46.sp,
@@ -144,12 +150,13 @@ fun DashboardHeader(
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth().wrapContentSize(align = Alignment.BottomCenter),
+        modifier = Modifier.fillMaxWidth()
+            .wrapContentSize(align = Alignment.BottomCenter),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LargestTransaction(
             modifier = Modifier.weight(1.6f),
-            hasEmptyTransaction = false
+            hasTransactions = true
         )
         PreviousTransaction(
             modifier = Modifier.weight(1f)
@@ -158,29 +165,43 @@ fun DashboardHeader(
 }
 
 @Composable
-fun LargestTransaction(
+fun DashboardTransactions(
     modifier: Modifier = Modifier,
-    hasEmptyTransaction: Boolean = true
+    hasTransactions: Boolean = false
 ) {
-    if(hasEmptyTransaction) {
-        Box(
+    if(hasTransactions) {
+
+    }
+    else {
+        Column(
             modifier = modifier
                 .fillMaxWidth()
-                .height(72.dp)
-                .background(color = PrimaryFixed, shape = RoundedCornerShape(16.dp)),
-            contentAlignment = Alignment.Center
+                .background(color = Background, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+            verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Icon(
+                modifier = Modifier.size(96.dp),
+                painter = painterResource(resource = Res.drawable.cash),
+                contentDescription = null,
+                tint = Color.Unspecified
+            )
             Text(
-                textAlign = TextAlign.Center,
-                text = "Your largest transaction will appear here",
-                maxLines = 2,
+                text = "No transactions to show",
                 fontWeight = FontWeight.W600,
-                fontSize = 16.sp,
-                color = OnSurface
+                fontSize = 20.sp,
+                color = Color.Black
             )
         }
     }
-    else {
+}
+
+@Composable
+fun LargestTransaction(
+    modifier: Modifier = Modifier,
+    hasTransactions: Boolean = false
+) {
+    if(hasTransactions) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -234,6 +255,24 @@ fun LargestTransaction(
                     color = OnSurface
                 )
             }
+        }
+    }
+    else {
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(72.dp)
+                .background(color = PrimaryFixed, shape = RoundedCornerShape(16.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                text = "Your largest transaction will appear here",
+                maxLines = 2,
+                fontWeight = FontWeight.W600,
+                fontSize = 16.sp,
+                color = OnSurface
+            )
         }
     }
 }
