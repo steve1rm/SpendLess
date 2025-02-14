@@ -131,9 +131,11 @@ fun DashboardHeader(
     modifier: Modifier = Modifier
 ) {
 
-    Column(modifier = modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .wrapContentSize(Alignment.Center),
         horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    ) {
         Text(
             text = "$10,382.45",
             fontSize = 46.sp,
@@ -150,8 +152,10 @@ fun DashboardHeader(
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .wrapContentSize(align = Alignment.BottomCenter),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(align = Alignment.BottomCenter)
+            .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LargestTransaction(
