@@ -174,8 +174,8 @@ fun PreferenceScreen(
                     mutableStateOf(currencyList.first())
                 }
 
-                Box {
-                    Column {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "Currency",
                             fontSize = 14.sp,
