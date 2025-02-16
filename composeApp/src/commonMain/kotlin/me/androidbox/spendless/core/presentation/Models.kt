@@ -38,3 +38,8 @@ enum class Currency(val symbol: String, val title: String) {
     INR("₹", "Indian Rupee (INR)"),
     ZAR("R", "South African Rand (ZAR)")
 }
+
+enum class TransactionType(val recipient: String, val typeName: String) {
+    RECEIVER(recipient = "Expense", typeName = "Receiver"),
+    SENDER(recipient = "Income", typeName = "Sender")
+}

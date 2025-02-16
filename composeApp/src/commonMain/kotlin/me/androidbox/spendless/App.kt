@@ -1,7 +1,8 @@
 package me.androidbox.spendless
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +17,8 @@ import me.androidbox.spendless.core.presentation.ObserveAsEvents
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.transactions.TransactionViewModel
+import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -30,7 +33,7 @@ fun App() {
             startDestination = Route.AuthenticationGraph
         ) {
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.DashboardScreen
+                startDestination = Route.CreateTransactionContent
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -78,6 +81,16 @@ fun App() {
 
                         },
                         onAddTransaction = {}
+                    )
+                }
+
+                composable<Route.CreateTransactionContent> {
+                    val transactionViewModel = koinViewModel<TransactionViewModel>()
+                    val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
+
+                    CreateTransactionContent(
+                        state = transactionState,
+                        action = transactionViewModel::onAction
                     )
                 }
             }

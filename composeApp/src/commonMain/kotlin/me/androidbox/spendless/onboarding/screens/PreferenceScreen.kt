@@ -55,14 +55,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.OnPrimary
+import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
-import me.androidbox.spendless.core.presentation.components.GenericDropDownItem
+import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 
@@ -161,7 +161,10 @@ fun PreferenceScreen(
 
                 val itemsExpenses = listOf("-$10", "($10)")
 
-                ButtonPanel(itemsExpenses) { item ->
+                ButtonPanel(
+                    items = itemsExpenses,
+                    selectedColor = OnSurface,
+                    unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
                     println(item)
                 }
 
@@ -224,7 +227,7 @@ fun PreferenceScreen(
                                 selectedCurrency = item
                             },
                             itemContent = { currency ->
-                                GenericDropDownItem(
+                                CurrencyDropDownItem(
                                     text = currency.title,
                                     isSelected = false
                                 )
@@ -241,7 +244,9 @@ fun PreferenceScreen(
                 )
                 val itemsDecimalSeparator = listOf("1.00", "1,00")
 
-                ButtonPanel(itemsDecimalSeparator) { item ->
+                ButtonPanel(items = itemsDecimalSeparator,
+                    selectedColor = OnSurface,
+                    unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
                     println(item)
                 }
 
@@ -254,7 +259,9 @@ fun PreferenceScreen(
 
                 val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
 
-                ButtonPanel(itemsThousandsSeparator) { item ->
+                ButtonPanel(items = itemsThousandsSeparator,
+                    selectedColor = OnSurface,
+                    unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
                     println(item)
                 }
 

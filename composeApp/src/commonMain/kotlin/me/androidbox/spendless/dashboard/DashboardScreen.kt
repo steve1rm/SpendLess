@@ -162,6 +162,7 @@ fun DashboardHeader(
             modifier = Modifier.weight(1.6f),
             hasTransactions = true
         )
+
         PreviousTransaction(
             modifier = Modifier.weight(1f)
         )
