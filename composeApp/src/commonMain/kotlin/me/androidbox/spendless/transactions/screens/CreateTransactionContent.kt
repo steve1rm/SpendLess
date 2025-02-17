@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -45,13 +46,19 @@ import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.Primary
+import me.androidbox.spendless.core.presentation.PrimaryFixed
+import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
+import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.transactions.TransactionAction
 import me.androidbox.spendless.transactions.TransactionState
+import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
+import spendless.composeapp.generated.resources.food
+import spendless.composeapp.generated.resources.health
 import spendless.composeapp.generated.resources.trending_down
 import spendless.composeapp.generated.resources.trending_up
 
@@ -192,15 +199,14 @@ fun CreateTransactionContent(
             mutableStateOf(false)
         }
 
-        val options = listOf("Entertainment", "Clothing & Accessories", "Education", "Food & Groceries", "Health & Wellness")
 
         var selectedItem by remember {
-            mutableStateOf(options.first())
+            mutableStateOf(TransactionItems.entries.first())
         }
 
         if(state.type == TransactionType.RECEIVER) {
             Box(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)
             ) {
 
                 Row(
@@ -220,9 +226,25 @@ fun CreateTransactionContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = selectedItem
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier.size(40.dp).background(color = PrimaryFixed, shape = RoundedCornerShape(12.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(20.dp),
+                                painter = painterResource(selectedItem.iconRes),
+                                contentDescription = null,
+                                tint = Color.Unspecified)
+                        }
+
+                        Text(
+                            text = selectedItem.title
+                        )
+                    }
 
                     Icon(
                         imageVector = if (shouldShowDropDown) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
@@ -232,7 +254,7 @@ fun CreateTransactionContent(
 
                 if (shouldShowDropDown) {
                     GenericDropDownMenu(
-                        dropDownMenuItems = options,
+                        dropDownMenuItems = TransactionItems.entries,
                         onDismissed = {
                             shouldShowDropDown = false
                         },
@@ -241,8 +263,8 @@ fun CreateTransactionContent(
                             selectedItem = item
                         },
                         itemContent = { item ->
-                            CurrencyDropDownItem(
-                                text = item,
+                            TransactionDropDownItem(
+                                transactionItems = item,
                                 isSelected = false
                             )
                         }
