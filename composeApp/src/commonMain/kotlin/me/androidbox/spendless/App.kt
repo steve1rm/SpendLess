@@ -27,12 +27,14 @@ import org.koin.compose.viewmodel.koinViewModel
 @Preview
 fun App() {
     MaterialTheme {
+
         val navController = rememberNavController()
 
         NavHost(
             navController = navController,
             startDestination = Route.AuthenticationGraph
         ) {
+
             navigation<Route.AuthenticationGraph>(
                 startDestination = Route.DashboardScreen
             ) {

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
@@ -40,6 +41,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.Error
@@ -59,6 +61,7 @@ import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.transactions.TransactionAction
 import me.androidbox.spendless.transactions.TransactionState
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.food
 import spendless.composeapp.generated.resources.health
@@ -77,6 +80,32 @@ fun CreateTransactionContent(
             .padding(horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Create Transaction",
+                fontSize = 16.sp,
+                color = OnSurface.copy(alpha = 0.6f),
+                fontWeight = FontWeight.W600)
+
+            IconButton(
+                onClick = {
+                    action(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Should close bottom sheet",
+                    tint = OnSurface
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         ButtonPanel(
             items = listOf(TransactionType.RECEIVER.recipient, TransactionType.SENDER.recipient),
             startIcons = listOf(Res.drawable.trending_down, Res.drawable.trending_up),
@@ -108,10 +137,7 @@ fun CreateTransactionContent(
             ),
             onValueChange = { newName ->
                 val name = newName.filter { it.isLetterOrDigit() }
-
-                if(name.count() in 4..14) {
-                    action(DashboardAction.OnTransactionAmountEntered(name.trim()))
-                }
+                action(DashboardAction.OnTransactionNameEntered(name.trim()))
             },
             value = state.name,
             textStyle = TextStyle(
@@ -183,7 +209,9 @@ fun CreateTransactionContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = {}
+                onClick = {
+
+                }
             ) {
                 Icon(imageVector = Icons.Default.Add,
                     contentDescription = "Add notes",

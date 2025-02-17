@@ -33,6 +33,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -43,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
@@ -120,21 +122,30 @@ fun DashboardScreen(
                 DashboardTransactions(modifier = Modifier.weight(2f))
             }
 
+            val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+            val coroutineScope = rememberCoroutineScope()
+
             if(dashboardState.newTransaction) {
                 ModalBottomSheet(
                     modifier = Modifier
                         .fillMaxHeight()
                         .windowInsetsPadding(WindowInsets.statusBars),
-                    sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                    sheetState = sheetState,
                     onDismissRequest = {
-                        dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                        }
                     },
-                    properties = ModalBottomSheetProperties(),
+                    properties = ModalBottomSheetProperties(
+                        shouldDismissOnBackPress = false
+                    ),
+                    dragHandle = null,
                     content = {
                         CreateTransactionContent(
                             state = dashboardState,
-                            action = {
-
+                            action = { action ->
+                                dashboardAction(action)
                             }
                         )
                     }

@@ -28,7 +28,6 @@ class TransactionViewModel : ViewModel() {
                         name = action.name
                     )
                 }
-
             }
             is TransactionAction.OnTransactionTypeClicked -> {
                 _transactionState.update { transactionState ->

@@ -14,7 +14,7 @@ class DashBoardViewModel : ViewModel() {
         when(action) {
             is DashboardAction.OpenNewTransaction -> {
                 _dashboardState.update { dashboardState ->
-                    dashboardState.copy(newTransaction = true)
+                    dashboardState.copy(newTransaction = action.shouldOpen)
                 }
             }
 
@@ -22,10 +22,32 @@ class DashBoardViewModel : ViewModel() {
                 println("OpenSettings Screen")
             }
 
-            DashboardAction.OnCreateClicked -> TODO()
-            is DashboardAction.OnTransactionAmountEntered -> TODO()
-            is DashboardAction.OnTransactionNameEntered -> TODO()
-            is DashboardAction.OnTransactionTypeClicked -> TODO()
+            DashboardAction.OnCreateClicked -> {
+                if(_dashboardState.value.name.count() in 4..14) {
+                    println("Create transaction save to the database")
+                }
+            }
+            is DashboardAction.OnTransactionAmountEntered -> {
+                _dashboardState.update { transactionState ->
+                    transactionState.copy(
+                        amount = action.amount
+                    )
+                }
+            }
+            is DashboardAction.OnTransactionNameEntered -> {
+                _dashboardState.update { transactionState ->
+                    transactionState.copy(
+                        name = action.name
+                    )
+                }
+            }
+            is DashboardAction.OnTransactionTypeClicked -> {
+                _dashboardState.update { transactionState ->
+                    transactionState.copy(
+                        type = action.transactionType
+                    )
+                }
+            }
         }
     }
 }
