@@ -1,5 +1,6 @@
 package me.androidbox.spendless.core.presentation
 
+import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(0xFF5A00C8)
@@ -15,3 +16,4 @@ val OnSurfaceVariant = Color(0xFF44474B)
 val OnSecondaryContainer = Color(0xFF414300)
 val SecondaryFixed = Color(0xFFE5EA58)
 val SecondaryContainer = Color(0xFFD2E750)
+val Success = Color(0xFF29AC08)
