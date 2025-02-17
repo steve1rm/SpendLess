@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -52,6 +53,8 @@ import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
+import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.transactions.TransactionAction
 import me.androidbox.spendless.transactions.TransactionState
@@ -65,8 +68,8 @@ import spendless.composeapp.generated.resources.trending_up
 @Composable
 fun CreateTransactionContent(
     modifier: Modifier = Modifier,
-    state: TransactionState,
-    action: (action: TransactionAction) -> Unit
+    state: DashboardState,
+    action: (action: DashboardAction) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -82,10 +85,10 @@ fun CreateTransactionContent(
         ) { item ->
             when (item) {
                 TransactionType.RECEIVER.recipient -> {
-                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
+                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
                 }
                 TransactionType.SENDER.recipient -> {
-                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.SENDER))
+                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.SENDER))
                 }
             }
         }
@@ -107,7 +110,7 @@ fun CreateTransactionContent(
                 val name = newName.filter { it.isLetterOrDigit() }
 
                 if(name.count() in 4..14) {
-                    action(TransactionAction.OnTransactionAmountEntered(name.trim()))
+                    action(DashboardAction.OnTransactionAmountEntered(name.trim()))
                 }
             },
             value = state.name,
@@ -154,7 +157,7 @@ fun CreateTransactionContent(
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
 
-                    action(TransactionAction.OnTransactionAmountEntered(amount.trim()))
+                    action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
                 },
                 value = state.amount,
                 textStyle = TextStyle(
@@ -199,14 +202,15 @@ fun CreateTransactionContent(
             mutableStateOf(false)
         }
 
-
         var selectedItem by remember {
             mutableStateOf(TransactionItems.entries.first())
         }
 
         if(state.type == TransactionType.RECEIVER) {
             Box(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp)
             ) {
 
                 Row(
@@ -218,7 +222,7 @@ fun CreateTransactionContent(
                         .padding(start = 12.dp, end = 10.dp)
                         .clickable(
                             indication = null,
-                            interactionSource = MutableInteractionSource(),
+                            interactionSource = remember { MutableInteractionSource() },
                             onClick = {
                                 shouldShowDropDown = !shouldShowDropDown
                             }
@@ -267,7 +271,8 @@ fun CreateTransactionContent(
                                 transactionItems = item,
                                 isSelected = false
                             )
-                        }
+                        },
+                        shouldShowDropdown = shouldShowDropDown
                     )
                 }
             }
@@ -282,7 +287,7 @@ fun CreateTransactionContent(
             ),
             onClick = {
                 if(state.amount.count() in 4..14) {
-                    action(TransactionAction.OnCreateClicked)
+                    action(DashboardAction.OnCreateClicked)
                 }
             }
         ) {

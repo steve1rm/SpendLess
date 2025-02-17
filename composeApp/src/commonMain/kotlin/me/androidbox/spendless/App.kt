@@ -14,6 +14,7 @@ import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
+import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
@@ -33,7 +34,7 @@ fun App() {
             startDestination = Route.AuthenticationGraph
         ) {
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.CreateTransactionContent
+                startDestination = Route.DashboardScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -76,11 +77,12 @@ fun App() {
                 }
 
                 composable<Route.DashboardScreen> {
-                    DashboardScreen(
-                        onSettingsClicked = {
+                    val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
+                    val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
-                        },
-                        onAddTransaction = {}
+                    DashboardScreen(
+                        dashboardState = dashboardState,
+                        dashboardAction = dashBoardViewModel::onAction
                     )
                 }
 
@@ -88,10 +90,10 @@ fun App() {
                     val transactionViewModel = koinViewModel<TransactionViewModel>()
                     val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
 
-                    CreateTransactionContent(
+                  /*  CreateTransactionContent(
                         state = transactionState,
                         action = transactionViewModel::onAction
-                    )
+                    )*/
                 }
             }
         }

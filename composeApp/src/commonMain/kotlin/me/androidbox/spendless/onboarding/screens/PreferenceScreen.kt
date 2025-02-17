@@ -217,23 +217,22 @@ fun PreferenceScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                     }
 
-                    if(shouldShowDropDown) {
-                        GenericDropDownMenu(
-                            dropDownMenuItems = currencyList,
-                            onDismissed = {
-                                shouldShowDropDown = false
-                            },
-                            onMenuItemClicked = { item, index ->
-                                selectedCurrency = item
-                            },
-                            itemContent = { currency ->
-                                CurrencyDropDownItem(
-                                    text = currency.title,
-                                    isSelected = false
-                                )
-                            }
-                        )
-                    }
+                    GenericDropDownMenu(
+                        dropDownMenuItems = currencyList,
+                        onDismissed = {
+                            shouldShowDropDown = false
+                        },
+                        onMenuItemClicked = { item, index ->
+                            selectedCurrency = item
+                        },
+                        itemContent = { currency ->
+                            CurrencyDropDownItem(
+                                text = currency.title,
+                                isSelected = false
+                            )
+                        },
+                        shouldShowDropdown = shouldShowDropDown
+                    )
                 }
 
                 Text(

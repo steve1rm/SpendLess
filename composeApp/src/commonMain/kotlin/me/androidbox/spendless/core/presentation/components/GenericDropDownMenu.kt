@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.TransactionItems
 import org.jetbrains.compose.resources.painterResource
@@ -35,12 +36,11 @@ fun <T> GenericDropDownMenu(
     dropDownMenuItems: List<T>,
     onMenuItemClicked: (item: T, index: Int) -> Unit,
     onDismissed: () -> Unit,
+    shouldShowDropdown: Boolean,
     startIconList: List<@Composable () -> Unit> = emptyList(),
     itemContent: @Composable (item: T) -> Unit
 ) {
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
+
     val scrollState = rememberScrollState()
 
     DropdownMenu(
@@ -48,9 +48,8 @@ fun <T> GenericDropDownMenu(
         scrollState = scrollState,
         containerColor = Color.White,
         shape = RoundedCornerShape(16.dp),
-        expanded = !isExpanded,
+        expanded = shouldShowDropdown,
         onDismissRequest = {
-            isExpanded = false
             onDismissed()
         },
         content = {

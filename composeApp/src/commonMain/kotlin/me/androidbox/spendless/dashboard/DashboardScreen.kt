@@ -8,11 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,10 +25,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +52,7 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
+import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
@@ -54,8 +62,8 @@ import spendless.composeapp.generated.resources.settings
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
-    onSettingsClicked: () -> Unit,
-    onAddTransaction: () -> Unit
+    dashboardState: DashboardState,
+    dashboardAction: (action: DashboardAction) -> Unit
 ) {
 
     Scaffold(
@@ -88,7 +96,9 @@ fun DashboardScreen(
                             .size(48.dp)
                             .background(color = Color.White.copy(0.2f), RoundedCornerShape(16.dp))
                             .clickable(
-                                onClick = onSettingsClicked
+                                onClick = {
+                                    dashboardAction(DashboardAction.OpenSettings)
+                                }
                             ),
                         contentAlignment = Alignment.Center
                     ) {
@@ -109,10 +119,33 @@ fun DashboardScreen(
                 DashboardHeader(modifier = Modifier.weight(1f))
                 DashboardTransactions(modifier = Modifier.weight(2f))
             }
+
+            if(dashboardState.newTransaction) {
+                ModalBottomSheet(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .windowInsetsPadding(WindowInsets.statusBars),
+                    sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                    onDismissRequest = {
+                        dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                    },
+                    properties = ModalBottomSheetProperties(),
+                    content = {
+                        CreateTransactionContent(
+                            state = dashboardState,
+                            action = {
+
+                            }
+                        )
+                    }
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddTransaction,
+                onClick = {
+                    dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
+                },
                 containerColor = SecondaryContainer,
                 content = {
                     Icon(imageVector = Icons.Default.Add,
@@ -175,7 +208,7 @@ fun DashboardTransactions(
     hasTransactions: Boolean = false
 ) {
     if(hasTransactions) {
-
+        /** Show transactions here */
     }
     else {
         Column(
