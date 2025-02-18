@@ -13,6 +13,7 @@ import me.androidbox.spendless.authentication.presentation.components.DigitKey
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
+import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 
 class MainActivity : ComponentActivity() {
@@ -24,6 +25,12 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PopularItemPreview() {
+    PopularItem()
 }
 
 @Preview

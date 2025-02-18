@@ -54,6 +54,7 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
+import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -194,6 +195,12 @@ fun DashboardHeader(
             color = OnPrimary
         )
     }
+
+    PopularItem(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+    )
 
     Row(
         modifier = Modifier
