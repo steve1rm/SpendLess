@@ -48,6 +48,10 @@ class DashBoardViewModel : ViewModel() {
                     )
                 }
             }
+
+            DashboardAction.OnShowAllClicked -> {
+                /** Go to all transactions */
+            }
         }
     }
 }
