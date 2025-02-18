@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -227,6 +229,37 @@ fun DashboardTransactions(
 ) {
     if(hasTransactions) {
         /** Show transactions here */
+        Column(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Latest Transactions",
+                    fontWeight = FontWeight.W600,
+                    fontSize = 16.sp,
+                    color = OnSurface
+                )
+
+                Text(
+                    text = "Show all",
+                    fontWeight = FontWeight.W600,
+                    fontSize = 20.sp,
+                    color = Primary
+                )
+            }
+
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                state = rememberLazyListState(),
+
+            ) {
+
+            }
+        }
     }
     else {
         Column(
