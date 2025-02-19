@@ -22,4 +22,7 @@ sealed interface Route {
 
     @Serializable
     data object CreateTransactionContent : Route
+
+    @Serializable
+    data object AllTransactionScreen : Route
 }

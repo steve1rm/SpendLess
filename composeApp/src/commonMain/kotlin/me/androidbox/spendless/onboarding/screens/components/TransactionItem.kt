@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,17 +21,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.Success
+import me.androidbox.spendless.transactions.domain.TransactionModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendless.composeapp.generated.resources.Res
-import spendless.composeapp.generated.resources.health
 import spendless.composeapp.generated.resources.notes
-import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun TransactionItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    transactionModel: TransactionModel
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -43,7 +41,7 @@ fun TransactionItem(
             ) {
                 Icon(
                     modifier = Modifier.size(44.dp),
-                    painter = painterResource(Res.drawable.health),
+                    painter = painterResource(transactionModel.description.iconRes),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
@@ -70,14 +68,14 @@ fun TransactionItem(
                 
                 ) {
                     Text(
-                        text = "Rick's share - Birthday M.",
+                        text = transactionModel.title,
                         fontWeight = FontWeight.W500,
                         fontSize = 16.sp,
                         color = OnSurface
                     )
 
                     Text(
-                        text = "Income",
+                        text = transactionModel.description.title,
                         fontWeight = FontWeight.W400,
                         fontSize = 12.sp,
                         color = OnSurface
@@ -85,7 +83,7 @@ fun TransactionItem(
                 }
 
                 Text(
-                    text = "$20.00",
+                    text = transactionModel.amount.toString(),
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
                     color = Success
@@ -97,7 +95,7 @@ fun TransactionItem(
             Spacer(modifier = Modifier.width(52.dp))
 
             Text(
-                text = "Enjoyed a coffee and a snack at Starbucks with Rick and M.",
+                text = transactionModel.note,
                 fontWeight = FontWeight.W400,
                 fontSize = 14.sp,
                 color = OnSurface
@@ -109,6 +107,6 @@ fun TransactionItem(
 @Preview()
 @Composable
 fun TransactionItemPreview() {
-    TransactionItem(
-    )
+   /* TransactionItem(
+    ) */
 }

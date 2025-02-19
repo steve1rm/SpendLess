@@ -15,6 +15,7 @@ import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.onboarding.screens.components.TransactionItem
+import me.androidbox.spendless.transactions.domain.TransactionModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,8 +43,9 @@ fun AppAndroidPreview() {
 @Preview(showBackground = true)
 @Composable
 fun TransactionItemPreview() {
-    TransactionItem(
-    )
+  /*  TransactionItem(
+        transactionModel = TransactionModel("", "", "", "", "",)
+    )*/
 }
 
 @Preview(showBackground = true)
