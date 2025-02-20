@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -69,6 +70,11 @@ fun SettingsScreen(
             ) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(16.dp),
+                        ambientColor = Color(0xff1800401A).copy(alpha = 0.1f)
+                    )
                     .background(color = Color.White, shape = RoundedCornerShape(16.dp))) {
 
                     SettingsButton(
@@ -98,6 +104,11 @@ fun SettingsScreen(
                 }
 
                 SettingsButton(
+                    modifier = Modifier.shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(16.dp),
+                        ambientColor = Color(0xff1800401A).copy(alpha = 0.1f)
+                    ),
                     icon = {
                         Icon(imageVector = vectorResource(resource = Res.drawable.logout),
                             contentDescription = "Go to settings",
