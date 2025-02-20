@@ -19,8 +19,8 @@ import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.settings.presentation.SettingsScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
-import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -37,7 +37,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.DashboardScreen
+                startDestination = Route.SettingsScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -106,6 +106,10 @@ fun App() {
                     AllTransactionListScreen(
                         transactionState = transactionState
                     )
+                }
+
+                composable<Route.SettingsScreen> {
+                    SettingsScreen()
                 }
             }
         }
