@@ -2,6 +2,7 @@ package me.androidbox.spendless.core.presentation
 
 import org.jetbrains.compose.resources.DrawableResource
 import spendless.composeapp.generated.resources.Res
+import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.clothing
 import spendless.composeapp.generated.resources.education
 import spendless.composeapp.generated.resources.entertainment
@@ -57,5 +58,6 @@ enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
     CLOTHING("Clothing & Accessories", Res.drawable.clothing),
     EDUCATION("Education", Res.drawable.education),
     FOOD("Food & Groceries", Res.drawable.food),
-    HEALTH("Health & Wellness", Res.drawable.health)
+    HEALTH("Health & Wellness", Res.drawable.health),
+    INCOME("Income", Res.drawable.cash)
 }

@@ -1,5 +1,6 @@
 package me.androidbox.spendless.onboarding.screens.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnSurface
+import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.Success
 import me.androidbox.spendless.transactions.domain.TransactionModel
 import org.jetbrains.compose.resources.painterResource
@@ -33,27 +37,36 @@ fun TransactionItem(
     modifier: Modifier = Modifier,
     transactionModel: TransactionModel
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth().background(color = Background)) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Box(
-                modifier = Modifier.size(44.dp)
-                    .wrapContentWidth(align = Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(color = PrimaryFixed, shape = RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    modifier = Modifier.size(44.dp),
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(transactionModel.description.iconRes),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
 
-                Icon(
+                Box(
                     modifier = Modifier
-                        .size(24.dp)
-                        .align(alignment = Alignment.BottomEnd),
-                    imageVector = vectorResource(resource = Res.drawable.notes),
-                    contentDescription = "Expand note",
-                    tint = Color.Green
-                )
+                        .size(20.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(6.dp))
+                        .align(alignment = Alignment.BottomEnd)
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(14.dp)
+                            .align(alignment = Alignment.Center),
+                        imageVector = vectorResource(resource = Res.drawable.notes),
+                        contentDescription = "Expand note",
+                        tint = Color.Green
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.width(8.dp))

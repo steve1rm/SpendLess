@@ -2,6 +2,7 @@
 
 package me.androidbox.spendless.dashboard
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,8 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.onboarding.screens.components.TransactionItem
@@ -26,9 +29,6 @@ fun AllTransactionListScreen(
     transactionState: TransactionState,
     modifier: Modifier = Modifier
 ) {
-
-    println(transactionState.listOfTransactions)
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -48,7 +48,8 @@ fun AllTransactionListScreen(
         },
         content = { paddingValues ->
             LazyColumn(
-                modifier = Modifier.fillMaxSize().padding(paddingValues)
+                modifier = Modifier.fillMaxSize().padding(paddingValues).padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(
                     items = transactionState.listOfTransactions,
