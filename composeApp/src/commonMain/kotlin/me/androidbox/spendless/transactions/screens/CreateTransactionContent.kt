@@ -285,23 +285,25 @@ fun CreateTransactionContent(
                 }
 
                 if (shouldShowDropDown) {
-                    GenericDropDownMenu(
-                        dropDownMenuItems = TransactionItems.entries,
-                        onDismissed = {
-                            shouldShowDropDown = false
-                        },
-                        onMenuItemClicked = { item, index ->
-                            println("Transaction item $item")
-                            selectedItem = item
-                        },
-                        itemContent = { item ->
-                            TransactionDropDownItem(
-                                transactionItems = item,
-                                isSelected = false
-                            )
-                        },
-                        shouldShowDropdown = shouldShowDropDown
-                    )
+                    Box(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
+                        GenericDropDownMenu(
+                            dropDownMenuItems = TransactionItems.entries,
+                            onDismissed = {
+                                shouldShowDropDown = false
+                            },
+                            onMenuItemClicked = { item, index ->
+                                println("Transaction item $item")
+                                selectedItem = item
+                            },
+                            itemContent = { item ->
+                                TransactionDropDownItem(
+                                    transactionItems = item,
+                                    isSelected = false
+                                )
+                            },
+                            shouldShowDropdown = shouldShowDropDown
+                        )
+                    }
                 }
             }
         }

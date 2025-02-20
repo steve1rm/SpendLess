@@ -37,7 +37,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.AllTransactionScreen
+                startDestination = Route.DashboardScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()

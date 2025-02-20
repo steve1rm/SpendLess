@@ -59,5 +59,4 @@ enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
     EDUCATION("Education", Res.drawable.education),
     FOOD("Food & Groceries", Res.drawable.food),
     HEALTH("Health & Wellness", Res.drawable.health),
-    INCOME("Income", Res.drawable.cash)
 }
