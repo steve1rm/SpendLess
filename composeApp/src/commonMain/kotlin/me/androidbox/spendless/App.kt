@@ -19,6 +19,7 @@ import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -37,7 +38,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.SettingsScreen
+                startDestination = Route.SecurityScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -110,6 +111,10 @@ fun App() {
 
                 composable<Route.SettingsScreen> {
                     SettingsScreen()
+                }
+
+                composable<Route.SecurityScreen> {
+                    SecurityScreen()
                 }
             }
         }

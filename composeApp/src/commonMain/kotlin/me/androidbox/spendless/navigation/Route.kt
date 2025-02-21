@@ -28,4 +28,7 @@ sealed interface Route {
 
     @Serializable
     data object SettingsScreen : Route
+
+    @Serializable
+    data object SecurityScreen : Route
 }
