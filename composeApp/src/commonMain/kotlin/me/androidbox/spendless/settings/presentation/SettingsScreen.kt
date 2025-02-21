@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -35,7 +36,10 @@ import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSecurityClicked: () -> Unit,
+    onPreferenceClicked: () -> Unit,
+    navController: NavController
 ) {
     Scaffold(
         modifier = modifier.background(color = Background),
@@ -50,7 +54,10 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = {
+                            // Go back to previous screen, pop the backstack
+                            navController.popBackStack()
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

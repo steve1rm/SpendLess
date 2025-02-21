@@ -23,6 +23,7 @@ import me.androidbox.spendless.core.presentation.OnSurface
 fun SpendLessTheme(
     modifier: Modifier = Modifier,
     toolBarTitle: String,
+    onNavigationClicked: () -> Unit,
     content: @Composable (paddingValue: PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -38,7 +39,9 @@ fun SpendLessTheme(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = {
+                            onNavigationClicked()
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

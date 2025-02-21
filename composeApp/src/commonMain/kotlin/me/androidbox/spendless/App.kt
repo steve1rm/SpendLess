@@ -38,7 +38,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.SecurityScreen
+                startDestination = Route.SettingsScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -110,11 +110,11 @@ fun App() {
                 }
 
                 composable<Route.SettingsScreen> {
-                    SettingsScreen()
+                    SettingsScreen(navController = navController)
                 }
 
                 composable<Route.SecurityScreen> {
-                    SecurityScreen()
+                    SecurityScreen(navController = navController)
                 }
             }
         }

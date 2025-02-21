@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -21,11 +22,15 @@ import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable
-fun SecurityScreen(modifier: Modifier = Modifier) {
+fun SecurityScreen(modifier: Modifier = Modifier,
+                   navController: NavController) {
 
     SpendLessTheme(
         modifier = modifier,
         toolBarTitle = "Security",
+        onNavigationClicked = {
+            navController.popBackStack()
+        },
         content = { paddingValue ->
             Column(
                 modifier = Modifier
