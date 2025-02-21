@@ -39,6 +39,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -74,6 +76,12 @@ fun CreateTransactionContent(
     state: DashboardState,
     action: (action: DashboardAction) -> Unit
 ) {
+
+    val density = LocalDensity.current
+    var dropDownItemWidth by remember {
+        mutableStateOf(0.dp)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -239,6 +247,11 @@ fun CreateTransactionContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
+                    .onSizeChanged { intSize ->
+                        dropDownItemWidth = with(density) {
+                            intSize.width.toDp()
+                        }
+                    }
             ) {
 
                 Row(
@@ -285,25 +298,24 @@ fun CreateTransactionContent(
                 }
 
                 if (shouldShowDropDown) {
-                    Box(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
-                        GenericDropDownMenu(
-                            dropDownMenuItems = TransactionItems.entries,
-                            onDismissed = {
-                                shouldShowDropDown = false
-                            },
-                            onMenuItemClicked = { item, index ->
-                                println("Transaction item $item")
-                                selectedItem = item
-                            },
-                            itemContent = { item ->
-                                TransactionDropDownItem(
-                                    transactionItems = item,
-                                    isSelected = false
-                                )
-                            },
-                            shouldShowDropdown = shouldShowDropDown
-                        )
-                    }
+                    GenericDropDownMenu(
+                        modifier = Modifier.width(dropDownItemWidth),
+                        dropDownMenuItems = TransactionItems.entries,
+                        onDismissed = {
+                            shouldShowDropDown = false
+                        },
+                        onMenuItemClicked = { item, index ->
+                            println("Transaction item $item")
+                            selectedItem = item
+                        },
+                        itemContent = { item ->
+                            TransactionDropDownItem(
+                                transactionItems = item,
+                                isSelected = false
+                            )
+                        },
+                        shouldShowDropdown = shouldShowDropDown
+                    )
                 }
             }
         }
