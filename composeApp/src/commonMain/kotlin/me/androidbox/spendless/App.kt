@@ -1,7 +1,8 @@
 package me.androidbox.spendless
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -13,8 +14,13 @@ import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
+import me.androidbox.spendless.dashboard.AllTransactionListScreen
+import me.androidbox.spendless.dashboard.DashBoardViewModel
+import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.settings.presentation.SettingsScreen
+import me.androidbox.spendless.transactions.TransactionViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -22,14 +28,16 @@ import org.koin.compose.viewmodel.koinViewModel
 @Preview
 fun App() {
     MaterialTheme {
+
         val navController = rememberNavController()
 
         NavHost(
             navController = navController,
             startDestination = Route.AuthenticationGraph
         ) {
+
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.PreferenceScreen
+                startDestination = Route.SettingsScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -69,6 +77,39 @@ fun App() {
 
                 composable<Route.PreferenceScreen> {
                     PreferenceScreen()
+                }
+
+                composable<Route.DashboardScreen> {
+                    val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
+                    val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
+
+                    DashboardScreen(
+                        dashboardState = dashboardState,
+                        dashboardAction = dashBoardViewModel::onAction
+                    )
+                }
+
+                composable<Route.CreateTransactionContent> {
+                    val transactionViewModel = koinViewModel<TransactionViewModel>()
+                    val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
+
+                  /*  CreateTransactionContent(
+                        state = transactionState,
+                        action = transactionViewModel::onAction
+                    )*/
+                }
+
+                composable<Route.AllTransactionScreen> {
+                    val transactionViewModel = koinViewModel<TransactionViewModel>()
+                    val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
+
+                    AllTransactionListScreen(
+                        transactionState = transactionState
+                    )
+                }
+
+                composable<Route.SettingsScreen> {
+                    SettingsScreen()
                 }
             }
         }

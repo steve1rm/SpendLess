@@ -1,5 +1,14 @@
 package me.androidbox.spendless.core.presentation
 
+import org.jetbrains.compose.resources.DrawableResource
+import spendless.composeapp.generated.resources.Res
+import spendless.composeapp.generated.resources.cash
+import spendless.composeapp.generated.resources.clothing
+import spendless.composeapp.generated.resources.education
+import spendless.composeapp.generated.resources.entertainment
+import spendless.composeapp.generated.resources.food
+import spendless.composeapp.generated.resources.health
+
 enum class KeyButtons(val key: String = "") {
     ONE("1"),
     TWO("2"),
@@ -37,4 +46,17 @@ enum class Currency(val symbol: String, val title: String) {
     CNY("¥", "Chinese Yuan Renminbi (CNY)"),
     INR("₹", "Indian Rupee (INR)"),
     ZAR("R", "South African Rand (ZAR)")
+}
+
+enum class TransactionType(val recipient: String, val typeName: String) {
+    RECEIVER(recipient = "Expense", typeName = "Receiver"),
+    SENDER(recipient = "Income", typeName = "Sender")
+}
+
+enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
+    ENTERTAINMENT("Entertainment", Res.drawable.entertainment),
+    CLOTHING("Clothing & Accessories", Res.drawable.clothing),
+    EDUCATION("Education", Res.drawable.education),
+    FOOD("Food & Groceries", Res.drawable.food),
+    HEALTH("Health & Wellness", Res.drawable.health),
 }
