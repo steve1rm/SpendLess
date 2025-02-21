@@ -5,12 +5,8 @@ package me.androidbox.spendless.settings.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -43,7 +38,8 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     onSecurityClicked: () -> Unit,
     onPreferenceClicked: () -> Unit,
-    navController: NavController
+    onLogoutClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.background(color = Background),
@@ -58,10 +54,7 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {
-                            // Go back to previous screen, pop the backstack
-                            navController.popBackStack()
-                        }
+                        onClick = onBackClicked
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -90,9 +83,7 @@ fun SettingsScreen(
                             )
                         },
                         text = "Preferences",
-                        onClicked = {
-                            println("Preferences clicked")
-                        }
+                        onClicked = onPreferenceClicked
                     )
 
                     SettingsButton(
@@ -102,23 +93,19 @@ fun SettingsScreen(
                                 tint = OnSurfaceVariant)
                         },
                         text = "Security",
-                        onClicked = {
-                            println("security clicked")
-                        }
+                        onClicked = onSecurityClicked
                     )
                 }
 
                 SettingsButton(
                     icon = {
                         Icon(imageVector = vectorResource(resource = Res.drawable.logout),
-                            contentDescription = "Go to settings",
+                            contentDescription = "Logout",
                             tint = Error
                         )
                     },
                     text = "Log out",
-                    onClicked = {
-                        println("Logout clicked")
-                    }
+                    onClicked = onLogoutClicked
                 )
             }
         }

@@ -22,15 +22,14 @@ import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable
-fun SecurityScreen(modifier: Modifier = Modifier,
-                   navController: NavController) {
+fun SecurityScreen(
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit) {
 
     SpendLessTheme(
         modifier = modifier,
         toolBarTitle = "Security",
-        onNavigationClicked = {
-            navController.popBackStack()
-        },
+        onNavigationClicked = onBackClicked,
         content = { paddingValue ->
             Column(
                 modifier = Modifier
