@@ -43,7 +43,11 @@ import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSecurityClicked: () -> Unit,
+    onPreferenceClicked: () -> Unit,
+    onLogoutClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     Scaffold(
         modifier = modifier
@@ -60,7 +64,7 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = onBackClicked
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -95,9 +99,7 @@ fun SettingsScreen(
                             )
                         },
                         text = "Preferences",
-                        onClicked = {
-                            println("Preferences clicked")
-                        }
+                        onClicked = onPreferenceClicked
                     )
 
                     SettingsButton(
@@ -107,9 +109,7 @@ fun SettingsScreen(
                                 tint = OnSurfaceVariant)
                         },
                         text = "Security",
-                        onClicked = {
-                            println("security clicked")
-                        }
+                        onClicked = onSecurityClicked
                     )
                 }
 
@@ -121,14 +121,12 @@ fun SettingsScreen(
                     ),
                     icon = {
                         Icon(imageVector = vectorResource(resource = Res.drawable.logout),
-                            contentDescription = "Go to settings",
+                            contentDescription = "Logout",
                             tint = Error
                         )
                     },
                     text = "Log out",
-                    onClicked = {
-                        println("Logout clicked")
-                    }
+                    onClicked = onLogoutClicked
                 )
             }
         }

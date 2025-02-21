@@ -68,7 +68,8 @@ import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 
 @Composable
 fun PreferenceScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.background(color = Color.Green),
@@ -77,7 +78,7 @@ fun PreferenceScreen(
                 title = {},
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = onBackClicked
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

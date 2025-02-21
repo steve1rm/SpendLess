@@ -19,6 +19,7 @@ import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -76,7 +77,11 @@ fun App() {
                 }
 
                 composable<Route.PreferenceScreen> {
-                    PreferenceScreen()
+                    PreferenceScreen(
+                        onBackClicked = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
 
                 composable<Route.DashboardScreen> {
@@ -109,7 +114,27 @@ fun App() {
                 }
 
                 composable<Route.SettingsScreen> {
-                    SettingsScreen()
+                    SettingsScreen(
+                        onPreferenceClicked = {
+                            navController.navigate(Route.PreferenceScreen)
+                        },
+                        onSecurityClicked = {
+                            navController.navigate(Route.SecurityScreen)
+                        },
+                        onLogoutClicked = {
+
+                        },
+                        onBackClicked = {
+                            navController.popBackStack()
+                        })
+                }
+
+                composable<Route.SecurityScreen> {
+                    SecurityScreen(
+                        onBackClicked = {
+                            navController.popBackStack()
+                        }
+                    )
                 }
             }
         }
