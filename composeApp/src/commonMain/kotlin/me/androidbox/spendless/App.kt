@@ -1,5 +1,7 @@
 package me.androidbox.spendless
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,7 +78,20 @@ fun App() {
                     )
                 }
 
-                composable<Route.PreferenceScreen> {
+                composable<Route.PreferenceScreen>(
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(300)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(300)
+                        )
+                    }
+                ) {
                     PreferenceScreen(
                         onBackClicked = {
                             navController.popBackStack()
@@ -113,7 +128,9 @@ fun App() {
                     )
                 }
 
-                composable<Route.SettingsScreen> {
+                composable<Route.SettingsScreen>(
+
+                ) {
                     SettingsScreen(
                         onPreferenceClicked = {
                             navController.navigate(Route.PreferenceScreen)
@@ -129,7 +146,20 @@ fun App() {
                         })
                 }
 
-                composable<Route.SecurityScreen> {
+                composable<Route.SecurityScreen>(
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(300)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(300)
+                        )
+                    }
+                ) {
                     SecurityScreen(
                         onBackClicked = {
                             navController.popBackStack()
