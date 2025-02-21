@@ -56,12 +56,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import me.androidbox.spendless.core.presentation.Currency
+import me.androidbox.spendless.core.presentation.DecimalSeparator
+import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.SurfaceContainer
+import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
@@ -160,22 +163,20 @@ fun PreferenceScreen(
                     color = OnSurface
                 )
 
-                val itemsExpenses = listOf("-$10", "($10)")
-
                 ButtonPanel(
-                    items = itemsExpenses,
+                    items = ExpensesFormat.entries.toList(),
                     selectedColor = OnSurface,
-                    unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
-                    println(item)
-                }
+                    unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
+                    onItemClicked = { item ->
+                        println(item)
+                    })
 
                 var shouldShowDropDown by remember {
                     mutableStateOf(false)
                 }
 
-                val currencyList = Currency.entries.toList() // "US Dollar (USD)", "Euro (EUR)", "British Pounds Sterling (GBP)", "Japanese Yen (JPY)", "Swiss Franc (CHF)", "Canadian Dollar (CAD)", "Australian Dollar (AUD)", "Chinese Yuan Renminbi (CNY)", "Indian Rupee (INR)", "South African Rand (ZAR)", "Thai Baht (THB)")
                 var selectedCurrency by remember {
-                    mutableStateOf(currencyList.first())
+                    mutableStateOf(Currency.entries.toList().first())
                 }
 
                 Box(modifier = Modifier.fillMaxWidth()) {
@@ -219,7 +220,7 @@ fun PreferenceScreen(
                     }
 
                     GenericDropDownMenu(
-                        dropDownMenuItems = currencyList,
+                        dropDownMenuItems = Currency.entries,
                         onDismissed = {
                             shouldShowDropDown = false
                         },
@@ -242,9 +243,8 @@ fun PreferenceScreen(
                     fontWeight = FontWeight.W500,
                     color = OnSurface
                 )
-                val itemsDecimalSeparator = listOf("1.00", "1,00")
 
-                ButtonPanel(items = itemsDecimalSeparator,
+                ButtonPanel(items = DecimalSeparator.entries,
                     selectedColor = OnSurface,
                     unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
                     println(item)
@@ -257,9 +257,7 @@ fun PreferenceScreen(
                     color = OnSurface
                 )
 
-                val itemsThousandsSeparator = listOf("1.000", "1,000", "1 000")
-
-                ButtonPanel(items = itemsThousandsSeparator,
+                ButtonPanel(items = ThousandsSeparator.entries,
                     selectedColor = OnSurface,
                     unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
                     println(item)

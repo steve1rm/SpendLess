@@ -14,6 +14,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import me.androidbox.spendless.core.presentation.ExpiryDuration
+import me.androidbox.spendless.core.presentation.LockedDuration
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -47,7 +49,7 @@ fun SecurityScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ButtonPanel(
-                    items = listOf("5 mins", "15 mins", "30 mins", "1 hour"),
+                    items = ExpiryDuration.entries,
                     selectedColor = OnSurface,
                     unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
                     onItemClicked = {
@@ -67,7 +69,7 @@ fun SecurityScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ButtonPanel(
-                    items = listOf("15s", "30s", "1 min", "5 mins"),
+                    items = LockedDuration.entries,
                     selectedColor = OnSurface,
                     unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
                     onItemClicked = {

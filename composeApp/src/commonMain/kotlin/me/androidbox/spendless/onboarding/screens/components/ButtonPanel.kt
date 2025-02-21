@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.spendless.core.presentation.PreferenceType
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -35,8 +36,8 @@ fun ButtonPanel(
     selectedColor: Color,
     unselectedColor: Color,
     startIcons: List<DrawableResource> = emptyList(),
-    items: List<String>,
-    onItemClicked: (textItem: String) -> Unit) {
+    items: List<PreferenceType>,
+    onItemClicked: (textItem: PreferenceType) -> Unit) {
 
     var selectedIndex by remember {
         mutableStateOf(0)
@@ -89,7 +90,7 @@ fun ButtonPanel(
                     Text(
                         fontWeight = FontWeight.W600,
                         fontSize = 16.sp,
-                        text = item,
+                        text = item.type,
                         color = if (selectedIndex == index) selectedColor else unselectedColor,
                     )
                 }
