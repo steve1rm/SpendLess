@@ -21,6 +21,7 @@ import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
@@ -93,6 +94,9 @@ fun App() {
                     }
                 ) {
                     PreferenceScreen(
+                        preferenceContent = {
+                            PreferenceContent()
+                        },
                         onBackClicked = {
                             navController.popBackStack()
                         }
