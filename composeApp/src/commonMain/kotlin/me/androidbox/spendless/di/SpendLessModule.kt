@@ -10,6 +10,8 @@ import me.androidbox.spendless.transactions.domain.Repository
 import me.androidbox.spendless.data.SpendLessDataSource
 import me.androidbox.spendless.data.SpendLessDataSourceImpl
 import me.androidbox.spendless.data.SpendLessDatabase
+import me.androidbox.spendless.domain.CreateUserUseCase
+import me.androidbox.spendless.domain.imp.CreateUserUseCaseImp
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -17,6 +19,12 @@ val spendLessModule = module {
     viewModelOf(::PinViewModel)
     viewModelOf(::TransactionViewModel)
     viewModelOf(::DashBoardViewModel)
+
+    factory<CreateUserUseCase> {
+        CreateUserUseCaseImp(
+            get<SpendLessDataSource>()
+        )
+    }
 
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(

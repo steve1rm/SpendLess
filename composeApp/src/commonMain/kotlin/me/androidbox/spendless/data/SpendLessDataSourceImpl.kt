@@ -7,7 +7,9 @@ import me.androidbox.spendless.data.Transaction
 class SpendLessDataSourceImpl(
     private val database: SpendLessDatabase
 ): SpendLessDataSource {
-
+    override suspend fun insertUser(user: User) {
+        database.userDao().insertUser(user)
+    }
 
     override suspend fun getAllTransaction(): Flow<List<Transaction>> {
         return database.transactionDao().getAll()
