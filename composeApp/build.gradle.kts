@@ -7,7 +7,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -38,6 +40,7 @@ kotlin {
             // koin
             implementation(libs.koin.android)
             implementation(libs.koin.compose)
+            implementation(libs.room.runtime.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -48,6 +51,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
 
+            // Room
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+
+            implementation(libs.kotlinx.serialization)
+
             // Koin
             api(libs.koin.core)
             implementation(libs.koin.compose)
@@ -56,8 +65,6 @@ kotlin {
             implementation(libs.kotlinx.datetime)
 
             implementation(libs.navigation.compose)
-
-            implementation(libs.kotlinx.serialization.json)
         }
     }
 }
@@ -89,7 +96,12 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     debugImplementation(compose.uiTooling)
+    ksp(libs.room.compiler)
 }
 

@@ -16,7 +16,8 @@ class SpendLessApplication : Application() {
             config = {
                 androidContext(this@SpendLessApplication)
                 androidLogger(Level.DEBUG)
-            }
+            },
+            androidSpecificModule
         )
     }
 }
