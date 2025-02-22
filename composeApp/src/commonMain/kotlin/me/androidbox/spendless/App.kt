@@ -20,8 +20,9 @@ import me.androidbox.spendless.dashboard.AllTransactionListScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
 import me.androidbox.spendless.navigation.Route
-import me.androidbox.spendless.onboarding.screens.PreferenceScreen
+import me.androidbox.spendless.onboarding.screens.PreferenceOnboardingScreen
 import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
+import me.androidbox.spendless.settings.presentation.PreferenceSettingsScreen
 import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
@@ -41,7 +42,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.SettingsScreen
+                startDestination = Route.PreferenceOnBoardingScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -79,7 +80,7 @@ fun App() {
                     )
                 }
 
-                composable<Route.PreferenceScreen>(
+                composable<Route.PreferenceOnBoardingScreen>(
                     enterTransition = {
                         slideIntoContainer(
                             AnimatedContentTransitionScope.SlideDirection.Left,
@@ -93,7 +94,7 @@ fun App() {
                         )
                     }
                 ) {
-                    PreferenceScreen(
+                    PreferenceOnboardingScreen(
                         preferenceContent = {
                             PreferenceContent()
                         },
@@ -137,7 +138,7 @@ fun App() {
                 ) {
                     SettingsScreen(
                         onPreferenceClicked = {
-                            navController.navigate(Route.PreferenceScreen)
+                            navController.navigate(Route.PreferenceSettingsScreen)
                         },
                         onSecurityClicked = {
                             navController.navigate(Route.SecurityScreen)
@@ -167,6 +168,30 @@ fun App() {
                     SecurityScreen(
                         onBackClicked = {
                             navController.popBackStack()
+                        }
+                    )
+                }
+
+                composable<Route.PreferenceSettingsScreen>(
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(300)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Right,
+                            animationSpec = tween(300)
+                        )
+                    }
+                ) {
+                    PreferenceSettingsScreen(
+                        onBackClicked = {
+                            navController.popBackStack()
+                        },
+                        preferenceContent = {
+                            PreferenceContent()
                         }
                     )
                 }

@@ -13,9 +13,8 @@ sealed interface Route {
     @Serializable
     data object PinPromptScreen : Route
 
-
     @Serializable
-    data object PreferenceScreen : Route
+    data object PreferenceOnBoardingScreen : Route
 
     @Serializable
     data object DashboardScreen : Route
@@ -31,4 +30,7 @@ sealed interface Route {
 
     @Serializable
     data object SecurityScreen : Route
+
+    @Serializable
+    data object PreferenceSettingsScreen : Route
 }

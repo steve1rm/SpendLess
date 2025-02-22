@@ -1,41 +1,25 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package me.androidbox.spendless.onboarding.screens
+package me.androidbox.spendless.settings.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -46,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
@@ -55,43 +38,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import me.androidbox.spendless.core.presentation.Currency
-import me.androidbox.spendless.core.presentation.DecimalSeparator
-import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.OnPrimary
-import me.androidbox.spendless.core.presentation.OnPrimaryFixed
-import me.androidbox.spendless.core.presentation.OnSurface
-import me.androidbox.spendless.core.presentation.OnSurfaceVariant
 import me.androidbox.spendless.core.presentation.Primary
-import me.androidbox.spendless.core.presentation.SurfaceContainer
-import me.androidbox.spendless.core.presentation.ThousandsSeparator
-import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
-import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
-import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
+import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable
-fun PreferenceScreen(
+fun PreferenceSettingsScreen(
     modifier: Modifier = Modifier,
     preferenceContent: @Composable () -> Unit,
     onBackClicked: () -> Unit
 ) {
-    Scaffold(
-        modifier = modifier.background(color = Color.Green),
-        topBar = {
-            TopAppBar(
-                title = {},
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBackClicked
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Go back"
-                        )
-                    }
-                }
-            )
-        },
+    SpendLessTheme(
+        modifier = modifier,
+        toolBarTitle = "Preferences",
+        onNavigationClicked = onBackClicked,
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -101,21 +61,6 @@ fun PreferenceScreen(
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
-                    text = "Set SpendLess\nto your preferences",
-                    fontWeight = FontWeight.W600,
-                    fontSize = 28.sp,
-                    color = OnSurface,
-                    lineHeight = 32.sp
-                )
-
-                Text(
-                    text = "You can change it at anytime in the settings",
-                    fontWeight = FontWeight.W400,
-                    fontSize = 16.sp,
-                    color = OnSurfaceVariant
-                )
-
                 preferenceContent()
 
                 Button(
