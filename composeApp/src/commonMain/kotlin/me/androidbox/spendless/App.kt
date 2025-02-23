@@ -17,6 +17,7 @@ import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
+import me.androidbox.spendless.authentication.presentation.screens.RegisterScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
 import me.androidbox.spendless.dashboard.AllTransactionListScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
@@ -44,7 +45,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.LoginScreen
+                startDestination = Route.RegisterScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -203,6 +204,16 @@ fun App() {
                     val authenticationState by authenticationViewModel.authenticationState.collectAsStateWithLifecycle()
 
                     LoginScreen(
+                        authenticationState = authenticationState,
+                        action = authenticationViewModel::action
+                    )
+                }
+
+                composable<Route.RegisterScreen> {
+                    val authenticationViewModel = koinViewModel<AuthenticationViewModel>()
+                    val authenticationState by authenticationViewModel.authenticationState.collectAsStateWithLifecycle()
+
+                    RegisterScreen(
                         authenticationState = authenticationState,
                         action = authenticationViewModel::action
                     )
