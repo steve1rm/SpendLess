@@ -10,10 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import me.androidbox.spendless.authentication.presentation.AuthenticationViewModel
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents
 import me.androidbox.spendless.authentication.presentation.PinViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
+import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
 import me.androidbox.spendless.dashboard.AllTransactionListScreen
@@ -42,7 +44,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.PreferenceOnBoardingScreen
+                startDestination = Route.LoginScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -193,6 +195,16 @@ fun App() {
                         preferenceContent = {
                             PreferenceContent()
                         }
+                    )
+                }
+
+                composable<Route.LoginScreen> {
+                    val authenticationViewModel = koinViewModel<AuthenticationViewModel>()
+                    val authenticationState by authenticationViewModel.authenticationState.collectAsStateWithLifecycle()
+
+                    LoginScreen(
+                        authenticationState = authenticationState,
+                        action = authenticationViewModel::action
                     )
                 }
             }
