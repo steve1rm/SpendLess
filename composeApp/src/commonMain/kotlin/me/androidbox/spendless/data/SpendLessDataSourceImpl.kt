@@ -1,5 +1,6 @@
 package me.androidbox.spendless.data
 
+import kotlinx.coroutines.flow.Flow
 import me.androidbox.spendless.data.SpendLessDatabase
 import me.androidbox.spendless.data.Transaction
 
@@ -8,7 +9,7 @@ class SpendLessDataSourceImpl(
 ): SpendLessDataSource {
 
 
-    override suspend fun getAllTransaction(): List<Transaction> {
+    override suspend fun getAllTransaction(): Flow<List<Transaction>> {
         return database.transactionDao().getAll()
     }
 
