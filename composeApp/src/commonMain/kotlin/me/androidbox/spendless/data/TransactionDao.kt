@@ -2,11 +2,12 @@ package me.androidbox.spendless.data
 
 import androidx.room.Dao
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
     @Query("SELECT * FROM 'transaction'")
-    suspend fun getAll(): List<Transaction>
+    fun getAll(): Flow<List<Transaction>>
 
 //    @Query("SELECT * FROM transaction WHERE category=")
 //    fun getTransactionByCategory(): Flow<List<Transaction>>
