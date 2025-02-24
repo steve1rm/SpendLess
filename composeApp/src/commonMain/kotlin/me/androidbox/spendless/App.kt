@@ -212,7 +212,13 @@ fun App() {
                         action = { loginAction ->
                             when(loginAction) {
                                 LoginAction.OnRegisterClicked -> {
-                                    navController.navigate(Route.RegisterScreen)
+                                    navController.navigate(Route.RegisterScreen) {
+                                        popUpTo(Route.LoginScreen) {
+                                            this.inclusive = true
+                                            this.saveState = true
+                                        }
+                                        restoreState = true
+                                    }
                                 }
                                 else -> {
                                     loginViewModel.action(loginAction)
@@ -231,7 +237,13 @@ fun App() {
                         action = { registerAction ->
                             when(registerAction) {
                                 OnLoginClicked -> {
-                                    navController.navigate(Route.LoginScreen)
+                                    navController.navigate(Route.LoginScreen) {
+                                        this.popUpTo(Route.RegisterScreen) {
+                                            this.inclusive = true
+                                            this.saveState = true
+                                        }
+                                        this.restoreState = true
+                                    }
                                 }
                                 else -> {
                                     registerViewModel.action(registerAction)
