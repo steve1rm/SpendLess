@@ -1,7 +1,8 @@
 package me.androidbox.spendless.di
 
-import me.androidbox.spendless.authentication.presentation.AuthenticationViewModel
+import me.androidbox.spendless.authentication.presentation.LoginViewModel
 import me.androidbox.spendless.authentication.presentation.PinViewModel
+import me.androidbox.spendless.authentication.presentation.RegisterViewModel
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.transactions.TransactionViewModel
 import me.androidbox.spendless.transactions.data.RepositoryImp
@@ -15,7 +16,8 @@ val spendLessModule = module {
     viewModelOf(::PinViewModel)
     viewModelOf(::TransactionViewModel)
     viewModelOf(::DashBoardViewModel)
-    viewModelOf(::AuthenticationViewModel)
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::RegisterViewModel)
 
     factory<Repository> {
         RepositoryImp()

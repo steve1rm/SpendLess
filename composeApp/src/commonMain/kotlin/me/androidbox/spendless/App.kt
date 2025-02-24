@@ -10,10 +10,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import me.androidbox.spendless.authentication.presentation.AuthenticationViewModel
+import me.androidbox.spendless.authentication.presentation.LoginAction
+import me.androidbox.spendless.authentication.presentation.LoginViewModel
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents
+import me.androidbox.spendless.authentication.presentation.LoginState
 import me.androidbox.spendless.authentication.presentation.PinViewModel
+import me.androidbox.spendless.authentication.presentation.RegisterAction.OnLoginClicked
+import me.androidbox.spendless.authentication.presentation.RegisterViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
@@ -45,7 +49,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.RegisterScreen
+                startDestination = Route.LoginScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -200,22 +204,40 @@ fun App() {
                 }
 
                 composable<Route.LoginScreen> {
-                    val authenticationViewModel = koinViewModel<AuthenticationViewModel>()
-                    val authenticationState by authenticationViewModel.authenticationState.collectAsStateWithLifecycle()
+                    val loginViewModel = koinViewModel<LoginViewModel>()
+                    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
 
                     LoginScreen(
-                        authenticationState = authenticationState,
-                        action = authenticationViewModel::action
+                        loginState = loginState,
+                        action = { loginAction ->
+                            when(loginAction) {
+                                LoginAction.OnRegisterClicked -> {
+                                    navController.navigate(Route.RegisterScreen)
+                                }
+                                else -> {
+                                    loginViewModel.action(loginAction)
+                                }
+                            }
+                        }
                     )
                 }
 
                 composable<Route.RegisterScreen> {
-                    val authenticationViewModel = koinViewModel<AuthenticationViewModel>()
-                    val authenticationState by authenticationViewModel.authenticationState.collectAsStateWithLifecycle()
+                    val registerViewModel = koinViewModel<RegisterViewModel>()
+                    val registerState by registerViewModel.registerState.collectAsStateWithLifecycle()
 
                     RegisterScreen(
-                        authenticationState = authenticationState,
-                        action = authenticationViewModel::action
+                        registerState = registerState,
+                        action = { registerAction ->
+                            when(registerAction) {
+                                OnLoginClicked -> {
+                                    navController.navigate(Route.LoginScreen)
+                                }
+                                else -> {
+                                    registerViewModel.action(registerAction)
+                                }
+                            }
+                        }
                     )
                 }
             }

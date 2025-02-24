@@ -1,6 +1,6 @@
 package me.androidbox.spendless.authentication.presentation
 
-data class AuthenticationState(
+data class LoginState(
     val username: String = "",
     val pin: String = ""
 )

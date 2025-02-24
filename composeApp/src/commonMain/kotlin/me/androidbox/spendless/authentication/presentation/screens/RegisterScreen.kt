@@ -2,6 +2,7 @@ package me.androidbox.spendless.authentication.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,13 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicSecureTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,14 +31,11 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.authentication.presentation.AuthenticationAction
-import me.androidbox.spendless.authentication.presentation.AuthenticationState
+import me.androidbox.spendless.authentication.presentation.LoginAction
+import me.androidbox.spendless.authentication.presentation.RegisterAction
+import me.androidbox.spendless.authentication.presentation.RegisterState
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -55,8 +48,8 @@ import spendless.composeapp.generated.resources.logo
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    authenticationState: AuthenticationState,
-    action: (action: AuthenticationAction) -> Unit
+    registerState: RegisterState,
+    action: (action: RegisterAction) -> Unit
 ) {
 
     var usernameBorderColor by remember {
@@ -133,9 +126,9 @@ fun RegisterScreen(
                 ),
                 shape = RoundedCornerShape(16.dp),
                 onValueChange = { newName ->
-                    action(AuthenticationAction.OnUsernameEntered(newName.trim()))
+                    action(RegisterAction.OnUsernameEntered(newName.trim()))
                 },
-                value = authenticationState.username,
+                value = registerState.username,
                 textStyle = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W600,
@@ -182,6 +175,11 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
+                modifier = Modifier.clickable(
+                    onClick = {
+                        action(RegisterAction.OnLoginClicked)
+                    }
+                ),
                 text = "Already have an account?",
                 fontWeight = FontWeight.W600,
                 fontSize = 16.sp,

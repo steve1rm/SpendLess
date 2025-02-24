@@ -2,16 +2,14 @@ package me.androidbox.spendless.authentication.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicSecureTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -32,12 +30,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.authentication.presentation.AuthenticationAction
-import me.androidbox.spendless.authentication.presentation.AuthenticationState
+import me.androidbox.spendless.authentication.presentation.LoginAction
+import me.androidbox.spendless.authentication.presentation.LoginState
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnSurface
@@ -50,8 +46,8 @@ import spendless.composeapp.generated.resources.logo
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    authenticationState: AuthenticationState,
-    action: (action: AuthenticationAction) -> Unit
+    loginState: LoginState,
+    action: (action: LoginAction) -> Unit
 ) {
 
     var usernameBorderColor by remember {
@@ -125,9 +121,9 @@ fun LoginScreen(
                 ),
                 shape = RoundedCornerShape(16.dp),
                 onValueChange = { newName ->
-                    action(AuthenticationAction.OnUsernameEntered(newName.trim()))
+                    action(LoginAction.OnUsernameEntered(newName.trim()))
                 },
-                value = authenticationState.username,
+                value = loginState.username,
                 textStyle = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W600,
@@ -168,9 +164,9 @@ fun LoginScreen(
                 ),
                 shape = RoundedCornerShape(16.dp),
                 onValueChange = { newName ->
-                    action(AuthenticationAction.OnPinEntered(newName.trim()))
+                    action(LoginAction.OnPinEntered(newName.trim()))
                 },
-                value = authenticationState.pin,
+                value = loginState.pin,
                 textStyle = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.W600,
@@ -208,6 +204,11 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
+                modifier = Modifier.clickable(
+                    onClick = {
+                        action(LoginAction.OnRegisterClicked)
+                    }
+                ),
                 text = "New to SpendLess?",
                 fontWeight = FontWeight.W600,
                 fontSize = 16.sp,
