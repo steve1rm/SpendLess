@@ -8,4 +8,5 @@ import androidx.room.TypeConverters
 @TypeConverters(Converters::class)
 abstract class SpendLessDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
+    abstract fun userDao(): UserDao
 }
