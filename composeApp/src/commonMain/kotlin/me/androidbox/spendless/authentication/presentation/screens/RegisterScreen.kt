@@ -63,10 +63,6 @@ fun RegisterScreen(
         mutableStateOf(Color.Transparent)
     }
 
-    var pinBorderColor by remember {
-        mutableStateOf(Color.Transparent)
-    }
-
     Scaffold(
         modifier = modifier.
         background(color = Background)
