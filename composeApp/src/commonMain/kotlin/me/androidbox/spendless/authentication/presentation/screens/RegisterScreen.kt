@@ -33,7 +33,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.authentication.presentation.LoginAction
 import me.androidbox.spendless.authentication.presentation.RegisterAction
 import me.androidbox.spendless.authentication.presentation.RegisterState
 import me.androidbox.spendless.core.presentation.Background

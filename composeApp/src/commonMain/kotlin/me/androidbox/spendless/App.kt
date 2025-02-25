@@ -119,7 +119,9 @@ fun App() {
                             PreferenceContent()
                         },
                         onBackClicked = {
-                            navController.popBackStack()
+                            navController.navigate(Route.PinCreateScreen) {
+                                this.popUpTo(Route.PreferenceOnBoardingScreen)
+                            }
                         }
                     )
                 }
@@ -250,7 +252,7 @@ fun App() {
                             RegisterEvent.OnRegisterFailure -> {
                                 /**
                                  registerViewModel.onAction(RegisterAction.ShouldShowRedBanner(show = true))
-                                 * */
+                                 **/
                             }
                             RegisterEvent.OnRegisterSuccess -> {
                                 navController.navigate(Route.PinCreateScreen)

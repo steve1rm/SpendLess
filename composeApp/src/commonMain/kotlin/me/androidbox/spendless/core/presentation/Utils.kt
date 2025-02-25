@@ -25,6 +25,7 @@ fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
     }
 }
 
+/** pad a 0 i.e. 04:09 instead of this 4:9 */
 fun Long.pad(): String {
     return this.toString().padStart(2, '0')
 }
