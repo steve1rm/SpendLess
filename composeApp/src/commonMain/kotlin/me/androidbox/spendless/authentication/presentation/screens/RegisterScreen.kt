@@ -150,8 +150,11 @@ fun RegisterScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
+                enabled = registerState.canRegister,
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                onClick = {}
+                onClick = {
+                    action(RegisterAction.OnRegisterClicked)
+                }
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

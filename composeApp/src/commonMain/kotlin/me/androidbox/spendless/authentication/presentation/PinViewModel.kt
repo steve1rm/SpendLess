@@ -196,6 +196,10 @@ class PinViewModel : ViewModel() {
                     )
                 }
             }
+
+            CreatePinActions.OnBackPressed -> {
+                /** no-op */
+            }
         }
     }
 }

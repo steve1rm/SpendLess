@@ -16,7 +16,10 @@ import me.androidbox.spendless.authentication.presentation.CreatePinActions
 import me.androidbox.spendless.authentication.presentation.CreatePinEvents
 import me.androidbox.spendless.authentication.presentation.LoginState
 import me.androidbox.spendless.authentication.presentation.PinViewModel
+import me.androidbox.spendless.authentication.presentation.RegisterAction
 import me.androidbox.spendless.authentication.presentation.RegisterAction.OnLoginClicked
+import me.androidbox.spendless.authentication.presentation.RegisterAction.OnRegisterClicked
+import me.androidbox.spendless.authentication.presentation.RegisterEvent
 import me.androidbox.spendless.authentication.presentation.RegisterViewModel
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
@@ -49,7 +52,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.LoginScreen
+                startDestination = Route.PinCreateScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -74,7 +77,16 @@ fun App() {
 
                     CreatePinScreen(
                         createPinState = pinState,
-                        onAction = pinViewModel::onAction)
+                        onAction = { createPinActions ->
+                            when(createPinActions) {
+                                CreatePinActions.OnBackPressed -> {
+                                    navController.navigate(Route.RegisterScreen)
+                                }
+                                else -> {
+                                    pinViewModel.onAction(createPinActions)
+                                }
+                            }
+                        })
                 }
 
                 composable<Route.PinPromptScreen> {
@@ -232,6 +244,19 @@ fun App() {
                     val registerViewModel = koinViewModel<RegisterViewModel>()
                     val registerState by registerViewModel.registerState.collectAsStateWithLifecycle()
 
+                    ObserveAsEvents(registerViewModel.registerChannel) { registerEvent ->
+                        when(registerEvent) {
+                            RegisterEvent.OnRegisterFailure -> {
+                                /**
+                                 registerViewModel.onAction(RegisterAction.ShouldShowRedBanner(show = true))
+                                 * */
+                            }
+                            RegisterEvent.OnRegisterSuccess -> {
+                                navController.navigate(Route.PinCreateScreen)
+                            }
+                        }
+                    }
+
                     RegisterScreen(
                         registerState = registerState,
                         action = { registerAction ->
@@ -244,6 +269,9 @@ fun App() {
                                         }
                                         this.restoreState = true
                                     }
+                                }
+                                OnRegisterClicked -> {
+                                    navController.navigate(Route.PinCreateScreen)
                                 }
                                 else -> {
                                     registerViewModel.action(registerAction)

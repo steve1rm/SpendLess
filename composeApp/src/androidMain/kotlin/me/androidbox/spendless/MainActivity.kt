@@ -14,8 +14,6 @@ import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
-import me.androidbox.spendless.onboarding.screens.components.TransactionItem
-import me.androidbox.spendless.transactions.domain.TransactionModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +78,7 @@ fun KeyPadPreview() {
 @Preview(showBackground = true)
 @Composable
 fun KeyPreview() {
-    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {}, disableKeyPad = false)
+    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {}, enableKeypad = false)
 }
 
 @Preview

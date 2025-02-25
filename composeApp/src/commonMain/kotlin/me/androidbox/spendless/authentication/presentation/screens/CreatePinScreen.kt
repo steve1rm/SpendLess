@@ -54,6 +54,7 @@ fun CreatePinScreen(
                     IconButton(
                         onClick = {
                             /* Navigate back: pin mode create -> registration screen, pin mode repeat -> create pin screen */
+                            onAction(CreatePinActions.OnBackPressed)
                         }
                     ) {
                         Icon(
@@ -116,6 +117,7 @@ fun CreatePinScreen(
                     )
 
                     KeyPad(
+                        enableKeypad = true,
                         onKeyClicked = { keyButton ->
                             if (keyButton == KeyButtons.DELETE) {
                                 onAction(CreatePinActions.OnDeletePressed)
