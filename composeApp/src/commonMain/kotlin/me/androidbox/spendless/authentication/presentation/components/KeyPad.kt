@@ -120,7 +120,6 @@ fun KeyPad(
     }
 }
 
-
 @Composable
 fun DigitKey(modifier: Modifier = Modifier, digit: KeyButtons, enableKeypad: Boolean, onKeyClicked: (KeyButtons) -> Unit) {
     Box(

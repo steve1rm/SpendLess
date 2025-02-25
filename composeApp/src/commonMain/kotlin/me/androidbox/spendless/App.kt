@@ -52,7 +52,7 @@ fun App() {
         ) {
 
             navigation<Route.AuthenticationGraph>(
-                startDestination = Route.PinCreateScreen
+                startDestination = Route.LoginScreen
             ) {
                 composable<Route.PinCreateScreen> {
                     val pinViewModel = koinViewModel<PinViewModel>()
@@ -66,6 +66,7 @@ fun App() {
                                 if (createPinEvents.isValid) {
                                     /** Navigate to the onboarding screen valid pin */
                                     println("Navigate to onboarding")
+                                    navController.navigate(Route.PreferenceOnBoardingScreen)
                                 } else {
                                     /** Show red banner if user has entered an incorrect pin */
                                     println("Show Red banner")
