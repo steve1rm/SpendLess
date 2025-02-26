@@ -8,6 +8,12 @@ sealed interface Route {
     data object AuthenticationGraph: Route
 
     @Serializable
+    data object DashboardGraph: Route
+
+    @Serializable
+    data object SettingsGraph: Route
+
+    @Serializable
     data object PinCreateScreen : Route
 
     @Serializable
