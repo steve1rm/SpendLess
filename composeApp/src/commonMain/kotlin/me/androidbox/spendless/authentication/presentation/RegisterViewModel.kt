@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -70,5 +71,10 @@ class RegisterViewModel : ViewModel() {
                 _registerChannel.send(RegisterEvent.OnRegisterFailure)
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("onCleared REGISTER_VIEWMODEL")
     }
 }

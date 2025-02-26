@@ -202,6 +202,11 @@ class PinViewModel : ViewModel() {
             }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("onCleared PIN_VIEWMODEL")
+    }
 }
 
 private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {

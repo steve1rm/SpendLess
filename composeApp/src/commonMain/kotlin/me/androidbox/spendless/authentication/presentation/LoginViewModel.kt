@@ -58,4 +58,9 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        println("onCleared LOGIN_VIEWMODEL")
+    }
 }
