@@ -64,7 +64,7 @@ class RegisterViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 // use case for fetch from the room db
-                _registerChannel.send(RegisterEvent.OnRegisterSuccess)
+                _registerChannel.send(RegisterEvent.OnRegisterSuccess(username = registerState.value.username))
             }
             catch (exception: Exception) {
                 exception.printStackTrace()

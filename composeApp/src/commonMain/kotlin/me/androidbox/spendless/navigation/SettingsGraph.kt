@@ -13,10 +13,10 @@ import me.androidbox.spendless.settings.presentation.SettingsScreen
 
 fun NavGraphBuilder.settingsGraph(navController: NavController) {
 
-    this.navigation<Route.SettingsGraph>(startDestination = Route.SettingsGraph) {
-        composable<Route.SettingsScreen>(
+    this.navigation<Route.SettingsGraph>(
+        startDestination = Route.SettingsScreen) {
 
-        ) {
+        composable<Route.SettingsScreen> {
             SettingsScreen(
                 onPreferenceClicked = {
                     navController.navigate(Route.PreferenceSettingsScreen)

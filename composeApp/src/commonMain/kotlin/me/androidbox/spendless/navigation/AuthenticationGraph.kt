@@ -6,8 +6,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.compose.runtime.getValue
+import me.androidbox.spendless.authentication.presentation.AuthenticationAction
+import me.androidbox.spendless.authentication.presentation.AuthenticationSharedViewModel
 import me.androidbox.spendless.authentication.presentation.CreatePinActions
-import me.androidbox.spendless.authentication.presentation.CreatePinEvents
+import me.androidbox.spendless.authentication.presentation.CreatePinEvent
 import me.androidbox.spendless.authentication.presentation.LoginAction
 import me.androidbox.spendless.authentication.presentation.LoginViewModel
 import me.androidbox.spendless.authentication.presentation.PinViewModel
@@ -20,6 +22,7 @@ import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.authentication.presentation.screens.RegisterScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
+import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.authentication(navController: NavController) {
@@ -56,6 +59,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
         composable<Route.RegisterScreen> {
             val registerViewModel = koinViewModel<RegisterViewModel>()
             val registerState by registerViewModel.registerState.collectAsStateWithLifecycle()
+            val authenticationSharedViewModel = it.sharedViewModel<AuthenticationSharedViewModel>(navController)
 
             ObserveAsEvents(registerViewModel.registerChannel) { registerEvent ->
                 when (registerEvent) {
@@ -65,7 +69,8 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                          **/
                     }
 
-                    RegisterEvent.OnRegisterSuccess -> {
+                    is RegisterEvent.OnRegisterSuccess -> {
+                        authenticationSharedViewModel.onAction(AuthenticationAction.OnUsernameEntered(registerEvent.username))
                         navController.navigate(Route.PinCreateScreen)
                     }
                 }
@@ -86,6 +91,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                         }
 
                         OnRegisterClicked -> {
+                            authenticationSharedViewModel.onAction(AuthenticationAction.OnUsernameEntered(registerState.username))
                             navController.navigate(Route.PinCreateScreen)
                         }
 
@@ -100,16 +106,24 @@ fun NavGraphBuilder.authentication(navController: NavController) {
         composable<Route.PinCreateScreen> {
             val pinViewModel = koinViewModel<PinViewModel>()
             val pinState by pinViewModel.createPinState.collectAsStateWithLifecycle()
+            val authenticationSharedViewModel = it.sharedViewModel<AuthenticationSharedViewModel>(navController)
 
-            ObserveAsEvents(pinViewModel.pinChannel) { createPinEvents ->
-                when (createPinEvents) {
-                    is CreatePinEvents.PinEntryEvent -> {
-                        println("ObserveEvent ${createPinEvents.isValid}")
+            ObserveAsEvents(pinViewModel.pinChannel) { createPinEvent ->
+                when (createPinEvent) {
+                    is CreatePinEvent.PinEntryEvent -> {
+                        println("ObserveEvent ${createPinEvent.isValid}")
 
-                        if (createPinEvents.isValid) {
+                        if (createPinEvent.isValid) {
                             /** Navigate to the onboarding screen valid pin */
                             println("Navigate to onboarding")
-                            navController.navigate(Route.DashboardGraph)
+                            authenticationSharedViewModel.onAction(AuthenticationAction.OnPinEntered(createPinEvent.pin))
+                            authenticationSharedViewModel.saveCredentials()
+
+                            navController.navigate(Route.DashboardGraph) {
+                                this.popUpTo<Route.AuthenticationGraph> {
+                                    this.inclusive = true
+                                }
+                            }
                         } else {
                             /** Show red banner if user has entered an incorrect pin */
                             println("Show Red banner")
