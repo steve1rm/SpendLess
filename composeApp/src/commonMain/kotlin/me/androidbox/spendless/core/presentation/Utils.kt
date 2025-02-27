@@ -36,3 +36,26 @@ fun getFormattedTime(duration: Duration): String {
 
     return "${minutes.pad()}:${seconds.pad()}"
 }
+
+fun String.formatMoney(currency: Currency, expensesFormat: ExpensesFormat): String {
+
+    // 10,687.45
+    // 10 687,45
+    // 10.687,45
+
+
+    return buildString {
+        if(expensesFormat == ExpensesFormat.BRACKET) {
+            append("(")
+        }
+        else {
+            append("-")
+        }
+        append(currency.symbol)
+        append(" ")
+        append(this@formatMoney)
+        if(expensesFormat == ExpensesFormat.BRACKET) {
+            append(")")
+        }
+    }
+}

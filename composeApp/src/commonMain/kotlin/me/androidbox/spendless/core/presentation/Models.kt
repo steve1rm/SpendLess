@@ -43,7 +43,8 @@ enum class Currency(val symbol: String, val title: String) {
     AUD("A$", "Australian Dollar (AUD)"),
     CNY("¥", "Chinese Yuan Renminbi (CNY)"),
     INR("₹", "Indian Rupee (INR)"),
-    ZAR("R", "South African Rand (ZAR)")
+    ZAR("R", "South African Rand (ZAR)"),
+    THB("฿", "Thailand Baht (THB)")
 }
 
 enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
@@ -73,9 +74,9 @@ enum class ExpensesFormat(override val type: String) : PreferenceType {
     BRACKET("($10)")
 }
 
-enum class DecimalSeparator(override val type: String) : PreferenceType {
-    DOT("1.00"),
-    COMMA("(1,00)")
+enum class DecimalSeparator(override val type: String, val symbol: Char) : PreferenceType {
+    DOT("1.00", '.'),
+    COMMA("1,00", ',')
 }
 
 enum class ExpiryDuration(override val type: String) : PreferenceType {
@@ -92,8 +93,8 @@ enum class LockedDuration(override val type: String) : PreferenceType {
     FIVE_MINS("5 min")
 }
 
-enum class ThousandsSeparator(override val type: String) : PreferenceType {
-    MINUS("1.00"),
-    COMMA("(1,00)"),
-    SPACE("(1 00)")
+enum class ThousandsSeparator(override val type: String, val symbol: Char) : PreferenceType {
+    DOT("1.00", '.'),
+    COMMA("1,00", ','),
+    SPACE("1 00", ' ')
 }

@@ -14,6 +14,9 @@ import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +26,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+
+        val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+            this.groupingSeparator = ','
+            this.decimalSeparator = '.'
+        }
+
+        val decimalFormat = DecimalFormat("##,###.##", symbols)
+        decimalFormat.isDecimalSeparatorAlwaysShown = false
+
+        val number = 6347238245
+        val formattedNumber = decimalFormat.format(number / 100.0)
+
+        println(formattedNumber)
     }
 }
 

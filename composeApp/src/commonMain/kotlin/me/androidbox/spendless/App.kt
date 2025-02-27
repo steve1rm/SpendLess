@@ -9,7 +9,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import me.androidbox.spendless.authentication.presentation.AuthenticationSharedViewModel
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.navigation.authentication
 import me.androidbox.spendless.navigation.dashboardGraph
@@ -26,7 +25,7 @@ fun App() {
 
         NavHost(
             navController = navController,
-            startDestination = Route.AuthenticationGraph
+            startDestination = Route.DashboardGraph
         ) {
 
             this.authentication(navController)

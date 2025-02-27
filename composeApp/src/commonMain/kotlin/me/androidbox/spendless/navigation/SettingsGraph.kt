@@ -2,6 +2,7 @@ package me.androidbox.spendless.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -72,7 +73,22 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                     navController.popBackStack()
                 },
                 preferenceContent = {
-                    PreferenceContent()
+                    PreferenceContent(
+                        modifier = Modifier,
+                        onExpenseFormatClicked = {
+                            println(it.type)
+                        },
+                        onCurrencyClicked = {
+                            println(it.symbol)
+                        },
+                        onDecimalSeparatorClicked = {
+                            println(it.type)
+                        },
+                        onThousandsSeparator = {
+                            println(it.type)
+                        },
+                        money = 6347238245
+                    )
                 }
             )
         }

@@ -111,64 +111,9 @@ fun PreferenceOnboardingScreen(
 
 
 
-@Composable
-fun AnimatedChipSelector1() {
 
-    val localDensity = LocalDensity.current
-    val tabsList = listOf("5 min", "15 min", "30 min", "1 hour")
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabWidths = remember { mutableStateListOf(-1, -1, -1, -1) }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Top
-    ) {
 
-        TabRow(
-            modifier = Modifier.clip(RoundedCornerShape(12.dp)),
-            selectedTabIndex = selectedTabIndex,
-            contentColor = Color(0xff8138FF).copy(0.08f),
-            indicator = { tabPositions ->
-                if (tabWidths.isNotEmpty()) {  // only show Indicator after measurements are finished
-                    Column(
-                        modifier = Modifier
-                            .tabIndicatorOffset(tabPositions[selectedTabIndex])
-                            .fillMaxHeight()
-                            .requiredWidth( with(localDensity) { tabWidths[selectedTabIndex].toDp() } )
-                            .padding(vertical = 8.dp)
-                            .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                    ) {}
-                }
-            },
-            divider = {}
-        ) {
-            tabsList.forEachIndexed { tabIndex, tabName ->
-                FilterChip(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .zIndex(2f)
-                        .onGloballyPositioned { layoutCoordinates ->
-                            tabWidths[tabIndex] = layoutCoordinates.size.width
-                        },
-                    selected = false,
-                    shape = RoundedCornerShape(12.dp),
-                    border = null,
-                    onClick = { selectedTabIndex = tabIndex },
-                    label = {
-                        Text(
-                            text = tabName,
-                            textAlign = TextAlign.Center,
-                            color = if (selectedTabIndex == tabIndex) Color.Black else Color.DarkGray,
-                        )
-                    }
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun AnimatedChipSelector() {
@@ -227,6 +172,67 @@ fun AnimatedChipSelector() {
                         }
                     )
                 }
+            }
+        }
+    }
+}
+
+
+
+@Composable
+fun AnimatedChipSelector1() {
+
+    val localDensity = LocalDensity.current
+    val tabsList = listOf("5 min", "15 min", "30 min", "1 hour")
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val tabWidths = remember { mutableStateListOf(-1, -1, -1, -1) }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top
+    ) {
+
+        TabRow(
+            modifier = Modifier.clip(RoundedCornerShape(12.dp)),
+            selectedTabIndex = selectedTabIndex,
+            contentColor = Color(0xff8138FF).copy(0.08f),
+            indicator = { tabPositions ->
+                if (tabWidths.isNotEmpty()) {  // only show Indicator after measurements are finished
+                    Column(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[selectedTabIndex])
+                            .fillMaxHeight()
+                            .requiredWidth( with(localDensity) { tabWidths[selectedTabIndex].toDp() } )
+                            .padding(vertical = 8.dp)
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                    ) {}
+                }
+            },
+            divider = {}
+        ) {
+            tabsList.forEachIndexed { tabIndex, tabName ->
+                FilterChip(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .zIndex(2f)
+                        .onGloballyPositioned { layoutCoordinates ->
+                            tabWidths[tabIndex] = layoutCoordinates.size.width
+                        },
+                    selected = false,
+                    shape = RoundedCornerShape(12.dp),
+                    border = null,
+                    onClick = { selectedTabIndex = tabIndex },
+                    label = {
+                        Text(
+                            text = tabName,
+                            textAlign = TextAlign.Center,
+                            color = if (selectedTabIndex == tabIndex) Color.Black else Color.DarkGray,
+                        )
+                    }
+                )
             }
         }
     }

@@ -36,7 +36,21 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
         ) {
             PreferenceOnboardingScreen(
                 preferenceContent = {
-                    PreferenceContent()
+                    PreferenceContent(
+                        onExpenseFormatClicked = {
+                            println(it.type)
+                        },
+                        onCurrencyClicked = {
+                            println(it.symbol)
+                        },
+                        onDecimalSeparatorClicked = {
+                            println(it.type)
+                        },
+                        onThousandsSeparator = {
+                            println(it.type)
+                        },
+                        money = 6347238245
+                    )
                 },
                 onBackClicked = {
                     navController.navigate(Route.PinCreateScreen) {

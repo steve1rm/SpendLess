@@ -44,11 +44,39 @@ import me.androidbox.spendless.core.presentation.SurfaceContainer
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
+import me.androidbox.spendless.core.presentation.formatMoney
+import me.androidbox.spendless.formatMoney
 
 @Composable
 fun PreferenceContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    money: Long,
+    onExpenseFormatClicked: (expensesFormat: ExpensesFormat) -> Unit,
+    onCurrencyClicked: (currency: Currency) -> Unit,
+    onDecimalSeparatorClicked: (decimalSeparator: DecimalSeparator) -> Unit,
+    onThousandsSeparator: (thousandsSeparator: ThousandsSeparator) -> Unit
 ) {
+
+    var expensesFormat by remember {
+        mutableStateOf(ExpensesFormat.NEGATIVE)
+    }
+
+    var thousandsSeparator by remember {
+        mutableStateOf(ThousandsSeparator.COMMA)
+    }
+
+    var decimalSeparator by remember {
+        mutableStateOf(DecimalSeparator.DOT)
+    }
+
+    var shouldShowDropDown by remember {
+        mutableStateOf(false)
+    }
+
+    var selectedCurrency by remember {
+        mutableStateOf(Currency.entries.toList().first())
+    }
+
     /** Summary box */
     Card(
         modifier = modifier
@@ -70,7 +98,12 @@ fun PreferenceContent(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "$10,382.45",
+                    text = money.formatMoney(
+                        currency = selectedCurrency,
+                        expensesFormat = expensesFormat,
+                        thousandsSeparator = thousandsSeparator,
+                        decimalSeparator = decimalSeparator
+                    ),
                     fontSize = 32.sp,
                     fontWeight = FontWeight.W600,
                     color = OnSurface,
@@ -103,15 +136,9 @@ fun PreferenceContent(
         unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
         onItemClicked = { item ->
             println(item)
+            onExpenseFormatClicked(item as ExpensesFormat)
+            expensesFormat = item
         })
-
-    var shouldShowDropDown by remember {
-        mutableStateOf(false)
-    }
-
-    var selectedCurrency by remember {
-        mutableStateOf(Currency.entries.toList().first())
-    }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -160,6 +187,7 @@ fun PreferenceContent(
             },
             onMenuItemClicked = { item, index ->
                 selectedCurrency = item
+                onCurrencyClicked(item)
             },
             itemContent = { currency ->
                 CurrencyDropDownItem(
@@ -178,11 +206,16 @@ fun PreferenceContent(
         color = OnSurface
     )
 
-    ButtonPanel(items = DecimalSeparator.entries,
+    ButtonPanel(
+        items = DecimalSeparator.entries,
         selectedColor = OnSurface,
-        unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
-        println(item)
-    }
+        unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
+        onItemClicked = { preferenceType ->
+            println(preferenceType)
+            decimalSeparator = preferenceType as DecimalSeparator
+       //     onDecimalSeparatorClicked(preferenceType)
+        }
+    )
 
     Text(
         text = "Thousands separator",
@@ -193,8 +226,10 @@ fun PreferenceContent(
 
     ButtonPanel(items = ThousandsSeparator.entries,
         selectedColor = OnSurface,
-        unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f)) { item ->
-        println(item)
-    }
-
+        unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
+        onItemClicked = { item ->
+            println(item)
+         //   onThousandsSeparator(item as ThousandsSeparator)
+            thousandsSeparator = item as ThousandsSeparator
+        })
 }

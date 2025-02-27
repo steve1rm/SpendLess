@@ -37,7 +37,7 @@ fun ButtonPanel(
     unselectedColor: Color,
     startIcons: List<DrawableResource> = emptyList(),
     items: List<PreferenceType>,
-    onItemClicked: (textItem: PreferenceType) -> Unit) {
+    onItemClicked: (preferenceType: PreferenceType) -> Unit) {
 
     var selectedIndex by remember {
         mutableStateOf(0)
