@@ -5,7 +5,6 @@ import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
-import me.androidbox.spendless.core.presentation.formatMoney
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -22,22 +21,20 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
         this.decimalSeparator = decimalSeparator.symbol
     }
 
-    val decimalFormat = DecimalFormat("##,###.##", symbols)
+    val decimalFormat = DecimalFormat("#,##0.##", symbols)
     decimalFormat.isDecimalSeparatorAlwaysShown = false
 
-  //  val number = 6347238245
     val formattedNumber: String = decimalFormat.format(this / 100.0)
 
     return buildString {
-        if(expensesFormat == ExpensesFormat.BRACKET) {
-            append("(")
+        when(expensesFormat) {
+            ExpensesFormat.BRACKET -> append("(")
+            ExpensesFormat.NEGATIVE -> append("-")
         }
-        else {
-            append("-")
-        }
+
         append(currency.symbol)
-        append(" ")
         append(formattedNumber)
+
         if(expensesFormat == ExpensesFormat.BRACKET) {
             append(")")
         }
