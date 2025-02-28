@@ -122,7 +122,7 @@ fun App() {
                             navController.navigate(Route.SecurityScreen)
                         },
                         onLogoutClicked = {
-
+                            // Logout user
                         },
                         onBackClicked = {
                             navController.popBackStack()
