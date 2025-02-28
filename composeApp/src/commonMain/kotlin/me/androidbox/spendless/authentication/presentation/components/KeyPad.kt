@@ -30,7 +30,7 @@ import spendless.composeapp.generated.resources.backspace
 @Composable
 fun KeyPad(
     modifier: Modifier = Modifier,
-    disableKeyPad: Boolean = false,
+    enableKeypad: Boolean = true,
     onKeyClicked: (keyButton: KeyButtons) -> Unit
 ) {
     Column(
@@ -44,17 +44,17 @@ fun KeyPad(
         ) {
             DigitKey(
                 digit = KeyButtons.ONE,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.TWO,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.THREE,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
@@ -65,17 +65,17 @@ fun KeyPad(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             DigitKey(digit = KeyButtons.FOUR,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.FIVE,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.SIX,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
@@ -86,17 +86,17 @@ fun KeyPad(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             DigitKey(digit = KeyButtons.SEVEN,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.EIGHT,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
             DigitKey(digit = KeyButtons.NINE,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
@@ -109,7 +109,7 @@ fun KeyPad(
             /** Dummy digit so that the last 2 keys take up the space directly on the right */
             Box(modifier = Modifier.size(108.dp)) {}
             DigitKey(digit = KeyButtons.ZERO,
-                disableKeyPad = disableKeyPad,
+                enableKeypad = enableKeypad,
                 onKeyClicked = { key ->
                     onKeyClicked(key)
                 })
@@ -120,15 +120,14 @@ fun KeyPad(
     }
 }
 
-
 @Composable
-fun DigitKey(modifier: Modifier = Modifier, digit: KeyButtons, disableKeyPad: Boolean, onKeyClicked: (KeyButtons) -> Unit) {
+fun DigitKey(modifier: Modifier = Modifier, digit: KeyButtons, enableKeypad: Boolean, onKeyClicked: (KeyButtons) -> Unit) {
     Box(
         modifier = modifier
             .size(size = 108.dp)
             .clip(RoundedCornerShape(size = 32.dp))
             .background(color = PrimaryFixed)
-            .clickable(enabled = disableKeyPad) {
+            .clickable(enabled = enableKeypad) {
                 onKeyClicked(digit)
             },
         contentAlignment = Alignment.Center

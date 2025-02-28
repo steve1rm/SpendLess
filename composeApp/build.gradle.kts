@@ -63,11 +63,11 @@ kotlin {
 }
 
 android {
-    namespace = "me.androidbox.echojournal"
+    namespace = "me.androidbox.speedless"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "me.androidbox.echojournal"
+        applicationId = "me.androidbox.speedless"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
