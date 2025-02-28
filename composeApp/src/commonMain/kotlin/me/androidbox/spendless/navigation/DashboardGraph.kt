@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import me.androidbox.spendless.dashboard.AllTransactionListScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
+import me.androidbox.spendless.onboarding.screens.OnboardingPreferenceViewModel
 import me.androidbox.spendless.onboarding.screens.PreferenceOnboardingScreen
 import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.transactions.TransactionViewModel
@@ -34,29 +35,22 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                 )
             }
         ) {
+            val onboardingPreferenceViewModel = koinViewModel<OnboardingPreferenceViewModel>()
+            val onboardingPreferenceState by onboardingPreferenceViewModel.onboardingPreferenceState.collectAsStateWithLifecycle()
+
             PreferenceOnboardingScreen(
                 preferenceContent = {
                     PreferenceContent(
-                        onExpenseFormatClicked = {
-                            println(it.type)
-                        },
-                        onCurrencyClicked = {
-                            println(it.symbol)
-                        },
-                        onDecimalSeparatorClicked = {
-                            println(it.type)
-                        },
-                        onThousandsSeparator = {
-                            println(it.type)
-                        },
-                        money = 6347238245
+                        preferenceState = onboardingPreferenceState,
+                        action = onboardingPreferenceViewModel::onAction
                     )
                 },
                 onBackClicked = {
                     navController.navigate(Route.PinCreateScreen) {
                         this.popUpTo(Route.PreferenceOnBoardingScreen)
                     }
-                }
+                },
+                isEnabled = onboardingPreferenceState.isEnabled
             )
         }
 

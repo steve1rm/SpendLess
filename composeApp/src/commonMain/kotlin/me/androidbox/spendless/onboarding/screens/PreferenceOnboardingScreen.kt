@@ -47,6 +47,7 @@ import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 @Composable
 fun PreferenceOnboardingScreen(
     modifier: Modifier = Modifier,
+    isEnabled: Boolean,
     preferenceContent: @Composable () -> Unit,
     onBackClicked: () -> Unit
 ) {
@@ -95,7 +96,10 @@ fun PreferenceOnboardingScreen(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                    onClick = {}
+                    enabled = isEnabled,
+                    onClick = {
+
+                    }
                 ) {
                     Text(
                         text = "Start Tracking",

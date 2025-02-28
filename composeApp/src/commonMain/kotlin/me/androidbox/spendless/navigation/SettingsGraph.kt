@@ -2,15 +2,19 @@ package me.androidbox.spendless.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import me.androidbox.spendless.onboarding.screens.OnboardingPreferenceViewModel
 import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.settings.presentation.PreferenceSettingsScreen
 import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.settingsGraph(navController: NavController) {
 
@@ -68,26 +72,17 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                 )
             }
         ) {
+            val onboardingPreferenceViewModel = koinViewModel<OnboardingPreferenceViewModel>()
+            val onboardingPreferenceState by onboardingPreferenceViewModel.onboardingPreferenceState.collectAsStateWithLifecycle()
+
             PreferenceSettingsScreen(
                 onBackClicked = {
                     navController.popBackStack()
                 },
                 preferenceContent = {
                     PreferenceContent(
-                        modifier = Modifier,
-                        onExpenseFormatClicked = {
-                            println(it.type)
-                        },
-                        onCurrencyClicked = {
-                            println(it.symbol)
-                        },
-                        onDecimalSeparatorClicked = {
-                            println(it.type)
-                        },
-                        onThousandsSeparator = {
-                            println(it.type)
-                        },
-                        money = 6347238245
+                        preferenceState = onboardingPreferenceState,
+                        action = onboardingPreferenceViewModel::onAction
                     )
                 }
             )
