@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import me.androidbox.spendless.dashboard.AllTransactionListScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardScreen
-import me.androidbox.spendless.onboarding.screens.OnboardingPreferenceViewModel
+import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
 import me.androidbox.spendless.onboarding.screens.PreferenceOnboardingScreen
 import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.transactions.TransactionViewModel
@@ -35,14 +35,14 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                 )
             }
         ) {
-            val onboardingPreferenceViewModel = koinViewModel<OnboardingPreferenceViewModel>()
-            val onboardingPreferenceState by onboardingPreferenceViewModel.onboardingPreferenceState.collectAsStateWithLifecycle()
+            val preferenceViewModel = koinViewModel<PreferenceViewModel>()
+            val onboardingPreferenceState by preferenceViewModel.preferenceState.collectAsStateWithLifecycle()
 
             PreferenceOnboardingScreen(
                 preferenceContent = {
                     PreferenceContent(
                         preferenceState = onboardingPreferenceState,
-                        action = onboardingPreferenceViewModel::onAction
+                        action = preferenceViewModel::onAction
                     )
                 },
                 onBackClicked = {

@@ -39,8 +39,4 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
             append(")")
         }
     }
-
-    println(formattedNumber)
-
-    return formattedNumber
 }

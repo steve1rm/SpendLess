@@ -45,14 +45,14 @@ import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.formatMoney
-import me.androidbox.spendless.onboarding.screens.OnboardingPreferenceAction
-import me.androidbox.spendless.onboarding.screens.OnboardingPreferenceState
+import me.androidbox.spendless.onboarding.screens.PreferenceAction
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 
 @Composable
 fun PreferenceContent(
     modifier: Modifier = Modifier,
-    preferenceState: OnboardingPreferenceState,
-    action: (action: OnboardingPreferenceAction) -> Unit) {
+    preferenceState: PreferenceState,
+    action: (action: PreferenceAction) -> Unit) {
 
     var expensesFormat by remember {
         mutableStateOf(ExpensesFormat.NEGATIVE)
@@ -199,7 +199,7 @@ fun PreferenceContent(
         unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
         onItemClicked = { preferenceType ->
             println(preferenceType)
-            action(OnboardingPreferenceAction.OnDecimalSeparatorSelected(preferenceType as DecimalSeparator))
+            action(PreferenceAction.OnDecimalSeparatorSelected(preferenceType as DecimalSeparator))
         }
     )
 
@@ -215,6 +215,6 @@ fun PreferenceContent(
         unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
         onItemClicked = { preferenceType ->
             println(preferenceType)
-            action(OnboardingPreferenceAction.OnThousandsSeparatorSelected(preferenceType as ThousandsSeparator))
+            action(PreferenceAction.OnThousandsSeparatorSelected(preferenceType as ThousandsSeparator))
         })
 }
