@@ -11,7 +11,11 @@ interface UserDao {
     suspend fun getUser(): User
 
     @Insert
+<<<<<<< HEAD
     suspend fun insertUser(vararg user: User)
+=======
+    suspend fun insertAll(vararg user: User)
+>>>>>>> f15e979 (add user table)
 
 //    @Delete
 //    fun delete(transaction: Transaction)
