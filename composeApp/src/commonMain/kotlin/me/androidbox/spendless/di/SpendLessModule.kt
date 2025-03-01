@@ -10,7 +10,10 @@ import me.androidbox.spendless.transactions.domain.Repository
 import me.androidbox.spendless.data.SpendLessDataSource
 import me.androidbox.spendless.data.SpendLessDataSourceImpl
 import me.androidbox.spendless.data.SpendLessDatabase
+<<<<<<< HEAD
 import org.koin.core.module.dsl.factoryOf
+=======
+>>>>>>> 1f1e1d14dbd8567ee7b1093a285e279d5c2cb016
 import me.androidbox.spendless.domain.CreateTransactionUseCase
 import me.androidbox.spendless.domain.CreateUserUseCase
 import me.androidbox.spendless.domain.imp.CreateTransactionUseCaseImp
@@ -30,6 +33,19 @@ val spendLessModule = module {
         CreateTransactionUseCaseImp(
             get<SpendLessDataSource>()
         )
+<<<<<<< HEAD
+=======
+    }
+
+    factory<SpendLessDataSource> {
+        SpendLessDataSourceImpl(
+            get<SpendLessDatabase>()
+        )
+    }
+
+    factory<Repository> {
+        RepositoryImp()
+>>>>>>> 1f1e1d14dbd8567ee7b1093a285e279d5c2cb016
     }
 
     factory<FetchAllTransactionsUseCase> {
