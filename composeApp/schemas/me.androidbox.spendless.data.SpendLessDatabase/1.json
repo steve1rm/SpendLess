@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a8e6b5ca302d85b26c19b6ed5622ec5b",
+    "identityHash": "2edef94853c8bfb8af212d03d162f9ca",
     "entities": [
       {
         "tableName": "transaction",
@@ -94,7 +94,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a8e6b5ca302d85b26c19b6ed5622ec5b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2edef94853c8bfb8af212d03d162f9ca')"
     ]
   }
 }
