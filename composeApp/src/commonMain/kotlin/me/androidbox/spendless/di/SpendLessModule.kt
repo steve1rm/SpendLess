@@ -57,6 +57,12 @@ val spendLessModule = module {
         )
     }
 
+    factory<CreateTransactionUseCase> {
+        CreateTransactionUseCaseImp(
+            get<SpendLessDataSource>()
+        )
+    }
+
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(
             get<SpendLessDatabase>()
