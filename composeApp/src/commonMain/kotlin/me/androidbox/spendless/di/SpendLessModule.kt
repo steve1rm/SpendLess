@@ -19,15 +19,6 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val spendLessModule = module {
-    factory<SpendLessDataSource> {
-        SpendLessDataSourceImpl(
-            get<_root_ide_package_.me.androidbox.spendless.data.SpendLessDatabase>()
-        )
-    }
-
-    viewModelOf(::PinViewModel)
-    viewModelOf(::TransactionViewModel)
-    viewModelOf(::DashBoardViewModel)
 
     factory<CreateUserUseCase> {
         CreateUserUseCaseImp(
@@ -41,17 +32,17 @@ val spendLessModule = module {
         )
     }
 
+    factory<FetchAllTransactionsUseCase> {
+        FetchAllTransactionsUseCaseImp(get<Repository>())
+    }
+
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(
             get<SpendLessDatabase>()
         )
     }
 
-    factory<Repository> {
-        RepositoryImp()
-    }
-
-    factory<FetchAllTransactionsUseCase> {
-        FetchAllTransactionsUseCaseImp(get<Repository>())
-    }
+    viewModelOf(::PinViewModel)
+    viewModelOf(::TransactionViewModel)
+    viewModelOf(::DashBoardViewModel)
 }

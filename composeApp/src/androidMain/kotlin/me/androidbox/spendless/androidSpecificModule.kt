@@ -7,9 +7,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val androidSpecificModule = module {
-
     single<SpendLessDatabase> {
-        val dbFile = androidContext().getDatabasePath("spendLessJournal.db")
+        val dbFile = androidContext().getDatabasePath("spendLess.db")
 
         Room.databaseBuilder<SpendLessDatabase>(
             context = androidContext(),
