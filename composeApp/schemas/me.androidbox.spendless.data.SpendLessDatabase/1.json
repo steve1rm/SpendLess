@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a8e6b5ca302d85b26c19b6ed5622ec5b",
+    "identityHash": "f602e034f36e600837ee59cbf48afade",
     "entities": [
       {
         "tableName": "transaction",
@@ -57,7 +57,7 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `pinDigest` TEXT NOT NULL, `createdAt` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `pin` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -72,15 +72,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "pinDigest",
-            "columnName": "pinDigest",
+            "fieldPath": "pin",
+            "columnName": "pin",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
-            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -94,7 +88,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a8e6b5ca302d85b26c19b6ed5622ec5b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f602e034f36e600837ee59cbf48afade')"
     ]
   }
 }

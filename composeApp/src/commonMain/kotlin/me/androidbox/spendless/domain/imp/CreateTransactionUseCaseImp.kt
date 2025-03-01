@@ -5,9 +5,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import me.androidbox.spendless.data.SpendLessDataSource
 import me.androidbox.spendless.data.Transaction
-import me.androidbox.spendless.data.User
 import me.androidbox.spendless.domain.CreateTransactionUseCase
-import me.androidbox.spendless.domain.CreateUserUseCase
 
 
 class CreateTransactionUseCaseImp(

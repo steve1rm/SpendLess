@@ -25,7 +25,7 @@ fun App() {
 
         NavHost(
             navController = navController,
-            startDestination = Route.DashboardGraph
+            startDestination = Route.AuthenticationGraph
         ) {
 
             this.authentication(navController)
@@ -47,5 +47,5 @@ inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(navControlle
 
     // println("NavbackstackEntry ${viewModel<AuthenticationSharedViewModel>(parentEntry)::class.simpleName}")
 
-    return viewModel(parentEntry)
+    return koinViewModel(viewModelStoreOwner = parentEntry)
 }
