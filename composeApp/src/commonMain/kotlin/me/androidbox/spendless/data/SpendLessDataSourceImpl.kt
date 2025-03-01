@@ -7,6 +7,7 @@ import me.androidbox.spendless.data.Transaction
 class SpendLessDataSourceImpl(
     private val database: SpendLessDatabase
 ): SpendLessDataSource {
+
     override suspend fun insertUser(user: User) {
         database.userDao().insertUser(user)
     }
@@ -27,10 +28,10 @@ class SpendLessDataSourceImpl(
 //        database.topicDao().insertAll(topic)
 //    }
 //
-//    override fun getAllJournal(): Flow<List<EchoJournalUI>> {
+//    override fun getAllJournal(): Flow<List<SpendLessUI>> {
 //        return database.journalDao().getAll().map { listOfJournals ->
 //            listOfJournals.map { journal ->
-//                EchoJournalUI(
+//                SpendLessUI(
 //                    title = journal.title.orEmpty(),
 //                    description = journal.description.orEmpty(),
 //                    audioFilePath = journal.audioFilePath.orEmpty(),

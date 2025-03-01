@@ -47,17 +47,17 @@ val spendLessModule = module {
         )
     }
 
+    factory<FetchAllTransactionsUseCase> {
+        FetchAllTransactionsUseCaseImp(get<Repository>())
+    }
+
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(
             get<SpendLessDatabase>()
         )
     }
 
-    factory<Repository> {
-        RepositoryImp()
-    }
-
-    factory<FetchAllTransactionsUseCase> {
-        FetchAllTransactionsUseCaseImp(get<Repository>())
-    }
+    viewModelOf(::PinViewModel)
+    viewModelOf(::TransactionViewModel)
+    viewModelOf(::DashBoardViewModel)
 }
