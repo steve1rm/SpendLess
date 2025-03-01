@@ -36,6 +36,12 @@ val spendLessModule = module {
         FetchAllTransactionsUseCaseImp(get<Repository>())
     }
 
+    factory<CreateUserUseCase> {
+        CreateUserUseCaseImp(
+            get<SpendLessDataSource>()
+        )
+    }
+
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(
             get<SpendLessDatabase>()
