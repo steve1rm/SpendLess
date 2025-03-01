@@ -19,9 +19,6 @@ class SpendLessDataSourceImpl(
         database.transactionDao().insertTransaction()
     }
 
-    override suspend fun getAllTransaction(): List<Transaction> {
-        return database.transactionDao().getAll()
-    }
 
 //    override suspend fun getTopicWithPrefix(title: String): List<Transaction> {
 //        return database.transactionDao().getTransactionByCategory(title)

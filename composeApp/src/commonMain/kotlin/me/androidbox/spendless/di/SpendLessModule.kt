@@ -35,16 +35,14 @@ val spendLessModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::PreferenceViewModel)
 
-    factory<CreateUserUseCase> {
-        CreateUserUseCaseImp(
-            get<SpendLessDataSource>()
+    factory<SpendLessDataSource> {
+        SpendLessDataSourceImpl(
+            get<SpendLessDatabase>()
         )
     }
 
-    factory<CreateTransactionUseCase> {
-        CreateTransactionUseCaseImp(
-            get<SpendLessDataSource>()
-        )
+    factory<Repository> {
+        RepositoryImp()
     }
 
     factory<FetchAllTransactionsUseCase> {
