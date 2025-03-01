@@ -25,6 +25,7 @@ fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
     }
 }
 
+/** pad a 0 i.e. 04:09 instead of this 4:9 */
 fun Long.pad(): String {
     return this.toString().padStart(2, '0')
 }
@@ -34,4 +35,27 @@ fun getFormattedTime(duration: Duration): String {
     val seconds = duration.inWholeSeconds % 60
 
     return "${minutes.pad()}:${seconds.pad()}"
+}
+
+fun String.formatMoney(currency: Currency, expensesFormat: ExpensesFormat): String {
+
+    // 10,687.45
+    // 10 687,45
+    // 10.687,45
+
+
+    return buildString {
+        if(expensesFormat == ExpensesFormat.BRACKET) {
+            append("(")
+        }
+        else {
+            append("-")
+        }
+        append(currency.symbol)
+        append(" ")
+        append(this@formatMoney)
+        if(expensesFormat == ExpensesFormat.BRACKET) {
+            append(")")
+        }
+    }
 }

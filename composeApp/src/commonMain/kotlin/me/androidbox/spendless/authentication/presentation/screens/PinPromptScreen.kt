@@ -132,7 +132,7 @@ fun PinPromptScreen(
                     )
 
                     KeyPad(
-                        disableKeyPad = createPinState.enableKeyPad,
+                        enableKeypad = createPinState.enableKeyPad,
                         onKeyClicked = { keyButton ->
                             if (keyButton == KeyButtons.DELETE) {
                                 onAction(CreatePinActions.OnDeletePressed)

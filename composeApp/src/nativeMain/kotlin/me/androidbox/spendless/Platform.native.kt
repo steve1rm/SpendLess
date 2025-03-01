@@ -5,15 +5,11 @@ import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 
-interface Platform {
-    val name: String
-}
-
-expect fun getPlatform(): Platform
-
-expect fun Long.formatMoney(
+actual fun Long.formatMoney(
     currency: Currency,
     expensesFormat: ExpensesFormat,
     thousandsSeparator: ThousandsSeparator,
     decimalSeparator: DecimalSeparator
-): String
+): String {
+    TODO("Not yet implemented")
+}

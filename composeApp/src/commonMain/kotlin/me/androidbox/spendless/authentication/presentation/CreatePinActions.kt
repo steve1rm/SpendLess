@@ -8,4 +8,5 @@ sealed interface CreatePinActions {
     data object OnDeletePressed : CreatePinActions
     data class ShouldShowRedBanner(val showBanner: Boolean): CreatePinActions
     data class ShouldUpdateMode(val pinMode: PinMode) : CreatePinActions
+    data object OnBackPressed : CreatePinActions
 }

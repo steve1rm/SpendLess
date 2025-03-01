@@ -2,7 +2,6 @@ package me.androidbox.spendless.core.presentation
 
 import org.jetbrains.compose.resources.DrawableResource
 import spendless.composeapp.generated.resources.Res
-import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.clothing
 import spendless.composeapp.generated.resources.education
 import spendless.composeapp.generated.resources.entertainment
@@ -22,7 +21,6 @@ enum class KeyButtons(val key: String = "") {
     ZERO("0"),
     DELETE()
 }
-
 
 enum class Authentication(var title: String, val subTitle: String) {
     AUTHENTICATION_PROMPT("Your Name", subTitle = "Enter your PIN"),
@@ -45,12 +43,8 @@ enum class Currency(val symbol: String, val title: String) {
     AUD("A$", "Australian Dollar (AUD)"),
     CNY("¥", "Chinese Yuan Renminbi (CNY)"),
     INR("₹", "Indian Rupee (INR)"),
-    ZAR("R", "South African Rand (ZAR)")
-}
-
-enum class TransactionType(val recipient: String, val typeName: String) {
-    RECEIVER(recipient = "Expense", typeName = "Receiver"),
-    SENDER(recipient = "Income", typeName = "Sender")
+    ZAR("R", "South African Rand (ZAR)"),
+    THB("฿", "Thailand Baht (THB)")
 }
 
 enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
@@ -59,4 +53,48 @@ enum class TransactionItems(val title: String, val iconRes: DrawableResource) {
     EDUCATION("Education", Res.drawable.education),
     FOOD("Food & Groceries", Res.drawable.food),
     HEALTH("Health & Wellness", Res.drawable.health),
+}
+
+sealed interface PreferenceType {
+    val type: String
+        get() = ""
+    val recipient: String
+        get() = ""
+    val typeName: String
+        get() = ""
+}
+
+enum class TransactionType(override val recipient: String, override val typeName: String) : PreferenceType{
+    RECEIVER(recipient = "Expense", typeName = "Receiver"),
+    SENDER(recipient = "Income", typeName = "Sender")
+}
+
+enum class ExpensesFormat(override val type: String) : PreferenceType {
+    NEGATIVE("-$10"),
+    BRACKET("($10)")
+}
+
+enum class DecimalSeparator(override val type: String, val symbol: Char) : PreferenceType {
+    DOT("1.00", '.'),
+    COMMA("1,00", ',')
+}
+
+enum class ExpiryDuration(override val type: String) : PreferenceType {
+    FIVE_MINS("5 mins"),
+    FIFTEEN_MINUS("15 mins"),
+    THIRTY_MINUS("30 mins"),
+    ONE_HOUR("1 hour")
+}
+
+enum class LockedDuration(override val type: String) : PreferenceType {
+    FIFTEEN_SECS("15s"),
+    THIRTY_SECS("30s"),
+    ONE_MIN("1 min"),
+    FIVE_MINS("5 min")
+}
+
+enum class ThousandsSeparator(override val type: String, val symbol: Char) : PreferenceType {
+    DOT("1.00", '.'),
+    COMMA("1,00", ','),
+    SPACE("1 00", ' ')
 }

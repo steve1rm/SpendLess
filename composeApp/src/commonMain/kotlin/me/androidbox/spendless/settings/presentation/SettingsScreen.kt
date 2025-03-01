@@ -5,8 +5,14 @@ package me.androidbox.spendless.settings.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -16,8 +22,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,10 +43,16 @@ import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun SettingsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSecurityClicked: () -> Unit,
+    onPreferenceClicked: () -> Unit,
+    onLogoutClicked: () -> Unit,
+    onBackClicked: () -> Unit
 ) {
     Scaffold(
-        modifier = modifier.background(color = Background),
+        modifier = modifier
+            .background(color = Background)
+            .windowInsetsPadding(insets = WindowInsets.statusBars),
         topBar = {
             TopAppBar(
                 title = {
@@ -50,7 +64,7 @@ fun SettingsScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = {}
+                        onClick = onBackClicked
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -64,11 +78,17 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Column(modifier = Modifier
                     .fillMaxWidth()
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(16.dp),
+                        ambientColor = Color(0xff1800401A).copy(alpha = 0.1f)
+                    )
                     .background(color = Color.White, shape = RoundedCornerShape(16.dp))) {
 
                     SettingsButton(
@@ -79,9 +99,7 @@ fun SettingsScreen(
                             )
                         },
                         text = "Preferences",
-                        onClicked = {
-                            println("Preferences clicked")
-                        }
+                        onClicked = onPreferenceClicked
                     )
 
                     SettingsButton(
@@ -91,23 +109,24 @@ fun SettingsScreen(
                                 tint = OnSurfaceVariant)
                         },
                         text = "Security",
-                        onClicked = {
-                            println("security clicked")
-                        }
+                        onClicked = onSecurityClicked
                     )
                 }
 
                 SettingsButton(
+                    modifier = Modifier.shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(16.dp),
+                        ambientColor = Color(0xff1800401A).copy(alpha = 0.1f)
+                    ),
                     icon = {
                         Icon(imageVector = vectorResource(resource = Res.drawable.logout),
-                            contentDescription = "Go to settings",
+                            contentDescription = "Logout",
                             tint = Error
                         )
                     },
                     text = "Log out",
-                    onClicked = {
-                        println("Logout clicked")
-                    }
+                    onClicked = onLogoutClicked
                 )
             }
         }

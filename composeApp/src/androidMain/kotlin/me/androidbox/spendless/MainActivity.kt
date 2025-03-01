@@ -14,17 +14,31 @@ import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
-import me.androidbox.spendless.onboarding.screens.components.TransactionItem
-import me.androidbox.spendless.transactions.domain.TransactionModel
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setContent {
-            enableEdgeToEdge()
             App()
         }
+
+        val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+            this.groupingSeparator = ','
+            this.decimalSeparator = '.'
+        }
+
+        val decimalFormat = DecimalFormat("##,###.##", symbols)
+        decimalFormat.isDecimalSeparatorAlwaysShown = false
+
+        val number = 6347238245
+        val formattedNumber = decimalFormat.format(number / 100.0)
+
+        println(formattedNumber)
     }
 }
 
@@ -80,7 +94,7 @@ fun KeyPadPreview() {
 @Preview(showBackground = true)
 @Composable
 fun KeyPreview() {
-    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {}, disableKeyPad = false)
+    DigitKey(digit = KeyButtons.SIX, onKeyClicked = {}, enableKeypad = false)
 }
 
 @Preview

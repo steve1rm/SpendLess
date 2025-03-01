@@ -39,32 +39,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.Error
+import me.androidbox.spendless.core.presentation.ExpensesFormat
+import me.androidbox.spendless.core.presentation.ExpiryDuration
+import me.androidbox.spendless.core.presentation.LockedDuration
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
+import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.core.presentation.components.CurrencyDropDownItem
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
 import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.DashboardAction.*
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
-import me.androidbox.spendless.transactions.TransactionAction
-import me.androidbox.spendless.transactions.TransactionState
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
-import spendless.composeapp.generated.resources.food
-import spendless.composeapp.generated.resources.health
 import spendless.composeapp.generated.resources.trending_down
 import spendless.composeapp.generated.resources.trending_up
 
@@ -74,6 +75,12 @@ fun CreateTransactionContent(
     state: DashboardState,
     action: (action: DashboardAction) -> Unit
 ) {
+
+    val density = LocalDensity.current
+    var dropDownItemWidth by remember {
+        mutableStateOf(0.dp)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -107,17 +114,20 @@ fun CreateTransactionContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         ButtonPanel(
-            items = listOf(TransactionType.RECEIVER.recipient, TransactionType.SENDER.recipient),
+            items = TransactionType.entries, //listOf(TransactionType.RECEIVER.recipient, TransactionType.SENDER.recipient),
             startIcons = listOf(Res.drawable.trending_down, Res.drawable.trending_up),
             selectedColor = Primary,
             unselectedColor = OnPrimaryFixed
         ) { item ->
             when (item) {
-                TransactionType.RECEIVER.recipient -> {
-                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
+                TransactionType.RECEIVER -> {
+                    action(OnTransactionTypeClicked(TransactionType.RECEIVER))
                 }
-                TransactionType.SENDER.recipient -> {
-                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.SENDER))
+                TransactionType.SENDER -> {
+                    action(OnTransactionTypeClicked(TransactionType.SENDER))
+                }
+                else -> {
+                    /* no-op */
                 }
             }
         }
@@ -239,6 +249,11 @@ fun CreateTransactionContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
+                    .onSizeChanged { intSize ->
+                        dropDownItemWidth = with(density) {
+                            intSize.width.toDp()
+                        }
+                    }
             ) {
 
                 Row(
@@ -285,25 +300,24 @@ fun CreateTransactionContent(
                 }
 
                 if (shouldShowDropDown) {
-                    Box(modifier = Modifier.fillMaxWidth().padding(14.dp)) {
-                        GenericDropDownMenu(
-                            dropDownMenuItems = TransactionItems.entries,
-                            onDismissed = {
-                                shouldShowDropDown = false
-                            },
-                            onMenuItemClicked = { item, index ->
-                                println("Transaction item $item")
-                                selectedItem = item
-                            },
-                            itemContent = { item ->
-                                TransactionDropDownItem(
-                                    transactionItems = item,
-                                    isSelected = false
-                                )
-                            },
-                            shouldShowDropdown = shouldShowDropDown
-                        )
-                    }
+                    GenericDropDownMenu(
+                        modifier = Modifier.width(dropDownItemWidth),
+                        dropDownMenuItems = TransactionItems.entries,
+                        onDismissed = {
+                            shouldShowDropDown = false
+                        },
+                        onMenuItemClicked = { item, index ->
+                            println("Transaction item $item")
+                            selectedItem = item
+                        },
+                        itemContent = { item ->
+                            TransactionDropDownItem(
+                                transactionItems = item,
+                                isSelected = false
+                            )
+                        },
+                        shouldShowDropdown = shouldShowDropDown
+                    )
                 }
             }
         }
