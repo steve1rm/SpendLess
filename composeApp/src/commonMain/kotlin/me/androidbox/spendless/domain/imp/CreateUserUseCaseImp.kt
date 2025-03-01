@@ -14,7 +14,6 @@ class CreateUserUseCaseImp(
     override suspend fun execute(user: User): Result<Unit> {
         return withContext(Dispatchers.IO) {
             try {
-//                generatePinDigest(username, pin)  TODO
                 dataSource.insertUser(user)
                 Result.success(Unit)
             } catch (e: Exception) {
@@ -22,9 +21,4 @@ class CreateUserUseCaseImp(
             }
         }
     }
-
-    private fun generatePinDigest(username: String, pin: Int) {
-    }
-
-
 }
