@@ -19,10 +19,6 @@ class SpendLessDataSourceImpl(
         database.transactionDao().insertTransaction()
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1f1e1d1 (set up CreateTransactionUseCase)
 //    override suspend fun getTopicWithPrefix(title: String): List<Transaction> {
 //        return database.transactionDao().getTransactionByCategory(title)
 //    }
