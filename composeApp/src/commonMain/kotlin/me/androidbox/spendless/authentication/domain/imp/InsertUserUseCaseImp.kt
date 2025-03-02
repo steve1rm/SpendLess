@@ -1,8 +1,8 @@
-package me.androidbox.spendless.domain.imp
+package me.androidbox.spendless.authentication.domain.imp
 
 import me.androidbox.spendless.data.SpendLessDataSource
-import me.androidbox.spendless.data.User
-import me.androidbox.spendless.domain.InsertUserUseCase
+import me.androidbox.spendless.authentication.data.User
+import me.androidbox.spendless.authentication.domain.InsertUserUseCase
 
 class InsertUserUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource

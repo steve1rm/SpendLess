@@ -1,4 +1,4 @@
-package me.androidbox.spendless.data
+package me.androidbox.spendless.authentication.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

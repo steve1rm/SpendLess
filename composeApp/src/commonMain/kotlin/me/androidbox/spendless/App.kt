@@ -4,7 +4,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -44,8 +43,6 @@ inline fun <reified T: ViewModel> NavBackStackEntry.sharedViewModel(navControlle
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
-
-    // println("NavbackstackEntry ${viewModel<AuthenticationSharedViewModel>(parentEntry)::class.simpleName}")
 
     return koinViewModel(viewModelStoreOwner = parentEntry)
 }

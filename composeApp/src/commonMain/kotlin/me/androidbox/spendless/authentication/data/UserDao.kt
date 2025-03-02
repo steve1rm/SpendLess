@@ -1,10 +1,8 @@
-package me.androidbox.spendless.data
+package me.androidbox.spendless.authentication.data
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {

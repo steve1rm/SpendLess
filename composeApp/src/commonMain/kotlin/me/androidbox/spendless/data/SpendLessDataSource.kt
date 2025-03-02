@@ -1,7 +1,7 @@
 package me.androidbox.spendless.data
 
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.spendless.data.Transaction
+import me.androidbox.spendless.authentication.data.User
 
 interface SpendLessDataSource {
     suspend fun insertUser(user: User)

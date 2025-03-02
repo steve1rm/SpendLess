@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package me.androidbox.spendless.dashboard
+package me.androidbox.spendless.dashboard.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -56,6 +56,8 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
+import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource

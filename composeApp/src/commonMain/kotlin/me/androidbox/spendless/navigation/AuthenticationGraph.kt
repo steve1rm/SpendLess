@@ -22,8 +22,13 @@ import me.androidbox.spendless.authentication.presentation.screens.LoginScreen
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.authentication.presentation.screens.RegisterScreen
 import me.androidbox.spendless.core.presentation.ObserveAsEvents
+import me.androidbox.spendless.onboarding.screens.PreferenceOnboardingScreen
+import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
+import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 
 fun NavGraphBuilder.authentication(navController: NavController) {
     navigation<Route.AuthenticationGraph>(
@@ -117,13 +122,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                             /** Navigate to the onboarding screen valid pin */
                             println("Navigate to onboarding")
                             authenticationSharedViewModel.onAction(AuthenticationAction.OnPinEntered(createPinEvent.pin))
-                            authenticationSharedViewModel.saveCredentials()
-
-                            navController.navigate(Route.DashboardGraph) {
-                                this.popUpTo<Route.AuthenticationGraph> {
-                                    this.inclusive = true
-                                }
-                            }
+                            navController.navigate(Route.PreferenceOnBoardingScreen)
                         } else {
                             /** Show red banner if user has entered an incorrect pin */
                             println("Show Red banner")
@@ -159,6 +158,48 @@ fun NavGraphBuilder.authentication(navController: NavController) {
             PinPromptScreen(
                 createPinState = pinState,
                 onAction = pinViewModel::onAction
+            )
+        }
+
+        composable<Route.PreferenceOnBoardingScreen>(
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(300)
+                )
+            }
+        ) {
+            val preferenceViewModel = koinViewModel<PreferenceViewModel>()
+            val onboardingPreferenceState by preferenceViewModel.preferenceState.collectAsStateWithLifecycle()
+            val authenticationSharedViewModel = it.sharedViewModel<AuthenticationSharedViewModel>(navController = navController)
+
+            PreferenceOnboardingScreen(
+                preferenceContent = {
+                    PreferenceContent(
+                        preferenceState = onboardingPreferenceState,
+                        action = preferenceViewModel::onAction
+                    )
+                },
+                onBackClicked = {
+                    navController.navigate(Route.PinCreateScreen) {
+                        this.popUpTo(Route.PreferenceOnBoardingScreen)
+                    }
+                },
+                isEnabled = onboardingPreferenceState.isEnabled,
+                onStartTrackingClicked = {
+                    authenticationSharedViewModel.saveCredentials()
+                    navController.navigate(Route.DashboardGraph) {
+                        this.popUpTo(Route.AuthenticationGraph) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }
