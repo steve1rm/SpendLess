@@ -12,6 +12,11 @@ class InsertUserUseCaseImp(
         val pinHash: String = generatePinDigest(user.username, user.pin)
         println("INSERTUSERUSECASE pinDigest $pinHash")
 
-        spendLessDataSource.insertUser(user)
+        val securedUser: User = User(
+            username = user.username,
+            pin = pinHash
+        )
+
+        spendLessDataSource.insertUser(securedUser)
     }
 }
