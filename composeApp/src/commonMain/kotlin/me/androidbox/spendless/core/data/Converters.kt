@@ -1,4 +1,4 @@
-package me.androidbox.spendless.data
+package me.androidbox.spendless.core.data
 
 import androidx.room.TypeConverter
 import kotlinx.serialization.encodeToString

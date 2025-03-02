@@ -46,6 +46,7 @@ fun PreferenceOnboardingScreen(
     modifier: Modifier = Modifier,
     isEnabled: Boolean,
     preferenceContent: @Composable () -> Unit,
+    onStartTrackingClicked: () -> Unit,
     onBackClicked: () -> Unit
 ) {
 
@@ -95,7 +96,7 @@ fun PreferenceOnboardingScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                     enabled = isEnabled,
                     onClick = {
-
+                        onStartTrackingClicked()
                     }
                 ) {
                     Text(

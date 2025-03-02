@@ -28,7 +28,7 @@ class RegisterViewModel : ViewModel() {
     init {
         registerState.distinctUntilChangedBy { it.username }
             .map {
-                it.username.count() >= 1
+                it.username.isNotEmpty()
             }
             .onEach { isValid ->
                 _registerState.update { registerState ->
@@ -54,7 +54,7 @@ class RegisterViewModel : ViewModel() {
                 /** no-op */
             }
             RegisterAction.OnRegisterClicked -> {
-                /** Check that the login name doesn't exist */
+                /** Check that the login name does exist */
                 getLoginCredentials()
             }
         }
@@ -63,7 +63,7 @@ class RegisterViewModel : ViewModel() {
     private fun getLoginCredentials() {
         viewModelScope.launch {
             try {
-                // use case for fetch from the room db
+                // TODO use case for fetch from the room db
                 _registerChannel.send(RegisterEvent.OnRegisterSuccess(username = registerState.value.username))
             }
             catch (exception: Exception) {

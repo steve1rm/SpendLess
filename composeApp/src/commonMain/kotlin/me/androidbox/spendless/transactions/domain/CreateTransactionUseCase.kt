@@ -1,4 +1,4 @@
-package me.androidbox.spendless.domain
+package me.androidbox.spendless.transactions.domain
 
 import me.androidbox.spendless.data.Transaction
 

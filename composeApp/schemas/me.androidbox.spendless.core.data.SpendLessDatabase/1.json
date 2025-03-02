@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f602e034f36e600837ee59cbf48afade",
+    "identityHash": "026d5676da70d05e682ac1d64aa3fe83",
     "entities": [
       {
         "tableName": "transaction",
@@ -84,11 +84,53 @@
             "id"
           ]
         }
+      },
+      {
+        "tableName": "PreferenceTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `expensesFormat` INTEGER NOT NULL, `currency` INTEGER NOT NULL, `decimalSeparator` INTEGER NOT NULL, `thousandsSeparator` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expensesFormat",
+            "columnName": "expensesFormat",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currency",
+            "columnName": "currency",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "decimalSeparator",
+            "columnName": "decimalSeparator",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "thousandsSeparator",
+            "columnName": "thousandsSeparator",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f602e034f36e600837ee59cbf48afade')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '026d5676da70d05e682ac1d64aa3fe83')"
     ]
   }
 }
