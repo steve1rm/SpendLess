@@ -13,3 +13,7 @@ actual fun Long.formatMoney(
 ): String {
     TODO("Not yet implemented")
 }
+
+actual fun generatePinDigest(username: String, pin: String): String {
+    TODO("Not yet implemented")
+}

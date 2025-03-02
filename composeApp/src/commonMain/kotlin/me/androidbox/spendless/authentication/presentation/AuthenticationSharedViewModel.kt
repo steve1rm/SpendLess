@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.authentication.domain.InsertUserUseCase
+import me.androidbox.spendless.generatePinDigest
 
 class AuthenticationSharedViewModel(
     private val insertUserUseCase: InsertUserUseCase
@@ -22,6 +23,8 @@ class AuthenticationSharedViewModel(
                 username = action.username
             }
         }
+        val pinHash: String = generatePinDigest(username, pin)
+        println("INSERTUSERUSECASE pinDigest $pinHash")
     }
 
     fun saveCredentials() {

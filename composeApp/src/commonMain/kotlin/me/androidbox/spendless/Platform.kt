@@ -17,3 +17,8 @@ expect fun Long.formatMoney(
     thousandsSeparator: ThousandsSeparator,
     decimalSeparator: DecimalSeparator
 ): String
+
+expect fun generatePinDigest(
+    username: String,
+    pin: String
+):String

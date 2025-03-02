@@ -8,6 +8,7 @@ import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
@@ -39,4 +40,11 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
             append(")")
         }
     }
+}
+
+actual fun generatePinDigest(username: String, pin: String): String {
+    val toBeHashed = username + pin.toString() // Password set by the user
+    val encoder = BCryptPasswordEncoder()
+    val hashedPassword = encoder.encode(toBeHashed)
+    return hashedPassword
 }
