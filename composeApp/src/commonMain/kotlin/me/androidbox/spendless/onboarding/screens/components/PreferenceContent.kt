@@ -54,17 +54,17 @@ fun PreferenceContent(
     preferenceState: PreferenceState,
     action: (action: PreferenceAction) -> Unit) {
 
-    var expensesFormat by remember {
+  /*  var expensesFormat by remember {
         mutableStateOf(ExpensesFormat.NEGATIVE)
     }
-
+*/
     var shouldShowDropDown by remember {
         mutableStateOf(false)
     }
-
+/*
     var selectedCurrency by remember {
         mutableStateOf(Currency.entries.toList().first())
-    }
+    }*/
 
     /** Summary box */
     Card(
@@ -88,8 +88,8 @@ fun PreferenceContent(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = preferenceState.money.formatMoney(
-                        currency = selectedCurrency,
-                        expensesFormat = expensesFormat,
+                        currency = preferenceState.currency,
+                        expensesFormat = preferenceState.expensesFormat,
                         thousandsSeparator = preferenceState.thousandsSeparator,
                         decimalSeparator = preferenceState.decimalSeparator
                     ),
@@ -125,7 +125,7 @@ fun PreferenceContent(
         unselectedColor = OnPrimaryFixed.copy(alpha = 0.7f),
         onItemClicked = { item ->
             println(item)
-            expensesFormat = item as ExpensesFormat
+            action(PreferenceAction.OnExpensesFormat(item as ExpensesFormat))
         })
 
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -156,7 +156,7 @@ fun PreferenceContent(
             ) {
                 Text(
                     modifier = Modifier,
-                    text = "${selectedCurrency.symbol} ${selectedCurrency.title}"
+                    text = "${preferenceState.currency.symbol} ${preferenceState.currency.title}"
                 )
 
                 Icon(
@@ -174,7 +174,7 @@ fun PreferenceContent(
                 shouldShowDropDown = false
             },
             onMenuItemClicked = { item, index ->
-                selectedCurrency = item
+                action(PreferenceAction.OnCurrency(item))
             },
             itemContent = { currency ->
                 CurrencyDropDownItem(

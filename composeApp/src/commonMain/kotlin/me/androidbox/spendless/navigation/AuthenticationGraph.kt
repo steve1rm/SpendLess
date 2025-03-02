@@ -29,6 +29,7 @@ import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import me.androidbox.spendless.onboarding.screens.PreferenceAction
 
 fun NavGraphBuilder.authentication(navController: NavController) {
     navigation<Route.AuthenticationGraph>(
@@ -194,6 +195,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 isEnabled = onboardingPreferenceState.isEnabled,
                 onStartTrackingClicked = {
                     authenticationSharedViewModel.saveCredentials()
+                    preferenceViewModel.savePreferences()
                     navController.navigate(Route.DashboardGraph) {
                         this.popUpTo(Route.AuthenticationGraph) {
                             inclusive = true

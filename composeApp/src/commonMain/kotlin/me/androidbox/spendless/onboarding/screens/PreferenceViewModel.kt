@@ -8,8 +8,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import me.androidbox.spendless.settings.data.PreferenceTable
+import me.androidbox.spendless.settings.domain.InsertPreferenceUseCase
 
-class PreferenceViewModel : ViewModel() {
+class PreferenceViewModel(
+    private val insertPreferenceUseCase: InsertPreferenceUseCase
+) : ViewModel() {
     private val _preferenceState = MutableStateFlow(PreferenceState())
     val preferenceState = _preferenceState.asStateFlow()
 
@@ -27,11 +32,6 @@ class PreferenceViewModel : ViewModel() {
 
     fun onAction(action: PreferenceAction) {
         when(action) {
-            PreferenceAction.OnStartTracking -> {
-                // Create user
-                // Save preferences
-            }
-
             is PreferenceAction.OnDecimalSeparatorSelected -> {
                 _preferenceState.update { preferenceState ->
                     preferenceState.copy(
@@ -46,6 +46,35 @@ class PreferenceViewModel : ViewModel() {
                     )
                 }
             }
+
+            is PreferenceAction.OnCurrency -> {
+                _preferenceState.update { preferenceState ->
+                    preferenceState.copy(
+                        currency = action.currency
+                    )
+                }
+            }
+
+            is PreferenceAction.OnExpensesFormat -> {
+                _preferenceState.update { preferenceState ->
+                    preferenceState.copy(
+                        expensesFormat = action.expensesFormat
+                    )
+                }
+            }
+        }
+    }
+
+    fun savePreferences() {
+        viewModelScope.launch {
+            insertPreferenceUseCase.execute(
+                PreferenceTable(
+                    expensesFormat = preferenceState.value.expensesFormat.ordinal,
+                    currency = preferenceState.value.currency.ordinal,
+                    decimalSeparator = preferenceState.value.decimalSeparator.ordinal,
+                    thousandsSeparator = preferenceState.value.thousandsSeparator.ordinal
+                )
+            )
         }
     }
 }

@@ -13,6 +13,8 @@ import me.androidbox.spendless.authentication.domain.InsertUserUseCase
 import me.androidbox.spendless.transactions.domain.imp.CreateTransactionUseCaseImp
 import me.androidbox.spendless.authentication.domain.imp.InsertUserUseCaseImp
 import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
+import me.androidbox.spendless.settings.domain.InsertPreferenceUseCase
+import me.androidbox.spendless.settings.domain.imp.InsertPreferenceUseCaseImp
 import me.androidbox.spendless.transactions.TransactionViewModel
 import me.androidbox.spendless.transactions.data.RepositoryImp
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
@@ -22,7 +24,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-
 val spendLessModule = module {
     viewModelOf(::PinViewModel)
     viewModelOf(::TransactionViewModel)
@@ -31,14 +32,18 @@ val spendLessModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::PreferenceViewModel)
 
-    factory<InsertUserUseCase> {
-        InsertUserUseCaseImp(get<SpendLessDataSource>())
-    }
-
     viewModel {
         AuthenticationSharedViewModel(
             get<InsertUserUseCase>()
         )
+    }
+
+    factory<InsertUserUseCase> {
+        InsertUserUseCaseImp(get<SpendLessDataSource>())
+    }
+
+    factory<InsertPreferenceUseCase> {
+        InsertPreferenceUseCaseImp(get<SpendLessDataSource>())
     }
 
     factory<CreateTransactionUseCase> {
