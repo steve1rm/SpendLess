@@ -3,15 +3,15 @@ package me.androidbox.spendless.authentication.domain.imp
 import me.androidbox.spendless.data.SpendLessDataSource
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.authentication.domain.InsertUserUseCase
+import me.androidbox.spendless.generatePinDigest
 
 class InsertUserUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : InsertUserUseCase {
     override suspend fun execute(user: User){
-//                generatePinDigest(username, pin)  TODO
-        spendLessDataSource.insertUser(user)
-    }
+        val pinHash: String = generatePinDigest(user.username, user.pin)
+        println("INSERTUSERUSECASE pinDigest $pinHash")
 
-    private fun generatePinDigest(username: String, pin: Int) {
+        spendLessDataSource.insertUser(user)
     }
 }

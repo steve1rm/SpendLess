@@ -24,7 +24,7 @@ class AuthenticationSharedViewModel(
             }
         }
         val pinHash: String = generatePinDigest(username, pin)
-        println("INSERTUSERUSECASE pinDigest $pinHash")
+        println("AUTHSHAREDVIEWMODEL pinDigest $pinHash")
     }
 
     fun saveCredentials() {
