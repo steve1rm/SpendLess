@@ -25,8 +25,8 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val spendLessModule = module {
-    factory<CreateUserUseCase> {
-        CreateUserUseCaseImp(
+    factory<InsertUserUseCase> {
+        InsertUserUseCaseImp(
             get<SpendLessDataSource>()
         )
     }

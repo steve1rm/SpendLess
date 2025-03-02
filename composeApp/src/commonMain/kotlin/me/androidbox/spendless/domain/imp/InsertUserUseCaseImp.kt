@@ -3,15 +3,15 @@ package me.androidbox.spendless.domain.imp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import me.androidbox.spendless.authentication.data.User
+import me.androidbox.spendless.authentication.domain.InsertUserUseCase
 import me.androidbox.spendless.data.SpendLessDataSource
-import me.androidbox.spendless.data.User
-import me.androidbox.spendless.domain.CreateUserUseCase
 
 
-class CreateUserUseCaseImp(
+class InsertUserUseCaseImp(
     private val dataSource: SpendLessDataSource
-) : CreateUserUseCase {
-    override suspend fun execute(user: User): Result<Unit> {
+) : InsertUserUseCase {
+    override suspend fun execute(user: User) {
         return withContext(Dispatchers.IO) {
             try {
                 dataSource.insertUser(user)
