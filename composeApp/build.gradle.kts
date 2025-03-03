@@ -41,6 +41,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(libs.koin.compose)
             implementation(libs.room.runtime.android)
+            implementation(libs.crypto.provider)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -50,6 +51,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
+//            implementation(libs.spring.security)
 
             // Room
             implementation(libs.room.runtime)
@@ -57,6 +59,7 @@ kotlin {
 
             implementation(libs.kotlinx.serialization)
 
+            implementation(libs.crypto)
             // Koin
             api(libs.koin.core)
             implementation(libs.koin.compose)
