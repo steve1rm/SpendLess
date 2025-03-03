@@ -87,7 +87,9 @@ fun PreferenceOnboardingScreen(
                     )
                 }
 
-                preferenceContent()
+                preferenceContent(
+
+                )
 
                 Button(
                     modifier = Modifier

@@ -61,9 +61,9 @@ import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
 import me.androidbox.spendless.dashboard.DashboardAction
-import me.androidbox.spendless.dashboard.DashboardAction.*
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
+import me.androidbox.spendless.transactions.TransactionAction
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
@@ -73,7 +73,8 @@ import spendless.composeapp.generated.resources.trending_up
 fun CreateTransactionContent(
     modifier: Modifier = Modifier,
     state: DashboardState,
-    action: (action: DashboardAction) -> Unit
+    action: (action: TransactionAction) -> Unit,
+    openTransaction: (shouldOpen: Boolean) -> Unit
 ) {
 
     val density = LocalDensity.current
@@ -100,7 +101,7 @@ fun CreateTransactionContent(
 
             IconButton(
                 onClick = {
-                    action(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                    openTransaction(false)
                 }
             ) {
                 Icon(
@@ -121,10 +122,10 @@ fun CreateTransactionContent(
         ) { item ->
             when (item) {
                 TransactionType.RECEIVER -> {
-                    action(OnTransactionTypeClicked(TransactionType.RECEIVER))
+                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
                 }
                 TransactionType.SENDER -> {
-                    action(OnTransactionTypeClicked(TransactionType.SENDER))
+                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.SENDER))
                 }
                 else -> {
                     /* no-op */
@@ -147,7 +148,7 @@ fun CreateTransactionContent(
             ),
             onValueChange = { newName ->
                 val name = newName.filter { it.isLetterOrDigit() }
-                action(DashboardAction.OnTransactionNameEntered(name.trim()))
+                action(TransactionAction.OnTransactionNameEntered(name.trim()))
             },
             value = state.name,
             textStyle = TextStyle(
@@ -193,7 +194,7 @@ fun CreateTransactionContent(
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
 
-                    action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
+                    action(TransactionAction.OnTransactionAmountEntered(amount.trim()))
                 },
                 value = state.amount,
                 textStyle = TextStyle(
@@ -330,9 +331,9 @@ fun CreateTransactionContent(
                 containerColor = Primary
             ),
             onClick = {
-                if(state.amount.count() in 4..14) {
-                    action(DashboardAction.OnCreateClicked)
-                }
+           //     if(state.amount.count() in 4..14) {
+                    action(TransactionAction.OnCreateClicked)
+          //      }
             }
         ) {
             Text(

@@ -53,18 +53,9 @@ fun PreferenceContent(
     modifier: Modifier = Modifier,
     preferenceState: PreferenceState,
     action: (action: PreferenceAction) -> Unit) {
-
-  /*  var expensesFormat by remember {
-        mutableStateOf(ExpensesFormat.NEGATIVE)
-    }
-*/
     var shouldShowDropDown by remember {
         mutableStateOf(false)
     }
-/*
-    var selectedCurrency by remember {
-        mutableStateOf(Currency.entries.toList().first())
-    }*/
 
     /** Summary box */
     Card(

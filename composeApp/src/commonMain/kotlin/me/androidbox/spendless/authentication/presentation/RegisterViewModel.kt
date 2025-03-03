@@ -23,7 +23,7 @@ class RegisterViewModel : ViewModel() {
     val registerState = _registerState.asStateFlow()
 
     private val _registerChannel = Channel<RegisterEvent>()
-    val registerChannel = _registerChannel.consumeAsFlow()
+    val registerChannel = _registerChannel.receiveAsFlow()
 
     init {
         registerState.distinctUntilChangedBy { it.username }

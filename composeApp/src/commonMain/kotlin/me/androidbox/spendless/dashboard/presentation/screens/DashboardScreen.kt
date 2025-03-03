@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package me.androidbox.spendless.dashboard.screens
+package me.androidbox.spendless.dashboard.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,6 +59,7 @@ import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import me.androidbox.spendless.transactions.TransactionAction
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -70,7 +71,8 @@ import spendless.composeapp.generated.resources.settings
 fun DashboardScreen(
     modifier: Modifier = Modifier,
     dashboardState: DashboardState,
-    dashboardAction: (action: DashboardAction) -> Unit
+    dashboardAction: (action: DashboardAction) -> Unit,
+    transactionAction: (action: TransactionAction) -> Unit,
 ) {
 
     Scaffold(
@@ -150,7 +152,10 @@ fun DashboardScreen(
                         CreateTransactionContent(
                             state = dashboardState,
                             action = { action ->
-                                dashboardAction(action)
+                                transactionAction(action)
+                            },
+                            openTransaction = {
+                                dashboardAction(DashboardAction.OpenNewTransaction(it))
                             }
                         )
                     }

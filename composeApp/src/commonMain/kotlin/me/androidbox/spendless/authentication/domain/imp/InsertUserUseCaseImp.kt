@@ -1,6 +1,6 @@
 package me.androidbox.spendless.authentication.domain.imp
 
-import me.androidbox.spendless.data.SpendLessDataSource
+import me.androidbox.spendless.core.data.SpendLessDataSource
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.authentication.domain.InsertUserUseCase
 
