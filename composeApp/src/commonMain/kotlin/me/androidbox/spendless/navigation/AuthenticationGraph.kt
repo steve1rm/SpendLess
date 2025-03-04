@@ -30,6 +30,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import me.androidbox.spendless.authentication.presentation.LoginEvent
+import me.androidbox.spendless.authentication.presentation.RegisterAction
 import me.androidbox.spendless.onboarding.screens.PreferenceAction
 
 fun NavGraphBuilder.authentication(navController: NavController) {
@@ -45,7 +46,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 when(loginEvent) {
                     LoginEvent.OnLoginFailure -> {
                         /** Show red banner */
-                        println("Failed to login")
+                        loginViewModel.action(LoginAction.ShouldShowRedBanner(showBanner = true))
                     }
                     LoginEvent.OnLoginSuccess -> {
                         navController.navigate(Route.DashboardGraph) {
@@ -87,9 +88,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
             ObserveAsEvents(registerViewModel.registerChannel) { registerEvent ->
                 when (registerEvent) {
                     RegisterEvent.OnRegisterFailure -> {
-                        /**
-                        registerViewModel.onAction(RegisterAction.ShouldShowRedBanner(show = true))
-                         **/
+                        registerViewModel.action(RegisterAction.ShouldShowRedBanner(showBanner = true))
                     }
 
                     is RegisterEvent.OnRegisterSuccess -> {
@@ -114,8 +113,10 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                         }
 
                         OnRegisterClicked -> {
-                            authenticationSharedViewModel.onAction(AuthenticationAction.OnUsernameEntered(registerState.username))
-                            navController.navigate(Route.PinCreateScreen)
+                            registerViewModel.action(RegisterAction.OnRegisterClicked)
+//                            authenticationSharedViewModel.onAction(AuthenticationAction.OnUsernameEntered(registerState.username))
+
+                         //   navController.navigate(Route.PinCreateScreen)
                         }
 
                         else -> {

@@ -6,7 +6,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration
 
@@ -22,6 +24,14 @@ fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
                 }
             }
         }
+    }
+}
+
+fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
+    return flow {
+        emit(true)
+        delay(duration)
+        emit(false)
     }
 }
 

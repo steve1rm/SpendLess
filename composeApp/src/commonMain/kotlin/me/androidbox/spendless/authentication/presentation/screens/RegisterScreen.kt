@@ -1,15 +1,18 @@
 package me.androidbox.spendless.authentication.presentation.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -31,6 +34,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.authentication.presentation.RegisterAction
@@ -186,6 +190,26 @@ fun RegisterScreen(
                 fontWeight = FontWeight.W600,
                 fontSize = 16.sp,
                 color = Primary
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            AnimatedVisibility(
+                modifier = Modifier.wrapContentHeight(Alignment.Bottom),
+                visible = registerState.shouldShowRedBanner,
+                content = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(height = 72.dp)
+                            .background(color = Color.Red),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Username ${registerState.username} already exists",
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             )
         }
     }

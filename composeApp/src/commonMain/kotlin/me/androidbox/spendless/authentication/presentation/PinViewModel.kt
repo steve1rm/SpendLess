@@ -20,6 +20,7 @@ import me.androidbox.spendless.core.presentation.Authentication
 import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.core.presentation.PinMode
 import me.androidbox.spendless.core.presentation.countDownTimer
+import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -202,14 +203,6 @@ class PinViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         println("onCleared PIN_VIEWMODEL")
-    }
-}
-
-private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
-    return flow {
-        emit(true)
-        delay(duration)
-        emit(false)
     }
 }
 

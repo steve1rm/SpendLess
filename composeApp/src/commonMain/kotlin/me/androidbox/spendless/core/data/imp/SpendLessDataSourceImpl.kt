@@ -18,6 +18,10 @@ class SpendLessDataSourceImpl(
         return database.userDao().getUser(username)
     }
 
+    override suspend fun validateUser(username: String, pin: String): User? {
+        return database.userDao().validateUser(username, pin)
+    }
+
     override suspend fun insertPreference(preferenceTable: PreferenceTable) {
         database.preferenceDao().insertPreference(preferenceTable)
     }
