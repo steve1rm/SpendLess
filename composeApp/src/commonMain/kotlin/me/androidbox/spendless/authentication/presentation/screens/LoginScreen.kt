@@ -191,7 +191,9 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                onClick = {}
+                onClick = {
+                    action(LoginAction.OnLoginClicked)
+                }
             ) {
                 Text(
                     text = "Login",

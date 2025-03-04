@@ -35,7 +35,7 @@ class TransactionViewModel(
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000L),
             initialValue = TransactionState())
 
-    fun fetchAllTransactions() {
+    private fun fetchAllTransactions() {
         try {
             viewModelScope.launch {
                 _transactionState.update { transactionState ->

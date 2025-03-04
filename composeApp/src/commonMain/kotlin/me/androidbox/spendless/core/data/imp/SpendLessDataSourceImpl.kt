@@ -14,7 +14,7 @@ class SpendLessDataSourceImpl(
         database.userDao().insertUser(user)
     }
 
-    override suspend fun getUser(username: String): User {
+    override suspend fun getUser(username: String): User? {
         return database.userDao().getUser(username)
     }
 

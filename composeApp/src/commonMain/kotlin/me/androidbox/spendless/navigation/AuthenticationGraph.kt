@@ -29,6 +29,7 @@ import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import me.androidbox.spendless.authentication.presentation.LoginEvent
 import me.androidbox.spendless.onboarding.screens.PreferenceAction
 
 fun NavGraphBuilder.authentication(navController: NavController) {
@@ -39,6 +40,22 @@ fun NavGraphBuilder.authentication(navController: NavController) {
         this.composable<Route.LoginScreen> {
             val loginViewModel = koinViewModel<LoginViewModel>()
             val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
+
+            ObserveAsEvents(loginViewModel.loginChannel) { loginEvent ->
+                when(loginEvent) {
+                    LoginEvent.OnLoginFailure -> {
+                        /** Show red banner */
+                        println("Failed to login")
+                    }
+                    LoginEvent.OnLoginSuccess -> {
+                        navController.navigate(Route.DashboardGraph) {
+                            this.popUpTo(Route.AuthenticationGraph) {
+                                this.inclusive = true
+                            }
+                        }
+                    }
+                }
+            }
 
             LoginScreen(
                 loginState = loginState,

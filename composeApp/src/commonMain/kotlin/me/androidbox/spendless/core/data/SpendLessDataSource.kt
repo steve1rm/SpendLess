@@ -7,7 +7,7 @@ import me.androidbox.spendless.settings.data.PreferenceTable
 
 interface SpendLessDataSource {
     suspend fun insertUser(user: User)
-    suspend fun getUser(username: String): User
+    suspend fun getUser(username: String): User?
 
     suspend fun insertPreference(preferenceTable: PreferenceTable)
     suspend fun getPreference(): PreferenceTable
