@@ -98,7 +98,7 @@ class TransactionViewModel(
             is TransactionAction.OnTransactionTypeClicked -> {
                 _transactionState.update { transactionState ->
                     transactionState.copy(
-                        type = action.transactionType
+                        type = action.transactionType.typeName
                     )
                 }
             }

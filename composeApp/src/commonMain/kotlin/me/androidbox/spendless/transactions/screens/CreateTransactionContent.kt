@@ -64,6 +64,7 @@ import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.transactions.TransactionAction
+import me.androidbox.spendless.transactions.TransactionState
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
@@ -72,7 +73,7 @@ import spendless.composeapp.generated.resources.trending_up
 @Composable
 fun CreateTransactionContent(
     modifier: Modifier = Modifier,
-    state: DashboardState,
+    state: TransactionState,
     action: (action: TransactionAction) -> Unit,
     openTransaction: (shouldOpen: Boolean) -> Unit
 ) {
@@ -115,7 +116,7 @@ fun CreateTransactionContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         ButtonPanel(
-            items = TransactionType.entries, //listOf(TransactionType.RECEIVER.recipient, TransactionType.SENDER.recipient),
+            items = listOf(TransactionType.RECEIVER, TransactionType.SENDER),
             startIcons = listOf(Res.drawable.trending_down, Res.drawable.trending_up),
             selectedColor = Primary,
             unselectedColor = OnPrimaryFixed
@@ -158,7 +159,7 @@ fun CreateTransactionContent(
             ),
             placeholder = {
                 Text(
-                    text = state.type.typeName,
+                    text = state.type,
                     fontSize = 16.sp,
                     color = OnSurface.copy(alpha = 0.6f),
                     fontWeight = FontWeight.W600)
@@ -245,7 +246,7 @@ fun CreateTransactionContent(
             mutableStateOf(TransactionItems.entries.first())
         }
 
-        if(state.type == TransactionType.RECEIVER) {
+        if(state.type == TransactionType.RECEIVER.typeName) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

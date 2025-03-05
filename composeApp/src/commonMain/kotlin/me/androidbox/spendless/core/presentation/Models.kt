@@ -7,6 +7,7 @@ import spendless.composeapp.generated.resources.education
 import spendless.composeapp.generated.resources.entertainment
 import spendless.composeapp.generated.resources.food
 import spendless.composeapp.generated.resources.health
+import kotlin.reflect.typeOf
 
 enum class KeyButtons(val key: String = "") {
     ONE("1"),
@@ -64,9 +65,9 @@ sealed interface PreferenceType {
         get() = ""
 }
 
-enum class TransactionType(override val recipient: String, override val typeName: String) : PreferenceType{
-    RECEIVER(recipient = "Expense", typeName = "Receiver"),
-    SENDER(recipient = "Income", typeName = "Sender")
+enum class TransactionType(override val type: String, override val typeName: String) : PreferenceType {
+    RECEIVER(type = "Expense", typeName = "Receiver"),
+    SENDER(type = "Income", typeName = "Sender")
 }
 
 enum class ExpensesFormat(override val type: String) : PreferenceType {
