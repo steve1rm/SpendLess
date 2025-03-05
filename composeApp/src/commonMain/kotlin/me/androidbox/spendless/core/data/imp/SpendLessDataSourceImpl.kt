@@ -1,6 +1,7 @@
 package me.androidbox.spendless.core.data.imp
 
 import kotlinx.coroutines.flow.Flow
+import me.androidbox.spendless.authentication.data.Session
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.core.data.SpendLessDatabase
 import me.androidbox.spendless.core.data.SpendLessDataSource
@@ -20,6 +21,10 @@ class SpendLessDataSourceImpl(
 
     override suspend fun validateUser(username: String, pin: String): User? {
         return database.userDao().validateUser(username, pin)
+    }
+
+    override suspend fun createSession(session: Session) {
+        return database.sessionDao().insertSession(session)
     }
 
     override suspend fun insertPreference(preferenceTable: PreferenceTable) {

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
+import me.androidbox.spendless.authentication.domain.LoginUserUseCase
 import me.androidbox.spendless.authentication.domain.ValidateUserUseCase
 import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
@@ -24,7 +25,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class LoginViewModel(
     private val getUserUseCase: GetUserUseCase,
-    private val validateUserUseCase: ValidateUserUseCase
+    private val validateUserUseCase: ValidateUserUseCase,
+    private val loginUserUseCase: LoginUserUseCase
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState())
     val loginState = _loginState.asStateFlow()
@@ -86,6 +88,7 @@ class LoginViewModel(
                         _loginChannel.send(LoginEvent.OnLoginFailure)
                     }
                     else -> {
+                        loginUserUseCase.execute(loginState.value.username, loginState.value.pin)
                         _loginChannel.send(LoginEvent.OnLoginSuccess)
                     }
                 }

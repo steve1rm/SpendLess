@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b142d8bf548afcd2e48aa93c7c276c13",
+    "identityHash": "e943e51fe0688972eaaadd701a9394bc",
     "entities": [
       {
         "tableName": "transactionTable",
@@ -86,6 +86,30 @@
         }
       },
       {
+        "tableName": "session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `createdAt` TEXT NOT NULL, PRIMARY KEY(`userId`))",
+        "fields": [
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "userId"
+          ]
+        }
+      },
+      {
         "tableName": "PreferenceTable",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `expensesFormat` INTEGER NOT NULL, `currency` INTEGER NOT NULL, `decimalSeparator` INTEGER NOT NULL, `thousandsSeparator` INTEGER NOT NULL)",
         "fields": [
@@ -130,7 +154,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b142d8bf548afcd2e48aa93c7c276c13')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e943e51fe0688972eaaadd701a9394bc')"
     ]
   }
 }
