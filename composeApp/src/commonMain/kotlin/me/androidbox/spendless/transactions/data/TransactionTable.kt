@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "transactionTable")
 data class TransactionTable(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val title: String,
-    val counterparty: String,
-    val amount: Float,
+    val name: String,
+    val type: Int,
+    val counterParty: String,
+    val category: Int,
     val note: String,
-    val categoryId: Int,
-    val createdAt: Long
-)
+    val createAt: Long,
+    val amount: String)
 

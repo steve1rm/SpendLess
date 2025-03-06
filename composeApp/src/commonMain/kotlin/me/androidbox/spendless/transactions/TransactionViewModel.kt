@@ -45,15 +45,15 @@ class TransactionViewModel(
                 }
 
                 fetchAllTransactionsUseCase.execute()
-                    .collect{ transactionModel ->
-                        println(transactionModel)
+                    .collect{ transactions ->
+                        println(transactions)
 
-                        _transactionState.update { transactionState ->
+                       /* _transactionState.update { transactionState ->
                             transactionState.copy(
-                                listOfTransactions = transactionModel,
+                                listOfTransactions = transactions,
                                 isLoading = false
                             )
-                        }
+                        }*/
                     }
             }
         }

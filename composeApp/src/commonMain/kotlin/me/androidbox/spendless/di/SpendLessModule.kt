@@ -75,6 +75,6 @@ val spendLessModule = module {
     }
 
     factory<FetchAllTransactionsUseCase> {
-        FetchAllTransactionsUseCaseImp(get<Repository>())
+        FetchAllTransactionsUseCaseImp(get<SpendLessDataSource>())
     }
 }

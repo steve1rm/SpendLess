@@ -52,9 +52,9 @@ fun AllTransactionListScreen(
             ) {
                 items(
                     items = transactionState.listOfTransactions,
-                    itemContent = { transactionModel ->
+                    itemContent = { transaction ->
                         TransactionItem(
-                            transactionModel = transactionModel
+                            transaction = transaction
                         )
                     }
                 )

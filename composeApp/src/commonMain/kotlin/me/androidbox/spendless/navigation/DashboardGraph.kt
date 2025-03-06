@@ -24,6 +24,8 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
             val transactionViewModel = koinViewModel<TransactionViewModel>()
 
+            dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
+
             DashboardScreen(
                 dashboardState = dashboardState,
                 dashboardAction = dashBoardViewModel::onAction,

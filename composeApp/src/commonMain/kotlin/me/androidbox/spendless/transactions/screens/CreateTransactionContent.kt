@@ -145,7 +145,7 @@ fun CreateTransactionContent(
                 val name = newName.filter { it.isLetterOrDigit() }
                 action(DashboardAction.OnTransactionNameEntered(name.trim()))
             },
-            value = state.name,
+            value = state.transaction.name,
             textStyle = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W600,
@@ -153,7 +153,7 @@ fun CreateTransactionContent(
             ),
             placeholder = {
                 Text(
-                    text = state.type.typeName,
+                    text = state.transaction.type.typeName,
                     fontSize = 16.sp,
                     color = OnSurface.copy(alpha = 0.6f),
                     fontWeight = FontWeight.W600)
@@ -191,7 +191,7 @@ fun CreateTransactionContent(
 
                     action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
                 },
-                value = state.amount,
+                value = state.transaction.amount,
                 textStyle = TextStyle(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.W600,
@@ -199,7 +199,7 @@ fun CreateTransactionContent(
                 ),
                 placeholder = {
                     Text(
-                        text = state.amount,
+                        text = state.transaction.amount,
                         fontSize = 16.sp,
                         color = OnSurface.copy(alpha = 0.6f),
                         fontWeight = FontWeight.W600)
@@ -236,11 +236,7 @@ fun CreateTransactionContent(
             mutableStateOf(false)
         }
 
-        var selectedItem by remember {
-            mutableStateOf(TransactionItems.entries.first())
-        }
-
-        if(state.type == TransactionType.RECEIVER) {
+        if(state.transaction.type == TransactionType.RECEIVER) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -279,13 +275,13 @@ fun CreateTransactionContent(
                         ) {
                             Icon(
                                 modifier = Modifier.size(20.dp),
-                                painter = painterResource(selectedItem.iconRes),
+                                painter = painterResource(state.transaction.category.iconRes),
                                 contentDescription = null,
                                 tint = Color.Unspecified)
                         }
 
                         Text(
-                            text = selectedItem.title
+                            text = state.transaction.category.title
                         )
                     }
 
@@ -304,7 +300,7 @@ fun CreateTransactionContent(
                         },
                         onMenuItemClicked = { item, index ->
                             println("Transaction item $item")
-                            selectedItem = item
+                            action(DashboardAction.OnTransactionCategoryChanged(category = item))
                         },
                         itemContent = { item ->
                             TransactionDropDownItem(

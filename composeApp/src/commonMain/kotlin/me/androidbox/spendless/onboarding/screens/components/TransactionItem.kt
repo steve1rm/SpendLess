@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -25,7 +24,7 @@ import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.Success
-import me.androidbox.spendless.transactions.domain.TransactionModel
+import me.androidbox.spendless.dashboard.Transaction
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -35,7 +34,7 @@ import spendless.composeapp.generated.resources.notes
 @Composable
 fun TransactionItem(
     modifier: Modifier = Modifier,
-    transactionModel: TransactionModel
+    transaction: Transaction
 ) {
     Column(modifier = modifier.fillMaxWidth().background(color = Background)) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -47,7 +46,7 @@ fun TransactionItem(
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    painter = painterResource(transactionModel.description.iconRes),
+                    painter = painterResource(transaction.category.iconRes),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
@@ -81,14 +80,14 @@ fun TransactionItem(
                 
                 ) {
                     Text(
-                        text = transactionModel.title,
+                        text = transaction.name,
                         fontWeight = FontWeight.W500,
                         fontSize = 16.sp,
                         color = OnSurface
                     )
 
                     Text(
-                        text = transactionModel.description.title,
+                        text = transaction.category.title,
                         fontWeight = FontWeight.W400,
                         fontSize = 12.sp,
                         color = OnSurface
@@ -96,7 +95,7 @@ fun TransactionItem(
                 }
 
                 Text(
-                    text = transactionModel.amount.toString(),
+                    text = transaction.amount.toString(),
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
                     color = Success
@@ -108,7 +107,7 @@ fun TransactionItem(
             Spacer(modifier = Modifier.width(52.dp))
 
             Text(
-                text = transactionModel.note,
+                text = transaction.note,
                 fontWeight = FontWeight.W400,
                 fontSize = 14.sp,
                 color = OnSurface

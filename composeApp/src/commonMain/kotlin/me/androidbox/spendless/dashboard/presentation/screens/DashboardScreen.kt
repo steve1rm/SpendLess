@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -58,7 +59,9 @@ import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
+import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -124,7 +127,10 @@ fun DashboardScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 DashboardHeader(modifier = Modifier.weight(1f))
-                DashboardTransactions(modifier = Modifier.weight(2f))
+
+                DashboardTransactions(
+                    modifier = Modifier.weight(2f),
+                    listOfTransactions = dashboardState.listOfTransactions)
             }
 
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -230,9 +236,9 @@ fun DashboardHeader(
 @Composable
 fun DashboardTransactions(
     modifier: Modifier = Modifier,
-    hasTransactions: Boolean = false
+    listOfTransactions: List<Transaction>
 ) {
-    if(hasTransactions) {
+    if(listOfTransactions.isNotEmpty()) {
         /** Show transactions here */
         Column(
             modifier = modifier.fillMaxWidth()
@@ -262,7 +268,17 @@ fun DashboardTransactions(
                 state = rememberLazyListState(),
 
             ) {
-
+                items(
+                    items = listOfTransactions,
+                    key = {
+                        it.createAt
+                    },
+                    itemContent = { transaction ->
+                        TransactionItem(
+                            transaction = transaction
+                        )
+                    }
+                )
             }
         }
     }

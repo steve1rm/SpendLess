@@ -5,11 +5,16 @@ import me.androidbox.spendless.core.presentation.TransactionType
 
 data class DashboardState(
     val newTransaction: Boolean = false,
+    val transaction: Transaction = Transaction(),
+    val listOfTransactions: List<Transaction> = emptyList()
+)
+
+data class Transaction(
     val name: String = "",
     val type: TransactionType = TransactionType.RECEIVER,
     val counterParty: String = "",
-    val category: Int = TransactionItems.FOOD.ordinal,
+    val category: TransactionItems = TransactionItems.FOOD,
     val note: String = "",
     val createAt: Long = 0L,
-    val amount: String = "00.00"
+    val amount: String = "00.00",
 )

@@ -1,5 +1,6 @@
 package me.androidbox.spendless.dashboard
 
+import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 
 sealed interface DashboardAction {
@@ -9,5 +10,6 @@ sealed interface DashboardAction {
     data class OnTransactionTypeClicked(val transactionType: TransactionType) : DashboardAction
     data class OnTransactionNameEntered(val name: String) : DashboardAction
     data class OnTransactionAmountEntered(val amount: String) : DashboardAction
+    data class OnTransactionCategoryChanged(val category: TransactionItems) : DashboardAction
     data object OnShowAllClicked : DashboardAction
 }
