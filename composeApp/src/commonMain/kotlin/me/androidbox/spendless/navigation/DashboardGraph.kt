@@ -27,7 +27,6 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
             DashboardScreen(
                 dashboardState = dashboardState,
                 dashboardAction = dashBoardViewModel::onAction,
-                transactionAction = transactionViewModel::onAction
             )
         }
 

@@ -71,14 +71,14 @@ class TransactionViewModel(
             TransactionAction.OnCreateClicked -> {
                 println("create clicked")
                 viewModelScope.launch {
-                    insertTransactionUseCase.execute(transaction = TransactionTable(
+                   /* insertTransactionUseCase.execute(transaction = TransactionTable(
                         title = "test",
-                        counterparty = listOf(),
+                        counterparty = ,
                         amount = 4556f,
                         note = "this is a note",
                         createdAt = Clock.System.now().toEpochMilliseconds(),
                         categoryId = 101
-                    ))
+                    ))*/
                 }
             }
             is TransactionAction.OnTransactionAmountEntered -> {

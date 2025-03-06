@@ -59,7 +59,6 @@ import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
-import me.androidbox.spendless.transactions.TransactionAction
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -72,7 +71,6 @@ fun DashboardScreen(
     modifier: Modifier = Modifier,
     dashboardState: DashboardState,
     dashboardAction: (action: DashboardAction) -> Unit,
-    transactionAction: (action: TransactionAction) -> Unit,
 ) {
 
     Scaffold(
