@@ -45,17 +45,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.Error
-import me.androidbox.spendless.core.presentation.ExpensesFormat
-import me.androidbox.spendless.core.presentation.ExpiryDuration
-import me.androidbox.spendless.core.presentation.LockedDuration
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
-import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
@@ -64,7 +59,6 @@ import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import me.androidbox.spendless.transactions.TransactionAction
-import me.androidbox.spendless.transactions.TransactionState
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
@@ -73,8 +67,8 @@ import spendless.composeapp.generated.resources.trending_up
 @Composable
 fun CreateTransactionContent(
     modifier: Modifier = Modifier,
-    state: TransactionState,
-    action: (action: TransactionAction) -> Unit,
+    state: DashboardState,
+    action: (action: DashboardAction) -> Unit,
     openTransaction: (shouldOpen: Boolean) -> Unit
 ) {
 
@@ -123,10 +117,10 @@ fun CreateTransactionContent(
         ) { item ->
             when (item) {
                 TransactionType.RECEIVER -> {
-                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
+                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
                 }
                 TransactionType.SENDER -> {
-                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.SENDER))
+                    action(DashboardAction.OnTransactionTypeClicked(TransactionType.SENDER))
                 }
                 else -> {
                     /* no-op */
@@ -149,7 +143,7 @@ fun CreateTransactionContent(
             ),
             onValueChange = { newName ->
                 val name = newName.filter { it.isLetterOrDigit() }
-                action(TransactionAction.OnTransactionNameEntered(name.trim()))
+                action(DashboardAction.OnTransactionNameEntered(name.trim()))
             },
             value = state.name,
             textStyle = TextStyle(
@@ -159,7 +153,7 @@ fun CreateTransactionContent(
             ),
             placeholder = {
                 Text(
-                    text = state.type,
+                    text = state.type.typeName,
                     fontSize = 16.sp,
                     color = OnSurface.copy(alpha = 0.6f),
                     fontWeight = FontWeight.W600)
@@ -195,7 +189,7 @@ fun CreateTransactionContent(
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
 
-                    action(TransactionAction.OnTransactionAmountEntered(amount.trim()))
+                    action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
                 },
                 value = state.amount,
                 textStyle = TextStyle(
@@ -246,7 +240,7 @@ fun CreateTransactionContent(
             mutableStateOf(TransactionItems.entries.first())
         }
 
-        if(state.type == TransactionType.RECEIVER.typeName) {
+        if(state.type == TransactionType.RECEIVER) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -333,7 +327,7 @@ fun CreateTransactionContent(
             ),
             onClick = {
            //     if(state.amount.count() in 4..14) {
-                    action(TransactionAction.OnCreateClicked)
+                    action(DashboardAction.OnCreateClicked)
           //      }
             }
         ) {

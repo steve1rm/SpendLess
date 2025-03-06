@@ -152,10 +152,10 @@ fun DashboardScreen(
                         CreateTransactionContent(
                             state = dashboardState,
                             action = { action ->
-                                transactionAction(action)
+                                dashboardAction(action)
                             },
-                            openTransaction = {
-                                dashboardAction(DashboardAction.OpenNewTransaction(it))
+                            openTransaction = { shouldOpen ->
+                                dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen))
                             }
                         )
                     }
