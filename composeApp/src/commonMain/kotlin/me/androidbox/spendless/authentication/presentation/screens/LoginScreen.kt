@@ -1,13 +1,17 @@
 package me.androidbox.spendless.authentication.presentation.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -30,6 +34,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.authentication.presentation.LoginAction
@@ -66,7 +71,8 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .padding(paddingValue)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -191,7 +197,9 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .height(48.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                onClick = {}
+                onClick = {
+                    action(LoginAction.OnLoginClicked)
+                }
             ) {
                 Text(
                     text = "Login",
@@ -213,6 +221,26 @@ fun LoginScreen(
                 fontWeight = FontWeight.W600,
                 fontSize = 16.sp,
                 color = Primary
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            AnimatedVisibility(
+                modifier = Modifier.wrapContentHeight(Alignment.Bottom),
+                visible = loginState.shouldShowRedBanner,
+                content = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().height(height = 72.dp)
+                            .background(color = Color.Red),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Invalid username or PIN",
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             )
         }
     }

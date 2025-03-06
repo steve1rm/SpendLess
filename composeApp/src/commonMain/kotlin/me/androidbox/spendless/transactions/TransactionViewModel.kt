@@ -10,9 +10,13 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
+import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
 class TransactionViewModel(
+    private val insertTransactionUseCase: InsertTransactionUseCase,
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase
 ) : ViewModel() {
 
@@ -31,7 +35,7 @@ class TransactionViewModel(
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000L),
             initialValue = TransactionState())
 
-    fun fetchAllTransactions() {
+    private fun fetchAllTransactions() {
         try {
             viewModelScope.launch {
                 _transactionState.update { transactionState ->
@@ -66,6 +70,16 @@ class TransactionViewModel(
         when(action) {
             TransactionAction.OnCreateClicked -> {
                 println("create clicked")
+                viewModelScope.launch {
+                    insertTransactionUseCase.execute(transaction = TransactionTable(
+                        title = "test",
+                        counterparty = listOf(),
+                        amount = 4556f,
+                        note = "this is a note",
+                        createdAt = Clock.System.now().toEpochMilliseconds(),
+                        categoryId = 101
+                    ))
+                }
             }
             is TransactionAction.OnTransactionAmountEntered -> {
                 _transactionState.update { transactionState ->
@@ -84,7 +98,7 @@ class TransactionViewModel(
             is TransactionAction.OnTransactionTypeClicked -> {
                 _transactionState.update { transactionState ->
                     transactionState.copy(
-                        type = action.transactionType
+                        type = action.transactionType.typeName
                     )
                 }
             }

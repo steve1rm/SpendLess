@@ -6,8 +6,8 @@ import me.androidbox.spendless.core.presentation.PinMode
 import kotlin.time.Duration
 
 data class CreatePinState(
-    val pinInputList: List<KeyButtons> = emptyList<KeyButtons>(),
-    val secretPin: List<KeyButtons> = emptyList<KeyButtons>(),
+    val pinInputList: List<String> = emptyList<String>(),
+    val secretPin: List<String> = emptyList<String>(),
     val pinMode: PinMode = PinMode.CREATE,
     val authentication: Authentication = Authentication.AUTHENTICATION_PROMPT,
     val shouldShowRedBanner: Boolean = false,

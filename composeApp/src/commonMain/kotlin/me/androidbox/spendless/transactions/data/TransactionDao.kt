@@ -1,4 +1,4 @@
-package me.androidbox.spendless.data
+package me.androidbox.spendless.transactions.data
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,14 +7,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
-    @Query("SELECT * FROM 'transaction'")
-    fun getAll(): Flow<List<Transaction>>
+
+    @Insert
+    suspend fun insertTransaction(transaction: TransactionTable)
+
+   @Query("SELECT * FROM transactionTable")
+    fun getAll(): Flow<List<TransactionTable>>
 
 //    @Query("SELECT * FROM transaction WHERE category=")
 //    fun getTransactionByCategory(): Flow<List<Transaction>>
-
-    @Insert
-    suspend fun insertTransaction(vararg transaction: Transaction)
 
 //    @Delete
 //    fun delete(transaction: Transaction)

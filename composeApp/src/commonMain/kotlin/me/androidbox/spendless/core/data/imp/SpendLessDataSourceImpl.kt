@@ -1,8 +1,10 @@
-package me.androidbox.spendless.data
+package me.androidbox.spendless.core.data.imp
 
 import kotlinx.coroutines.flow.Flow
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.core.data.SpendLessDatabase
+import me.androidbox.spendless.core.data.SpendLessDataSource
+import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.settings.data.PreferenceTable
 
 class SpendLessDataSourceImpl(
@@ -12,8 +14,12 @@ class SpendLessDataSourceImpl(
         database.userDao().insertUser(user)
     }
 
-    override suspend fun getUser(username: String): User {
+    override suspend fun getUser(username: String): User? {
         return database.userDao().getUser(username)
+    }
+
+    override suspend fun validateUser(username: String, pin: String): User? {
+        return database.userDao().validateUser(username, pin)
     }
 
     override suspend fun insertPreference(preferenceTable: PreferenceTable) {
@@ -24,11 +30,11 @@ class SpendLessDataSourceImpl(
         return database.preferenceDao().getPreference()
     }
 
-    override fun getAllTransaction(): Flow<List<Transaction>> {
+    override fun getAllTransaction(): Flow<List<TransactionTable>> {
         return database.transactionDao().getAll()
     }
 
-    override suspend fun insertTransaction(transaction: Transaction) {
-        database.transactionDao().insertTransaction()
+    override suspend fun insertTransaction(transaction: TransactionTable) {
+        database.transactionDao().insertTransaction(transaction)
     }
 }

@@ -4,4 +4,5 @@ sealed interface RegisterAction {
     data class OnUsernameEntered(val username: String) : RegisterAction
     data object OnLoginClicked : RegisterAction
     data object OnRegisterClicked : RegisterAction
+    data class ShouldShowRedBanner(val showBanner: Boolean): RegisterAction
 }

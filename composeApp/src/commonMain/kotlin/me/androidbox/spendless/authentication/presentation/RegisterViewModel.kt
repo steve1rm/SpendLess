@@ -16,14 +16,19 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.presentation.RegisterAction.OnUsernameEntered
+import me.androidbox.spendless.core.presentation.showRedBannerForDuration
+import kotlin.time.Duration.Companion.seconds
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(
+    private val getUserUseCase: GetUserUseCase
+) : ViewModel() {
     private val _registerState = MutableStateFlow(RegisterState())
     val registerState = _registerState.asStateFlow()
 
     private val _registerChannel = Channel<RegisterEvent>()
-    val registerChannel = _registerChannel.consumeAsFlow()
+    val registerChannel = _registerChannel.receiveAsFlow()
 
     init {
         registerState.distinctUntilChangedBy { it.username }
@@ -57,14 +62,27 @@ class RegisterViewModel : ViewModel() {
                 /** Check that the login name does exist */
                 getLoginCredentials()
             }
+
+            is RegisterAction.ShouldShowRedBanner -> {
+                showRedBannerForDuration(2.seconds)
+                    .onEach { shouldShow ->
+                        _registerState.update { state ->
+                            state.copy(shouldShowRedBanner = shouldShow)
+                        }
+                    }.launchIn(viewModelScope)
+            }
         }
     }
 
     private fun getLoginCredentials() {
         viewModelScope.launch {
             try {
-                // TODO use case for fetch from the room db
-                _registerChannel.send(RegisterEvent.OnRegisterSuccess(username = registerState.value.username))
+                if(getUserUseCase.execute(registerState.value.username) == null) {
+                    _registerChannel.send(RegisterEvent.OnRegisterSuccess(username = registerState.value.username))
+                }
+                else {
+                    _registerChannel.send(RegisterEvent.OnRegisterFailure)
+                }
             }
             catch (exception: Exception) {
                 exception.printStackTrace()

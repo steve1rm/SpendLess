@@ -61,9 +61,10 @@ import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
 import me.androidbox.spendless.dashboard.DashboardAction
-import me.androidbox.spendless.dashboard.DashboardAction.*
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
+import me.androidbox.spendless.transactions.TransactionAction
+import me.androidbox.spendless.transactions.TransactionState
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
@@ -72,8 +73,9 @@ import spendless.composeapp.generated.resources.trending_up
 @Composable
 fun CreateTransactionContent(
     modifier: Modifier = Modifier,
-    state: DashboardState,
-    action: (action: DashboardAction) -> Unit
+    state: TransactionState,
+    action: (action: TransactionAction) -> Unit,
+    openTransaction: (shouldOpen: Boolean) -> Unit
 ) {
 
     val density = LocalDensity.current
@@ -100,7 +102,7 @@ fun CreateTransactionContent(
 
             IconButton(
                 onClick = {
-                    action(DashboardAction.OpenNewTransaction(shouldOpen = false))
+                    openTransaction(false)
                 }
             ) {
                 Icon(
@@ -114,17 +116,17 @@ fun CreateTransactionContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         ButtonPanel(
-            items = TransactionType.entries, //listOf(TransactionType.RECEIVER.recipient, TransactionType.SENDER.recipient),
+            items = listOf(TransactionType.RECEIVER, TransactionType.SENDER),
             startIcons = listOf(Res.drawable.trending_down, Res.drawable.trending_up),
             selectedColor = Primary,
             unselectedColor = OnPrimaryFixed
         ) { item ->
             when (item) {
                 TransactionType.RECEIVER -> {
-                    action(OnTransactionTypeClicked(TransactionType.RECEIVER))
+                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.RECEIVER))
                 }
                 TransactionType.SENDER -> {
-                    action(OnTransactionTypeClicked(TransactionType.SENDER))
+                    action(TransactionAction.OnTransactionTypeClicked(TransactionType.SENDER))
                 }
                 else -> {
                     /* no-op */
@@ -147,7 +149,7 @@ fun CreateTransactionContent(
             ),
             onValueChange = { newName ->
                 val name = newName.filter { it.isLetterOrDigit() }
-                action(DashboardAction.OnTransactionNameEntered(name.trim()))
+                action(TransactionAction.OnTransactionNameEntered(name.trim()))
             },
             value = state.name,
             textStyle = TextStyle(
@@ -157,7 +159,7 @@ fun CreateTransactionContent(
             ),
             placeholder = {
                 Text(
-                    text = state.type.typeName,
+                    text = state.type,
                     fontSize = 16.sp,
                     color = OnSurface.copy(alpha = 0.6f),
                     fontWeight = FontWeight.W600)
@@ -193,7 +195,7 @@ fun CreateTransactionContent(
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
 
-                    action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
+                    action(TransactionAction.OnTransactionAmountEntered(amount.trim()))
                 },
                 value = state.amount,
                 textStyle = TextStyle(
@@ -244,7 +246,7 @@ fun CreateTransactionContent(
             mutableStateOf(TransactionItems.entries.first())
         }
 
-        if(state.type == TransactionType.RECEIVER) {
+        if(state.type == TransactionType.RECEIVER.typeName) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -330,9 +332,9 @@ fun CreateTransactionContent(
                 containerColor = Primary
             ),
             onClick = {
-                if(state.amount.count() in 4..14) {
-                    action(DashboardAction.OnCreateClicked)
-                }
+           //     if(state.amount.count() in 4..14) {
+                    action(TransactionAction.OnCreateClicked)
+          //      }
             }
         ) {
             Text(

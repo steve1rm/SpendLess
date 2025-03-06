@@ -20,6 +20,7 @@ import me.androidbox.spendless.core.presentation.Authentication
 import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.core.presentation.PinMode
 import me.androidbox.spendless.core.presentation.countDownTimer
+import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -70,7 +71,7 @@ class PinViewModel : ViewModel() {
                         if(createPinState.value.pinInputList.count() < 5) {
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    pinInputList = createPinState.pinInputList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber.key
                                 )
                             }
 
@@ -93,7 +94,7 @@ class PinViewModel : ViewModel() {
                         if (createPinState.value.pinInputList.count() < 5) {
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    pinInputList = createPinState.pinInputList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber.key
                                 )
                             }
 
@@ -101,7 +102,7 @@ class PinViewModel : ViewModel() {
                                 val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.pinInputList)
 
                                 viewModelScope.launch {
-                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers, createPinState.value.pinInputList.joinToString()))
+                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers, createPinState.value.pinInputList.joinToString("")))
                                 }
 
                                 _createPinState.update { createPinState ->
@@ -122,7 +123,7 @@ class PinViewModel : ViewModel() {
                         if (createPinState.value.pinInputList.count() < 5) {
                             /** Get this from the encrypted shared preferences */
                             _createPinState.update {
-                                it.copy(secretPin = listOf(KeyButtons.ONE, KeyButtons.TWO, KeyButtons.THREE, KeyButtons.FOUR, KeyButtons.FIVE))
+                                it.copy(secretPin = listOf(KeyButtons.ONE.key, KeyButtons.TWO.key, KeyButtons.THREE.key, KeyButtons.FOUR.key, KeyButtons.FIVE.key))
                             }
 
                             println("Authentication Secret PIN ${createPinState.value.secretPin}")
@@ -130,7 +131,7 @@ class PinViewModel : ViewModel() {
 
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
-                                    pinInputList = createPinState.pinInputList + action.pinNumber
+                                    pinInputList = createPinState.pinInputList + action.pinNumber.key
                                 )
                             }
 
@@ -205,15 +206,7 @@ class PinViewModel : ViewModel() {
     }
 }
 
-private fun showRedBannerForDuration(duration: Duration): Flow<Boolean> {
-    return flow {
-        emit(true)
-        delay(duration)
-        emit(false)
-    }
-}
-
-fun pinEntryValid(secretPin: List<KeyButtons>, repeatedPin: List<KeyButtons>): Boolean {
+fun pinEntryValid(secretPin: List<String>, repeatedPin: List<String>): Boolean {
     var hasEnteredValidPin = true
 
     secretPin.forEachIndexed { index, pinNumber ->
