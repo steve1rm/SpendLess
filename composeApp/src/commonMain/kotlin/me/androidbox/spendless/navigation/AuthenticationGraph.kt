@@ -139,7 +139,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
 
                         if (createPinEvent.isValid) {
                             /** Navigate to the onboarding screen valid pin */
-                            println("Navigate to onboarding")
+                            println("Navigate to onboarding and save the pin in the AuthenticationSharedViewModel")
                             authenticationSharedViewModel.onAction(AuthenticationAction.OnPinEntered(createPinEvent.pin))
                             navController.navigate(Route.PreferenceOnBoardingScreen)
                         } else {
