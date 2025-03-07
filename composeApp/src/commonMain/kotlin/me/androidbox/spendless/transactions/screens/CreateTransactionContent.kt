@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -153,7 +152,8 @@ fun CreateTransactionContent(
             textStyle = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W600,
-                color = OnSurface.copy(alpha = 0.6f)
+                color = OnSurface,
+                textAlign = TextAlign.Center
             ),
             placeholder = {
                 Text(
