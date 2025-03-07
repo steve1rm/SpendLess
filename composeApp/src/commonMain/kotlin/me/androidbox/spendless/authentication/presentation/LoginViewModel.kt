@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.domain.ValidateUserUseCase
+import me.androidbox.spendless.authentication.domain.imp.generatePinDigest
 import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -80,7 +81,9 @@ class LoginViewModel(
     private fun getLoginCredentials() {
         viewModelScope.launch {
             try {
-                when(validateUserUseCase.execute(loginState.value.username, loginState.value.pin)) {
+                val pin = generatePinDigest(loginState.value.username, loginState.value.pin)
+
+                when(validateUserUseCase.execute(loginState.value.username, pin)) {
                     null -> {
                         println("User doesn't exist")
                         _loginChannel.send(LoginEvent.OnLoginFailure)
