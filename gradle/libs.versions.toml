@@ -13,9 +13,6 @@ androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 compose-multiplatform = "1.7.0"
 junit = "4.13.2"
-assertk = "0.28.1"
-coreKtx = "1.6.1"
-composeTest = "1.6.8"
 kotlin = "2.1.0"
 koin = "4.0.0"
 kotlinx-datetime = "0.6.1"
@@ -28,8 +25,6 @@ crypto = "0.4.0"
 room = "2.7.0-alpha11"
 ksp = "2.0.21-1.0.27"
 sqlite = "2.5.0-SNAPSHOT"
-junitJupiter = "5.8.1"
-junitVersion = "4.12"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -38,11 +33,6 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
 androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-espresso-core" }
-assertk = { module = "com.willowtreeapps.assertk:assertk", version.ref = "assertk" }
-compose-ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "composeTest" }
-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeTest" }
-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
-
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
@@ -70,8 +60,6 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 kotlinx-serialization = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-junit-junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

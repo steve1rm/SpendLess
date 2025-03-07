@@ -1,8 +1,6 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -19,16 +17,6 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
-        }
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        instrumentedTestVariant {
-            sourceSetTree.set(KotlinSourceSetTree.test)
-
-            dependencies {
-                implementation(libs.core.ktx)
-                implementation(libs.compose.ui.test.junit4.android)
-                debugImplementation(libs.compose.ui.test.manifest)
-            }
         }
     }
     
@@ -80,14 +68,6 @@ kotlin {
 
             implementation(libs.navigation.compose)
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-            implementation(kotlin("test-annotations-common"))
-            implementation(libs.assertk)
-
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
     }
 }
 
@@ -123,10 +103,6 @@ room {
 }
 
 dependencies {
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.junit)
-    testImplementation(libs.junit.junit)
     debugImplementation(compose.uiTooling)
     ksp(libs.room.compiler)
 }
