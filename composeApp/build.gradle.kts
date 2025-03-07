@@ -51,7 +51,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
-//            implementation(libs.spring.security)
 
             // Room
             implementation(libs.room.runtime)
