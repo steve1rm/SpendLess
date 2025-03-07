@@ -347,7 +347,7 @@ fun CreateTransactionContent(
             colors = ButtonDefaults.buttonColors(
                 containerColor = Primary
             ),
-            enabled = state.transaction.amount.count() in 4..14,
+            enabled = state.transaction.name.count() in 4..14,
             onClick = {
                 action(DashboardAction.OnCreateClicked)
             }
