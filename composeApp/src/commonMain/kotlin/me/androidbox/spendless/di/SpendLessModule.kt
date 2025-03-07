@@ -22,8 +22,10 @@ import me.androidbox.spendless.settings.domain.imp.InsertPreferenceUseCaseImp
 import me.androidbox.spendless.transactions.TransactionViewModel
 import me.androidbox.spendless.transactions.data.RepositoryImp
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
+import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
 import me.androidbox.spendless.transactions.domain.imp.FetchAllTransactionsUseCaseImp
 import me.androidbox.spendless.transactions.domain.Repository
+import me.androidbox.spendless.transactions.domain.imp.FetchLargestTransactionUseCaseImp
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -64,6 +66,17 @@ val spendLessModule = module {
         )
     }
 
+    factory<FetchAllTransactionsUseCase> {
+        FetchAllTransactionsUseCaseImp(
+            get<SpendLessDataSource>()
+        )
+    }
+
+
+    factory<FetchLargestTransactionUseCase> {
+        FetchLargestTransactionUseCaseImp(get<SpendLessDataSource>())
+    }
+
     factory<SpendLessDataSource> {
         SpendLessDataSourceImpl(
             get<SpendLessDatabase>()
@@ -72,9 +85,5 @@ val spendLessModule = module {
 
     factory<Repository> {
         RepositoryImp()
-    }
-
-    factory<FetchAllTransactionsUseCase> {
-        FetchAllTransactionsUseCaseImp(get<SpendLessDataSource>())
     }
 }

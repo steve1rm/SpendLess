@@ -14,11 +14,13 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
+import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
 class DashBoardViewModel(
     private val insertTransactionUseCase: InsertTransactionUseCase,
-    private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase
+    private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
+    private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -28,6 +30,7 @@ class DashBoardViewModel(
         .onStart {
             if(!hasFetched) {
                 fetchTransactions()
+                fetchLargestTransaction()
                 hasFetched = true
             }
         }
@@ -36,6 +39,15 @@ class DashBoardViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DashboardState()
         )
+
+    private fun fetchLargestTransaction() {
+        viewModelScope.launch {
+             fetchLargestTransactionUseCase.execute()
+                .collectLatest {
+                    println("Largest transaction $it")
+                }
+        }
+    }
 
     private fun fetchTransactions() {
         viewModelScope.launch {

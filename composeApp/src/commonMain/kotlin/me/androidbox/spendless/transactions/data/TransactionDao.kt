@@ -11,8 +11,16 @@ interface TransactionDao {
     @Insert
     suspend fun insertTransaction(transaction: TransactionTable)
 
-   @Query("SELECT * FROM transactionTable")
-    fun getAll(): Flow<List<TransactionTable>>
+    @Query("SELECT * FROM transactionTable")
+    fun getAllTransactions(): Flow<List<TransactionTable>>
+
+    @Query("SELECT * FROM transactionTable WHERE amount = (SELECT MAX(amount) FROM transactionTable)")
+    fun getLargestTransaction(): Flow<TransactionTable>
+
+/*
+    @Query("SELECT MAX(amount) FROM transactionTable")
+    suspend fun getLargestTransaction(): Flow<TransactionTable>
+*/
 
 //    @Query("SELECT * FROM transaction WHERE category=")
 //    fun getTransactionByCategory(): Flow<List<Transaction>>
