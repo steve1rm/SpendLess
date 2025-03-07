@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -43,6 +46,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.Error
@@ -58,7 +63,6 @@ import me.androidbox.spendless.core.presentation.components.TransactionDropDownI
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
-import me.androidbox.spendless.transactions.TransactionAction
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
@@ -91,7 +95,7 @@ fun CreateTransactionContent(
             Text(
                 text = "Create Transaction",
                 fontSize = 16.sp,
-                color = OnSurface.copy(alpha = 0.6f),
+                color = OnSurface,
                 fontWeight = FontWeight.W600)
 
             IconButton(
@@ -153,10 +157,12 @@ fun CreateTransactionContent(
             ),
             placeholder = {
                 Text(
+                    modifier = Modifier.fillMaxWidth(),
                     text = state.transaction.type.typeName,
                     fontSize = 16.sp,
                     color = OnSurface.copy(alpha = 0.6f),
-                    fontWeight = FontWeight.W600)
+                    fontWeight = FontWeight.W600,
+                    textAlign = TextAlign.Center)
             }
         )
 
@@ -164,46 +170,46 @@ fun CreateTransactionContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier.weight(1f).padding(end = 2.dp),
                 text = "-$",
                 fontSize = 36.sp,
                 color = Error,
-                fontWeight = FontWeight.W600
+                fontWeight = FontWeight.W600,
+                textAlign = TextAlign.End
             )
 
-            TextField(
+            BasicTextField(
+                modifier = Modifier.weight(1.5f),
                 maxLines = 1,
                 singleLine = true,
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedLabelColor = Color.Transparent,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedLabelColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = Color(0xffC1C3CE)
-                ),
+                value = state.transaction.amount,
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
-
                     action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
                 },
-                value = state.transaction.amount,
                 textStyle = TextStyle(
                     fontSize = 36.sp,
                     fontWeight = FontWeight.W600,
                     color = OnSurface
                 ),
-                placeholder = {
-                    Text(
-                        text = state.transaction.amount,
-                        fontSize = 16.sp,
-                        color = OnSurface.copy(alpha = 0.6f),
-                        fontWeight = FontWeight.W600)
-                }
+                decorationBox = { innerTextField ->
+                    if (state.transaction.amount.isEmpty()) {
+                        Text(
+                            text = "00.00",
+                            fontSize = 36.sp,
+                            color = OnSurface.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.W600
+                        )
+                    }
+                    innerTextField()
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                )
             )
         }
 

@@ -16,5 +16,5 @@ data class Transaction(
     val category: TransactionItems = TransactionItems.FOOD,
     val note: String = "",
     val createAt: Long = 0L,
-    val amount: String = "00.00",
+    val amount: String = "",
 )

@@ -24,7 +24,7 @@ fun App() {
 
         NavHost(
             navController = navController,
-            startDestination = Route.AuthenticationGraph
+            startDestination = Route.DashboardGraph
         ) {
 
             this.authentication(navController)
