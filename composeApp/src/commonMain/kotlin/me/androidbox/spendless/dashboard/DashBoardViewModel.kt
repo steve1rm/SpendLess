@@ -14,6 +14,7 @@ import kotlinx.datetime.Clock
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
+import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
@@ -21,7 +22,8 @@ class DashBoardViewModel(
     private val insertTransactionUseCase: InsertTransactionUseCase,
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
-    private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase
+    private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
+    private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -33,6 +35,7 @@ class DashBoardViewModel(
                 fetchTransactions()
                 fetchLargestTransaction()
                 fetchTotalSpentPreviousWeek()
+                fetchMostPopularCategory()
                 hasFetched = true
             }
         }
@@ -41,6 +44,19 @@ class DashBoardViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DashboardState()
         )
+
+    private fun fetchMostPopularCategory() {
+        viewModelScope.launch {
+            fetchMostPopularCategoryUseCase.execute()
+                .collectLatest { category ->
+                    _dashboardState.update { dashboardState ->
+                        dashboardState.copy(
+                            popularTransaction = category
+                        )
+                    }
+                }
+        }
+    }
 
     private fun fetchTotalSpentPreviousWeek() {
         viewModelScope.launch {

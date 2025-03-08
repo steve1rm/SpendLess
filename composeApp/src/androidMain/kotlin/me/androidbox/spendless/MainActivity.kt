@@ -13,6 +13,7 @@ import me.androidbox.spendless.authentication.presentation.components.DigitKey
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
+import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -45,7 +46,9 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun PopularItemPreview() {
-    PopularItem()
+    PopularItem(
+        popularCategory = Transaction()
+    )
 }
 
 @Preview

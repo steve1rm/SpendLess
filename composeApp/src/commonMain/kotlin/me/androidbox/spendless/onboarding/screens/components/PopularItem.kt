@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.TransactionItems
+import me.androidbox.spendless.dashboard.Transaction
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PopularItem(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    popularCategory: Transaction
 ) {
     Row(
         modifier = modifier
@@ -43,7 +45,7 @@ fun PopularItem(
             Icon(
                 modifier = Modifier
                     .size(30.dp),
-                painter = painterResource(resource = TransactionItems.FOOD.iconRes),
+                painter = painterResource(resource = popularCategory.category.iconRes),
                 contentDescription = null,
                 tint = Color.Unspecified
             )
@@ -53,7 +55,7 @@ fun PopularItem(
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = TransactionItems.FOOD.title,
+                text = popularCategory.category.title,
                 fontWeight = FontWeight.W600,
                 fontSize = 20.sp,
                 color = OnPrimary

@@ -137,7 +137,8 @@ fun DashboardScreen(
                 DashboardHeader(
                     modifier = Modifier.weight(1f),
                     largestTransaction = dashboardState.largestTransaction,
-                    totalPreviousSpent = dashboardState.totalPreviousSpent)
+                    totalPreviousSpent = dashboardState.totalPreviousSpent,
+                    popularTransaction = dashboardState.popularTransaction)
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
@@ -198,6 +199,7 @@ fun DashboardScreen(
 fun DashboardHeader(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
+    popularTransaction: Transaction,
     totalPreviousSpent: Float
 ) {
 
@@ -224,7 +226,8 @@ fun DashboardHeader(
     PopularItem(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 8.dp),
+        popularCategory = popularTransaction
     )
 
     Row(

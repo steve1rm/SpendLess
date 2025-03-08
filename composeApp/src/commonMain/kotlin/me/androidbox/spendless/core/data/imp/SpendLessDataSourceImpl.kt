@@ -61,6 +61,21 @@ class SpendLessDataSourceImpl(
             .getTotalSpentPreviousWeek(startOfPreviousWeek, endOfPreviousWeek)
     }
 
+    override fun getMostPopularCategory(): Flow<Transaction> {
+        return database.transactionDao().getMostPopularCategory()
+            .map { transactionTable ->
+                Transaction(
+                    name = transactionTable.name,
+                    type = TransactionType.entries[transactionTable.type],
+                    counterParty = transactionTable.counterParty,
+                    category = TransactionItems.entries[transactionTable.category],
+                    note = transactionTable.note,
+                    createAt = transactionTable.createAt,
+                    amount = transactionTable.amount
+                )
+            }
+    }
+
     override suspend fun insertTransaction(transaction: TransactionTable) {
         database.transactionDao().insertTransaction(transaction)
     }

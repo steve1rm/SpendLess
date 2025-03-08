@@ -7,6 +7,7 @@ data class DashboardState(
     val showTransactionBottomSheet: Boolean = false,
     val transaction: Transaction = Transaction(),
     val largestTransaction: Transaction = Transaction(),
+    val popularTransaction: Transaction = Transaction(),
     val listOfTransactions: List<Transaction> = emptyList(),
     val totalPreviousSpent: Float = 0.0f
 )

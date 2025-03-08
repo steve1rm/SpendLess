@@ -23,4 +23,13 @@ interface TransactionDao {
         WHERE createAt BETWEEN :startOfPreviousWeek AND :endOfPreviousWeek
     """)
     suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Float
+
+    @Query("""
+        SELECT *
+        FROM transactionTable
+        GROUP BY category
+        ORDER BY COUNT(category) DESC
+        LIMIT 1
+    """)
+    fun getMostPopularCategory(): Flow<TransactionTable>
 }
