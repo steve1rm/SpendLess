@@ -53,6 +53,14 @@ class SpendLessDataSourceImpl(
             }
     }
 
+    override suspend fun getTotalSpentPreviousWeek(
+        startOfPreviousWeek: Long,
+        endOfPreviousWeek: Long
+    ): Float {
+        return database.transactionDao()
+            .getTotalSpentPreviousWeek(startOfPreviousWeek, endOfPreviousWeek)
+    }
+
     override suspend fun insertTransaction(transaction: TransactionTable) {
         database.transactionDao().insertTransaction(transaction)
     }

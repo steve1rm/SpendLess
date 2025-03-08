@@ -2,7 +2,6 @@ package me.androidbox.spendless.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,12 +14,14 @@ import kotlinx.datetime.Clock
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
+import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
 class DashBoardViewModel(
     private val insertTransactionUseCase: InsertTransactionUseCase,
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
-    private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase
+    private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
+    private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -31,6 +32,7 @@ class DashBoardViewModel(
             if(!hasFetched) {
                 fetchTransactions()
                 fetchLargestTransaction()
+                fetchTotalSpentPreviousWeek()
                 hasFetched = true
             }
         }
@@ -40,11 +42,25 @@ class DashBoardViewModel(
             initialValue = DashboardState()
         )
 
+    private fun fetchTotalSpentPreviousWeek() {
+        viewModelScope.launch {
+            val totalSpent = fetchTotalSpentPreviousWeekUseCase.execute()
+            _dashboardState.update { dashboardState ->
+                dashboardState.copy(
+                    totalPreviousSpent = totalSpent
+                )
+            }
+        }
+    }
+
     private fun fetchLargestTransaction() {
         viewModelScope.launch {
              fetchLargestTransactionUseCase.execute()
-                .collectLatest {
-                    println("Largest transaction $it")
+                .collectLatest { transaction ->
+                    println("Largest transaction $transaction")
+                    _dashboardState.update { dashboardState ->
+                        dashboardState.copy(largestTransaction = transaction)
+                    }
                 }
         }
     }
@@ -66,7 +82,7 @@ class DashBoardViewModel(
         when(action) {
             is DashboardAction.OpenNewTransaction -> {
                 _dashboardState.update { dashboardState ->
-                    dashboardState.copy(newTransaction = action.shouldOpen)
+                    dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
                 }
             }
 
@@ -89,6 +105,14 @@ class DashBoardViewModel(
                                 type = dashboardState.value.transaction.type.ordinal
                             )
                         )
+
+                        /* Clear the transaction so its not retained when opening the transaction bottom sheet */
+                        _dashboardState.update { dashboardState ->
+                            dashboardState.copy(
+                                transaction = Transaction(),
+                                showTransactionBottomSheet = false
+                            )
+                        }
                     }
                 }
             }

@@ -4,9 +4,11 @@ import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 
 data class DashboardState(
-    val newTransaction: Boolean = false,
+    val showTransactionBottomSheet: Boolean = false,
     val transaction: Transaction = Transaction(),
-    val listOfTransactions: List<Transaction> = emptyList()
+    val largestTransaction: Transaction = Transaction(),
+    val listOfTransactions: List<Transaction> = emptyList(),
+    val totalPreviousSpent: Float = 0.0f
 )
 
 data class Transaction(

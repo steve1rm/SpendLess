@@ -48,6 +48,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.format.DateTimeFormat
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.toLocalDateTime
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
@@ -126,7 +134,10 @@ fun DashboardScreen(
                 modifier = Modifier.fillMaxWidth().padding(paddingValues),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                DashboardHeader(modifier = Modifier.weight(1f))
+                DashboardHeader(
+                    modifier = Modifier.weight(1f),
+                    largestTransaction = dashboardState.largestTransaction,
+                    totalPreviousSpent = dashboardState.totalPreviousSpent)
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
@@ -136,7 +147,7 @@ fun DashboardScreen(
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
             val coroutineScope = rememberCoroutineScope()
 
-            if(dashboardState.newTransaction) {
+            if(dashboardState.showTransactionBottomSheet) {
                 ModalBottomSheet(
                     modifier = Modifier
                         .fillMaxHeight()
@@ -145,7 +156,6 @@ fun DashboardScreen(
                     onDismissRequest = {
                         coroutineScope.launch {
                             sheetState.hide()
-                            dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = false))
                         }
                     },
                     properties = ModalBottomSheetProperties(
@@ -186,7 +196,9 @@ fun DashboardScreen(
 
 @Composable
 fun DashboardHeader(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    largestTransaction: Transaction,
+    totalPreviousSpent: Float
 ) {
 
     Column(modifier = modifier
@@ -224,11 +236,13 @@ fun DashboardHeader(
     ) {
         LargestTransaction(
             modifier = Modifier.weight(1.6f),
+            largestTransaction = largestTransaction,
             hasTransactions = true
         )
 
         PreviousTransaction(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            totalPreviousSpent = totalPreviousSpent
         )
     }
 }
@@ -309,6 +323,7 @@ fun DashboardTransactions(
 @Composable
 fun LargestTransaction(
     modifier: Modifier = Modifier,
+    largestTransaction: Transaction,
     hasTransactions: Boolean = false
 ) {
     if(hasTransactions) {
@@ -326,7 +341,7 @@ fun LargestTransaction(
             ) {
                 Text(
                     textAlign = TextAlign.Center,
-                    text = "Adobe Yearly",
+                    text = largestTransaction.name,
                     maxLines = 2,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
@@ -335,7 +350,7 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = "-$59.99",
+                    text = largestTransaction.amount,
                     maxLines = 2,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
@@ -358,7 +373,18 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = "Jan 7, 2025",
+                    text = Instant.fromEpochMilliseconds(
+                        largestTransaction.createAt
+                    ).toLocalDateTime(TimeZone.currentSystemDefault()).date
+                        .format(
+                            LocalDate.Format {
+                                dayOfMonth(Padding.NONE)
+                                chars(" ")
+                                monthName(MonthNames.ENGLISH_ABBREVIATED)
+                                chars(", ")
+                                year(Padding.NONE)
+                            }
+                        ),
                     maxLines = 2,
                     fontWeight = FontWeight.W400,
                     fontSize = 12.sp,
@@ -390,6 +416,7 @@ fun LargestTransaction(
 @Composable
 fun PreviousTransaction(
     modifier: Modifier = Modifier,
+    totalPreviousSpent: Float
 ) {
     Column(
         modifier = modifier
@@ -401,7 +428,7 @@ fun PreviousTransaction(
     ) {
         Text(
             textAlign = TextAlign.Center,
-            text = "-$762.20",
+            text = totalPreviousSpent.toString(),
             maxLines = 2,
             fontWeight = FontWeight.W600,
             fontSize = 20.sp,
