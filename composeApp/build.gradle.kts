@@ -101,7 +101,9 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -123,8 +125,6 @@ room {
 }
 
 dependencies {
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.junit)
     debugImplementation(compose.uiTooling)
     ksp(libs.room.compiler)
 }

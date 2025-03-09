@@ -12,7 +12,7 @@ androidx-material = "1.12.0"
 compose-multiplatform = "1.7.0"
 assertk = "0.28.1"
 coreKtx = "1.6.1"
-composeTest = "1.6.8"
+composeTest = "1.7.1"
 kotlin = "2.1.0"
 koin = "4.0.0"
 kotlinx-datetime = "0.6.1"
@@ -25,8 +25,6 @@ crypto = "0.4.0"
 room = "2.7.0-alpha11"
 ksp = "2.0.21-1.0.27"
 sqlite = "2.5.0-SNAPSHOT"
-junitJupiter = "5.8.1"
-junitVersion = "4.12"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -63,8 +61,6 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 kotlinx-serialization = {module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization"}
-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
-junit-junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
