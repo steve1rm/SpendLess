@@ -8,7 +8,7 @@ import kotlinx.datetime.Instant
 import me.androidbox.spendless.core.data.SpendLessDataSource
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.dashboard.TransactionHeader
+import me.androidbox.spendless.dashboard.AllTransactions
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days
@@ -16,7 +16,7 @@ import kotlin.time.Duration.Companion.days
 class FetchAllTransactionsUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : FetchAllTransactionsUseCase {
-    override fun execute(): Flow<List<TransactionHeader>> {
+    override fun execute(): Flow<List<AllTransactions>> {
         return populate().map { transactionList ->
             transactionList
                 .sortedByDescending { it.createAt }
@@ -24,7 +24,7 @@ class FetchAllTransactionsUseCaseImp(
         }.map {
             it.entries
                 .map { mapOfTransactions ->
-                    TransactionHeader(
+                    AllTransactions(
                         createdAt = mapOfTransactions.key,
                         transactions = mapOfTransactions.value
                     )

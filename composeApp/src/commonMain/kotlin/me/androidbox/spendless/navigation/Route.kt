@@ -35,7 +35,7 @@ sealed interface Route {
     data object CreateTransactionContent : Route
 
     @Serializable
-    data object AllTransactionScreen : Route
+    data object AllTransactionsScreen : Route
 
     @Serializable
     data object SettingsScreen : Route

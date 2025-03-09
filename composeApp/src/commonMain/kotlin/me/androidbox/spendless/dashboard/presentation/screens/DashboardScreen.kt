@@ -19,9 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -37,7 +34,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,15 +46,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
-import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
@@ -72,16 +65,15 @@ import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.dashboard.TransactionHeader
+import me.androidbox.spendless.dashboard.AllTransactions
+import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
-import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.settings
-import kotlin.time.Duration.Companion.days
 
 @Composable
 fun DashboardScreen(
@@ -148,7 +140,10 @@ fun DashboardScreen(
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
-                    listOfTransactions = dashboardState.listOfTransactions)
+                    listOfTransactions = dashboardState.listOfTransactions,
+                    onShowAllClicked = {
+                        dashboardAction(DashboardAction.OnShowAllClicked)
+                    })
             }
 
             val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -259,14 +254,9 @@ fun DashboardHeader(
 @Composable
 fun DashboardTransactions(
     modifier: Modifier = Modifier,
-    listOfTransactions: List<TransactionHeader>
+    listOfTransactions: List<AllTransactions>,
+    onShowAllClicked: () -> Unit
 ) {
-    val currentDate = remember {
-        Instant.fromEpochMilliseconds( Clock.System.now().toEpochMilliseconds())
-            .toLocalDateTime(TimeZone.currentSystemDefault())
-            .date
-    }
-
     if(listOfTransactions.isNotEmpty()) {
         /** Show transactions here */
         Column(
@@ -285,6 +275,9 @@ fun DashboardTransactions(
                 )
 
                 Text(
+                    modifier = Modifier.clickable(
+                        onClick = onShowAllClicked
+                    ),
                     text = "Show all",
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
@@ -292,53 +285,8 @@ fun DashboardTransactions(
                 )
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                state = rememberLazyListState()
-            ) {
-                listOfTransactions.forEach { transactionHeader ->
-                    stickyHeader(
-                        content = {
-                            val createdAt = Instant.fromEpochMilliseconds(transactionHeader.createdAt).toLocalDateTime(TimeZone.currentSystemDefault()).date
-
-                            val displayDate = when(createdAt) {
-                                currentDate -> {
-                                    "Today"
-                                }
-                                currentDate.minus(DatePeriod(days = 1)) -> {
-                                    "Yesterday"
-                                }
-                                else -> {
-                                    createdAt.format(
-                                        LocalDate.Format {
-                                            monthName(MonthNames.ENGLISH_FULL)
-                                            chars(" ")
-                                            dayOfMonth(Padding.NONE)
-                                        }
-                                    )
-                                }
-                            }
-
-                            Text(
-                                modifier = Modifier.fillMaxWidth().background(color = Background),
-                                text = displayDate)
-                        }
-                    )
-
-                    items(
-                        items = transactionHeader.transactions,
-                        key = { transaction ->
-                            transaction.id
-                        },
-                        itemContent = { transaction ->
-                            TransactionItem(
-                                transaction = transaction
-                            )
-                        }
-                    )
-
-                }
-            }
+            TransactionsListItems(
+                listOfTransactions = listOfTransactions)
         }
     }
     else {

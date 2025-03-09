@@ -10,6 +10,7 @@ import androidx.navigation.navigation
 import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionListScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScreen
 import me.androidbox.spendless.dashboard.presentation.screens.DashboardScreen
 import me.androidbox.spendless.transactions.TransactionViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -28,27 +29,40 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
 
             DashboardScreen(
                 dashboardState = dashboardState,
-                dashboardAction = dashBoardViewModel::onAction,
+                dashboardAction = { dashboardAction ->
+                    when(dashboardAction) {
+                        DashboardAction.OnShowAllClicked -> {
+                            navController.navigate(route = Route.AllTransactionsScreen)
+                        }
+                        else -> {
+                            dashBoardViewModel.onAction(dashboardAction)
+                        }
+                    }
+                },
             )
         }
 
-        composable<Route.CreateTransactionContent> {
+        composable<Route.AllTransactionsScreen> {
+            val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
+            val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
+
+            AllTransactionScreen(
+                transactions = dashboardState.listOfTransactions,
+                onNavigationClicked = {
+                    navController.popBackStack()
+                }
+            )
+/*
             val transactionViewModel = koinViewModel<TransactionViewModel>()
             val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
+*/
 
-            /*  CreateTransactionContent(
-                state = transactionState,
-                action = transactionViewModel::onAction
-            )*/
-        }
 
-        composable<Route.AllTransactionScreen> {
-            val transactionViewModel = koinViewModel<TransactionViewModel>()
-            val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
-
+/*
             AllTransactionListScreen(
                 transactionState = transactionState
             )
+*/
         }
     }
 }
