@@ -5,6 +5,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
@@ -38,7 +39,11 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
             )
         }
 
-        composable<Route.AllTransactionsScreen> {
+        composable<Route.AllTransactionsScreen>(
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "spendLess://dashboard"
+            })
+        ) {
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 

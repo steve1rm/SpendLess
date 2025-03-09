@@ -20,6 +20,7 @@ navigationCompose = "2.8.0-alpha10"
 kotlinx-serialization = "1.7.3"
 compose-material3 = "1.3.1"
 crypto = "0.4.0"
+glance = "1.1.1"
 
 # ROOM
 room = "2.7.0-alpha11"
@@ -51,6 +52,9 @@ navigation-compose = { group = "org.jetbrains.androidx.navigation", name = "navi
 
 crypto = { group = "dev.whyoleg.cryptography", name = "cryptography-core", version.ref = "crypto" }
 crypto-provider = { group = "dev.whyoleg.cryptography", name = "cryptography-provider-jdk" }
+
+glance = { group = "androidx.glance", name = "glance", version.ref = "glance"}
+glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance"}
 
 #ROOM
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
