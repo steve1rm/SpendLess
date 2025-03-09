@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -48,6 +49,14 @@ class DashBoardViewModel(
     private fun fetchMostPopularCategory() {
         viewModelScope.launch {
             fetchMostPopularCategoryUseCase.execute()
+                .catch {
+                    println("CATCH ME POPULAR ${it.printStackTrace()}")
+                    _dashboardState.update { dashboardState ->
+                        dashboardState.copy(
+                            popularTransaction = Transaction()
+                        )
+                    }
+                }
                 .collectLatest { category ->
                     _dashboardState.update { dashboardState ->
                         dashboardState.copy(
@@ -72,6 +81,9 @@ class DashBoardViewModel(
     private fun fetchLargestTransaction() {
         viewModelScope.launch {
              fetchLargestTransactionUseCase.execute()
+                 .catch {
+                     println("CATCH ME LARGEST ${it.printStackTrace()}")
+                 }
                 .collectLatest { transaction ->
                     println("Largest transaction $transaction")
                     _dashboardState.update { dashboardState ->
