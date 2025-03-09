@@ -3,14 +3,15 @@ package me.androidbox.spendless
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -30,8 +31,6 @@ import androidx.glance.unit.ColorProvider
 import me.androidbox.speedless.R
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.Primary
-import androidx.core.net.toUri
-import androidx.glance.appwidget.action.actionRunCallback
 
 class TransactionWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
@@ -43,7 +42,9 @@ class TransactionWidget : GlanceAppWidget() {
                     .background(color = Primary)
                     .padding(start = 16.dp, end = 16.dp)
                     .clickable(
-                        actionStartActivity<MainActivity>()
+                        actionStartActivity<MainActivity>(
+                            parameters = actionParametersOf(ActionParameters.Key<Boolean>("WIDGET") to true)
+                        )
                     ),
                 verticalAlignment = Alignment.Vertical.CenterVertically,
                 horizontalAlignment = Alignment.Horizontal.Start

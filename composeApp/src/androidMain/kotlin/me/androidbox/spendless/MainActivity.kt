@@ -24,22 +24,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        val cameFromWidget = intent.extras?.getBoolean("WIDGET") ?: false
+        println("cameFromWidget $cameFromWidget")
+
         setContent {
             App()
         }
-
-        val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
-            this.groupingSeparator = ','
-            this.decimalSeparator = '.'
-        }
-
-        val decimalFormat = DecimalFormat("##,###.##", symbols)
-        decimalFormat.isDecimalSeparatorAlwaysShown = false
-
-        val number = 6347238245
-        val formattedNumber = decimalFormat.format(number / 100.0)
-
-        println(formattedNumber)
     }
 }
 
