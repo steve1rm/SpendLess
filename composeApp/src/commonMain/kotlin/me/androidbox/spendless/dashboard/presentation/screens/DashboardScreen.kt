@@ -309,7 +309,7 @@ fun DashboardTransactions(
                                     "Yesterday"
                                 }
                                 else -> {
-                                    Instant.fromEpochMilliseconds(transactionHeader.createdAt).toLocalDateTime(TimeZone.currentSystemDefault()).date.format(
+                                    createdAt.format(
                                         LocalDate.Format {
                                             monthName(MonthNames.ENGLISH_FULL)
                                             chars(" ")
