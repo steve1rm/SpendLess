@@ -1,7 +1,8 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
 package me.androidbox.spendless.dashboard.presentation.screens
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +37,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,13 +50,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
-import kotlinx.datetime.format.DateTimeFormat
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnPrimary
@@ -68,6 +72,7 @@ import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.dashboard.Transaction
+import me.androidbox.spendless.dashboard.TransactionHeader
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
@@ -76,6 +81,7 @@ import org.jetbrains.compose.resources.vectorResource
 import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.settings
+import kotlin.time.Duration.Companion.days
 
 @Composable
 fun DashboardScreen(
@@ -253,12 +259,18 @@ fun DashboardHeader(
 @Composable
 fun DashboardTransactions(
     modifier: Modifier = Modifier,
-    listOfTransactions: List<Transaction>
+    listOfTransactions: List<TransactionHeader>
 ) {
+    val currentDate = remember {
+        Instant.fromEpochMilliseconds( Clock.System.now().toEpochMilliseconds())
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .date
+    }
+
     if(listOfTransactions.isNotEmpty()) {
         /** Show transactions here */
         Column(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth().background(color = Background)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -282,20 +294,50 @@ fun DashboardTransactions(
 
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
-                state = rememberLazyListState(),
-
+                state = rememberLazyListState()
             ) {
-                items(
-                    items = listOfTransactions,
-                    key = {
-                        it.createAt
-                    },
-                    itemContent = { transaction ->
-                        TransactionItem(
-                            transaction = transaction
-                        )
-                    }
-                )
+                listOfTransactions.forEach { transactionHeader ->
+                    stickyHeader(
+                        content = {
+                            val createdAt = Instant.fromEpochMilliseconds(transactionHeader.createdAt).toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+                            val displayDate = when(createdAt) {
+                                currentDate -> {
+                                    "Today"
+                                }
+                                currentDate.minus(DatePeriod(days = 1)) -> {
+                                    "Yesterday"
+                                }
+                                else -> {
+                                    Instant.fromEpochMilliseconds(transactionHeader.createdAt).toLocalDateTime(TimeZone.currentSystemDefault()).date.format(
+                                        LocalDate.Format {
+                                            monthName(MonthNames.ENGLISH_FULL)
+                                            chars(" ")
+                                            dayOfMonth(Padding.NONE)
+                                        }
+                                    )
+                                }
+                            }
+
+                            Text(
+                                modifier = Modifier.fillMaxWidth().background(color = Background),
+                                text = displayDate)
+                        }
+                    )
+
+                    items(
+                        items = transactionHeader.transactions,
+                        key = { transaction ->
+                            transaction.id
+                        },
+                        itemContent = { transaction ->
+                            TransactionItem(
+                                transaction = transaction
+                            )
+                        }
+                    )
+
+                }
             }
         }
     }

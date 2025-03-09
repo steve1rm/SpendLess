@@ -8,11 +8,17 @@ data class DashboardState(
     val transaction: Transaction = Transaction(),
     val largestTransaction: Transaction = Transaction(),
     val popularTransaction: Transaction = Transaction(),
-    val listOfTransactions: List<Transaction> = emptyList(),
+    val listOfTransactions: List<TransactionHeader> = emptyList(),
     val totalPreviousSpent: Float = 0.0f
 )
 
+data class TransactionHeader(
+    val createdAt: Long = 0L,
+    val transactions: List<Transaction> = emptyList()
+)
+
 data class Transaction(
+    val id: Int = 0,
     val name: String = "",
     val type: TransactionType = TransactionType.RECEIVER,
     val counterParty: String = "",

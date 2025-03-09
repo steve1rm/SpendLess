@@ -42,6 +42,7 @@ class SpendLessDataSourceImpl(
         return database.transactionDao().getLargestTransaction()
             .map { transactionTable ->
                 Transaction(
+                    id = transactionTable.id,
                     name = transactionTable.name,
                     type = TransactionType.entries[transactionTable.type],
                     counterParty = transactionTable.counterParty,
@@ -65,6 +66,7 @@ class SpendLessDataSourceImpl(
         return database.transactionDao().getMostPopularCategory()
             .map { transactionTable ->
                 Transaction(
+                    id = transactionTable.id,
                     name = transactionTable.name,
                     type = TransactionType.entries[transactionTable.type],
                     counterParty = transactionTable.counterParty,
