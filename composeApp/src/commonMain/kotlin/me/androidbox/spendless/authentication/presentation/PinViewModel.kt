@@ -24,10 +24,10 @@ import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class PinViewModel : ViewModel() {
+open class PinViewModel : ViewModel() {
 
     private val _createPinState = MutableStateFlow<CreatePinState>(CreatePinState())
-    val createPinState = _createPinState.asStateFlow()
+    open val createPinState = _createPinState.asStateFlow()
 
     private val _pinChannel = Channel<CreatePinEvent>()
     val pinChannel = _pinChannel.consumeAsFlow()
