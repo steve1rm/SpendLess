@@ -1,6 +1,5 @@
 package me.androidbox.spendless.authentication.presentation
 
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -11,6 +10,8 @@ import me.androidbox.spendless.authentication.presentation.screens.PinPromptScre
 import kotlin.test.BeforeTest
 import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
+import androidx.compose.runtime.getValue
+
 
 class PinUITest {
     private lateinit var pinViewModel: FakePinViewModel
@@ -45,7 +46,7 @@ class PinUITest {
 }
 
 class FakePinViewModel  : PinViewModel() {
-    val _createPinState = MutableStateFlow(CreatePinState())
+    private val _createPinState = MutableStateFlow(CreatePinState())
     override val createPinState = _createPinState.asStateFlow()
 }
 
