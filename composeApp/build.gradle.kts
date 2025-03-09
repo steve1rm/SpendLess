@@ -124,8 +124,6 @@ room {
 
 dependencies {
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.junit)
     testImplementation(libs.junit.junit)
     debugImplementation(compose.uiTooling)
     ksp(libs.room.compiler)
