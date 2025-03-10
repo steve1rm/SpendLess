@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "10ae3bbd27b6239028ba15e93c9a1a43",
+    "identityHash": "41cdd729b6642d0614dd023070cf4845",
     "entities": [
       {
         "tableName": "transactionTable",
@@ -53,6 +53,30 @@
           {
             "fieldPath": "amount",
             "columnName": "amount",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "encryptedTransactionTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `encryptedString` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "encryptedString",
+            "columnName": "encryptedString",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -139,7 +163,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '10ae3bbd27b6239028ba15e93c9a1a43')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '41cdd729b6642d0614dd023070cf4845')"
     ]
   }
 }

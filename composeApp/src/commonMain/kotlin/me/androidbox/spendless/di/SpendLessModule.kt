@@ -25,11 +25,13 @@ import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
 import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
+import me.androidbox.spendless.transactions.domain.InsertEncryptedTransactionUseCase
 import me.androidbox.spendless.transactions.domain.imp.FetchAllTransactionsUseCaseImp
 import me.androidbox.spendless.transactions.domain.Repository
 import me.androidbox.spendless.transactions.domain.imp.FetchLargestTransactionUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.FetchMostPopularCategoryUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.FetchTotalSpentPreviousWeekUseCaseImp
+import me.androidbox.spendless.transactions.domain.imp.InsertEncryptedTransactionUseCaseImp
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -66,6 +68,12 @@ val spendLessModule = module {
 
     factory<InsertTransactionUseCase> {
         InsertTransactionUseCaseImp(
+            get<SpendLessDataSource>()
+        )
+    }
+
+    factory<InsertEncryptedTransactionUseCase> {
+        InsertEncryptedTransactionUseCaseImp(
             get<SpendLessDataSource>()
         )
     }

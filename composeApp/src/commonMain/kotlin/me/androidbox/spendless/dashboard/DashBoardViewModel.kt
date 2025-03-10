@@ -18,9 +18,11 @@ import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCas
 import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
+import me.androidbox.spendless.transactions.domain.InsertEncryptedTransactionUseCase
 
 class DashBoardViewModel(
     private val insertTransactionUseCase: InsertTransactionUseCase,
+    private val insertEncryptedTransactionUseCase: InsertEncryptedTransactionUseCase,
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
@@ -122,16 +124,22 @@ class DashBoardViewModel(
                 if(_dashboardState.value.transaction.name.count() in 4..14) {
                     println("Create transaction save to the database")
                     viewModelScope.launch {
+                        val transaction = TransactionTable(
+                            name = dashboardState.value.transaction.name,
+                            counterParty = dashboardState.value.transaction.counterParty,
+                            note = dashboardState.value.transaction.note,
+                            amount = dashboardState.value.transaction.amount,
+                            category = dashboardState.value.transaction.category.ordinal,
+                            createAt = Clock.System.now().toEpochMilliseconds(),
+                            type = dashboardState.value.transaction.type.ordinal
+                        )
+
                         insertTransactionUseCase.execute(
-                            transaction = TransactionTable(
-                                name = dashboardState.value.transaction.name,
-                                counterParty = dashboardState.value.transaction.counterParty,
-                                note = dashboardState.value.transaction.note,
-                                amount = dashboardState.value.transaction.amount,
-                                category = dashboardState.value.transaction.category.ordinal,
-                                createAt = Clock.System.now().toEpochMilliseconds(),
-                                type = dashboardState.value.transaction.type.ordinal
-                            )
+                            transaction = transaction
+                        )
+
+                        insertEncryptedTransactionUseCase.execute(
+                            transactionToEncrypt = transaction
                         )
 
                         /* Clear the transaction so its not retained when opening the transaction bottom sheet */

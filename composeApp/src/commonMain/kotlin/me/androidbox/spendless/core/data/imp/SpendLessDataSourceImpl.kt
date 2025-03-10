@@ -10,6 +10,7 @@ import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.settings.data.PreferenceTable
+import me.androidbox.spendless.transactions.data.EncryptedTransactionTable
 
 class SpendLessDataSourceImpl(
     private val database: SpendLessDatabase
@@ -81,4 +82,10 @@ class SpendLessDataSourceImpl(
     override suspend fun insertTransaction(transaction: TransactionTable) {
         database.transactionDao().insertTransaction(transaction)
     }
+
+    override suspend fun insertEncryptedTransaction(transactionToEncrypt: EncryptedTransactionTable) {
+        database.encryptedTransactionDao().insertEncryptedTransaction(transactionToEncrypt)
+    }
+
+
 }
