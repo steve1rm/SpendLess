@@ -1,15 +1,19 @@
 package me.androidbox.spendless.core.data.imp
 
+import androidx.sqlite.SQLiteException
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.core.data.SpendLessDatabase
 import me.androidbox.spendless.core.data.SpendLessDataSource
+import me.androidbox.spendless.core.domain.DataError
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.settings.data.PreferenceTable
+import kotlin.coroutines.cancellation.CancellationException
 
 class SpendLessDataSourceImpl(
     private val database: SpendLessDatabase
@@ -62,19 +66,35 @@ class SpendLessDataSourceImpl(
             .getTotalSpentPreviousWeek(startOfPreviousWeek, endOfPreviousWeek)
     }
 
-    override fun getMostPopularCategory(): Flow<Transaction> {
+    override fun getMostPopularCategory(): Flow<Result<Transaction>> {
         return database.transactionDao().getMostPopularCategory()
             .map { transactionTable ->
-                Transaction(
-                    id = transactionTable.id,
-                    name = transactionTable.name,
-                    type = TransactionType.entries[transactionTable.type],
-                    counterParty = transactionTable.counterParty,
-                    category = TransactionItems.entries[transactionTable.category],
-                    note = transactionTable.note,
-                    createAt = transactionTable.createAt,
-                    amount = transactionTable.amount
+                Result.success(
+                    Transaction(
+                        id = transactionTable.id,
+                        name = transactionTable.name,
+                        type = TransactionType.entries[transactionTable.type],
+                        counterParty = transactionTable.counterParty,
+                        category = TransactionItems.entries[transactionTable.category],
+                        note = transactionTable.note,
+                        createAt = transactionTable.createAt,
+                        amount = transactionTable.amount
+                    )
                 )
+            }
+            .catch { exception ->
+                when (exception) {
+                    is SQLiteException -> {
+                        emit(Result.failure(exception))
+                    }
+                    is Exception -> {
+                        if (exception is CancellationException) {
+                            throw CancellationException()
+                        }
+                        println("RESULT.FAILURE")
+                        emit(Result.failure(exception))
+                    }
+                }
             }
     }
 

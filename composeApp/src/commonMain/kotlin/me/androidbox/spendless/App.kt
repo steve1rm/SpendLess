@@ -22,7 +22,7 @@ fun App(shouldNavigateOnWidget: Boolean = false) {
 
         NavHost(
             navController = navController,
-            startDestination = if(shouldNavigateOnWidget) Route.DashboardGraph else Route.AuthenticationGraph
+            startDestination = Route.DashboardGraph // if(shouldNavigateOnWidget) Route.DashboardGraph else Route.AuthenticationGraph
         ) {
 
             this.authentication(navController)

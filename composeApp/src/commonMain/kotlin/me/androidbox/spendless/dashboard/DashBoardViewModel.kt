@@ -1,5 +1,6 @@
 package me.androidbox.spendless.dashboard
 
+import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,19 +50,22 @@ class DashBoardViewModel(
     private fun fetchMostPopularCategory() {
         viewModelScope.launch {
             fetchMostPopularCategoryUseCase.execute()
-                .catch {
-                    println("CATCH ME POPULAR ${it.printStackTrace()}")
-                    _dashboardState.update { dashboardState ->
-                        dashboardState.copy(
-                            popularTransaction = Transaction()
-                        )
-                    }
-                }
-                .collectLatest { category ->
-                    _dashboardState.update { dashboardState ->
-                        dashboardState.copy(
-                            popularTransaction = category
-                        )
+                .collectLatest { result ->
+                    println("RESULT VM")
+                    result.onSuccess { transaction ->
+                        _dashboardState.update { dashboardState ->
+                            dashboardState.copy(
+                                popularTransaction = transaction
+                            )
+                        }
+                    }.onFailure {
+                        println("RESULT.FAILURE VM")
+                        it.printStackTrace()
+                        _dashboardState.update { dashboardState ->
+                            dashboardState.copy(
+                                popularTransaction = Transaction()
+                            )
+                        }
                     }
                 }
         }

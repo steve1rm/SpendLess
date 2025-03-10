@@ -8,7 +8,7 @@ import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCa
 class FetchMostPopularCategoryUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ): FetchMostPopularCategoryUseCase {
-    override fun execute(): Flow<Transaction> {
+    override fun execute(): Flow<Result<Transaction>> {
         return spendLessDataSource.getMostPopularCategory()
     }
 }
