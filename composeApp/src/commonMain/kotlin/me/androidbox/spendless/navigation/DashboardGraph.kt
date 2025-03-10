@@ -13,7 +13,7 @@ import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScre
 import me.androidbox.spendless.dashboard.presentation.screens.DashboardScreen
 import org.koin.compose.viewmodel.koinViewModel
 
-fun NavGraphBuilder.dashboardGraph(navController: NavController) {
+fun NavGraphBuilder.dashboardGraph(navController: NavController, shouldNavigateOnWidget: Boolean = false) {
     this.navigation<Route.DashboardGraph>(
         startDestination = Route.DashboardScreen
     ) {
@@ -24,7 +24,12 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
 
             dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
+          /*  if(shouldNavigateOnWidget) {
+                dashBoardViewModel.onAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
+            }*/
+
             DashboardScreen(
+                shouldNavigateOnWidget = shouldNavigateOnWidget,
                 dashboardState = dashboardState,
                 dashboardAction = { dashboardAction ->
                     when(dashboardAction) {

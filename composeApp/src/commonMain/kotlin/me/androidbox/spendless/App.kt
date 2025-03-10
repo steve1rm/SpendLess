@@ -12,23 +12,22 @@ import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.navigation.authentication
 import me.androidbox.spendless.navigation.dashboardGraph
 import me.androidbox.spendless.navigation.settingsGraph
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun App() {
+fun App(shouldNavigateOnWidget: Boolean = false) {
     MaterialTheme {
 
         val navController = rememberNavController()
 
         NavHost(
             navController = navController,
-            startDestination = Route.DashboardGraph
+            startDestination = if(shouldNavigateOnWidget) Route.DashboardGraph else Route.AuthenticationGraph
         ) {
 
             this.authentication(navController)
 
-            this.dashboardGraph(navController)
+            this.dashboardGraph(navController, shouldNavigateOnWidget)
 
             this.settingsGraph(navController)
         }

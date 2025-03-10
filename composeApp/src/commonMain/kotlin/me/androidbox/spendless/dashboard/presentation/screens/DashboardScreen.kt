@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -77,10 +78,17 @@ import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun DashboardScreen(
+    shouldNavigateOnWidget: Boolean,
     modifier: Modifier = Modifier,
     dashboardState: DashboardState,
     dashboardAction: (action: DashboardAction) -> Unit,
 ) {
+
+    LaunchedEffect(shouldNavigateOnWidget) {
+        if(shouldNavigateOnWidget) {
+            dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
+        }
+    }
 
     Scaffold(
         modifier = modifier

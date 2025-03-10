@@ -15,20 +15,17 @@ import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val cameFromWidget = intent.extras?.getBoolean("WIDGET") ?: false
-        println("cameFromWidget $cameFromWidget")
+        val shouldNavigateFromWidget = intent.extras?.getBoolean("WIDGET") ?: false
+        println("cameFromWidget $shouldNavigateFromWidget")
 
         setContent {
-            App()
+            App(shouldNavigateOnWidget = shouldNavigateFromWidget)
         }
     }
 }
