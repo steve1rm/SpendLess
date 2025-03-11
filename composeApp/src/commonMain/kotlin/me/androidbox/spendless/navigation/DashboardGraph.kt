@@ -18,15 +18,19 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController, shouldNavigateO
         startDestination = Route.DashboardScreen
     ) {
 
-        composable<Route.DashboardScreen> {
+        composable<Route.DashboardScreen>(
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "spendLess://dashboard"
+            })) {
+
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
             dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
-          /*  if(shouldNavigateOnWidget) {
-                dashBoardViewModel.onAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
-            }*/
+            /*  if(shouldNavigateOnWidget) {
+                  dashBoardViewModel.onAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
+              }*/
 
             DashboardScreen(
                 shouldNavigateOnWidget = shouldNavigateOnWidget,
@@ -44,11 +48,7 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController, shouldNavigateO
             )
         }
 
-        composable<Route.AllTransactionsScreen>(
-            deepLinks = listOf(navDeepLink {
-                uriPattern = "spendLess://dashboard"
-            })
-        ) {
+        composable<Route.AllTransactionsScreen>() {
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 

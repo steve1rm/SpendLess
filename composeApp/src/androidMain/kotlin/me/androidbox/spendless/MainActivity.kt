@@ -7,12 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.spendless.authentication.presentation.CreatePinState
-import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.authentication.presentation.components.DeleteKey
 import me.androidbox.spendless.authentication.presentation.components.DigitKey
 import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
+import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val shouldNavigateFromWidget = intent.extras?.getBoolean("WIDGET") ?: false
-        println("cameFromWidget $shouldNavigateFromWidget")
+        println("onCreate $shouldNavigateFromWidget")
 
         setContent {
             App(shouldNavigateOnWidget = shouldNavigateFromWidget)

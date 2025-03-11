@@ -3,6 +3,7 @@ package me.androidbox.spendless
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
@@ -16,6 +17,7 @@ import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.ActionCallback
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
@@ -42,10 +44,13 @@ class TransactionWidget : GlanceAppWidget() {
                     .background(color = Primary)
                     .padding(start = 16.dp, end = 16.dp)
                     .clickable(
-                        actionStartActivity<MainActivity>(
+                      /*  actionStartActivity<MainActivity>(
                             parameters = actionParametersOf(ActionParameters.Key<Boolean>("WIDGET") to true)
-                        )
-                    ),
+                        )*/
+
+                                actionRunCallback<TransactionCallback>()
+
+                        ),
                 verticalAlignment = Alignment.Vertical.CenterVertically,
                 horizontalAlignment = Alignment.Horizontal.Start
             ) {
@@ -76,17 +81,16 @@ object TransactionCallback : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
-        val intent = Intent(Intent.ACTION_VIEW, "spendLess://dashboard".toUri()).apply {
-            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        println("TRANSACTION CALLBACK")
+        val deepLinkUri = "spendless://dashboard".toUri()
+
+        val intent = Intent(Intent.ACTION_VIEW, deepLinkUri).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            addCategory(Intent.CATEGORY_DEFAULT)
+            addCategory(Intent.CATEGORY_BROWSABLE)
+            setPackage(context.packageName)
         }
 
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        pendingIntent.send()
+        context.startActivity(intent)
     }
 }
