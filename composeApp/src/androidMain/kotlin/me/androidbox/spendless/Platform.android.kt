@@ -1,6 +1,8 @@
 package me.androidbox.spendless
 
+import android.content.Context
 import android.os.Build
+import com.liftric.kvault.KVault
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
@@ -38,5 +40,26 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
         if(expensesFormat == ExpensesFormat.BRACKET) {
             append(")")
         }
+    }
+}
+
+actual class SpendLessPreferenceImp(context: Context) : SpendLessPreference {
+
+    private val store = KVault(context, "SpendLess")
+
+    actual override fun setUsername(value: String) {
+        store.set("USERNAME", value)
+    }
+
+    actual override fun getUsername(): String? {
+        return store.string("USERNAME")
+    }
+
+    actual override fun setTimeStamp(value: Long) {
+        store.set("TIMESTAMP", value)
+    }
+
+    actual override fun getTimeStamp(): Long? {
+        return store.long("TIMESTAMP")
     }
 }

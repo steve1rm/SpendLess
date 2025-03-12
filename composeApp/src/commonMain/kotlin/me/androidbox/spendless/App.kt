@@ -8,17 +8,24 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.liftric.kvault.KVault
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.navigation.authentication
 import me.androidbox.spendless.navigation.dashboardGraph
 import me.androidbox.spendless.navigation.settingsGraph
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun App(shouldNavigateOnWidget: Boolean = false) {
-    MaterialTheme {
 
+    MaterialTheme {
         val navController = rememberNavController()
+
+        val spendLessPreference = koinInject<SpendLessPreference>()
+
+        println("USERNAME: ${spendLessPreference.getUsername()}")
+        println("TIMESTAMP: ${spendLessPreference.getTimeStamp()}")
 
         NavHost(
             navController = navController,

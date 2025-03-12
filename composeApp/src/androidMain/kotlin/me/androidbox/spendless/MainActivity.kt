@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.liftric.kvault.KVault
 import me.androidbox.spendless.authentication.presentation.CreatePinState
 import me.androidbox.spendless.authentication.presentation.components.DeleteKey
 import me.androidbox.spendless.authentication.presentation.components.DigitKey

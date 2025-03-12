@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
+            implementation("com.liftric:kvault:1.12.0")
 //            implementation(libs.spring.security)
 
             // Room

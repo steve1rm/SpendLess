@@ -83,7 +83,6 @@ fun DashboardScreen(
     dashboardState: DashboardState,
     dashboardAction: (action: DashboardAction) -> Unit,
 ) {
-
     LaunchedEffect(shouldNavigateOnWidget) {
         if(shouldNavigateOnWidget) {
             dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))

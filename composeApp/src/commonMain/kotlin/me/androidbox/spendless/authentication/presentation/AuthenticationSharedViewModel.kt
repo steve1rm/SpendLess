@@ -3,11 +3,14 @@ package me.androidbox.spendless.authentication.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.authentication.domain.InsertUserUseCase
 
 class AuthenticationSharedViewModel(
-    private val insertUserUseCase: InsertUserUseCase
+    private val insertUserUseCase: InsertUserUseCase,
+    private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
 
     private var username = ""
@@ -34,6 +37,8 @@ class AuthenticationSharedViewModel(
                     username = username,
                     pin = pin)
                 )
+                spendLessPreference.setUsername(username)
+                spendLessPreference.setTimeStamp(Clock.System.now().toEpochMilliseconds())
             }
             catch (ex: Exception) {
                 ex.printStackTrace()

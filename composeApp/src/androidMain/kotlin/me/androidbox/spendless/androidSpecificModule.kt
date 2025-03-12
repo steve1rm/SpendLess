@@ -17,4 +17,8 @@ val androidSpecificModule = module {
             .setDriver(AndroidSQLiteDriver())
             .build()
     }
+
+    single<SpendLessPreference> {
+        SpendLessPreferenceImp(androidContext())
+    }
 }
