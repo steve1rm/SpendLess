@@ -8,7 +8,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.liftric.kvault.KVault
+import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.navigation.authentication
 import me.androidbox.spendless.navigation.dashboardGraph
@@ -24,12 +24,17 @@ fun App(shouldNavigateOnWidget: Boolean = false) {
 
         val spendLessPreference = koinInject<SpendLessPreference>()
 
+        val isSessionActive = spendLessPreference.getTimeStamp()?.let { timeStamp ->
+            hasActiveSession(timeStamp)
+        } ?: false
+
         println("USERNAME: ${spendLessPreference.getUsername()}")
         println("TIMESTAMP: ${spendLessPreference.getTimeStamp()}")
+        println("HAS ACTIVE SESSION: $isSessionActive")
 
         NavHost(
             navController = navController,
-            startDestination = if(shouldNavigateOnWidget) Route.DashboardGraph else Route.AuthenticationGraph
+            startDestination = if(shouldNavigateOnWidget || isSessionActive) Route.DashboardGraph else Route.AuthenticationGraph
         ) {
 
             this.authentication(navController)
