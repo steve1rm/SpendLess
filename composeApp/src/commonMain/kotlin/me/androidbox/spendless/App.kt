@@ -15,54 +15,50 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import me.androidbox.spendless.authentication.domain.GetUserUseCase
-import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.navigation.Route
 import me.androidbox.spendless.navigation.authentication
 import me.androidbox.spendless.navigation.dashboardGraph
 import me.androidbox.spendless.navigation.settingsGraph
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun App(shouldNavigateOnWidget: Boolean = false) {
+fun App() {
 
     MaterialTheme {
         val navController = rememberNavController()
         val mainViewModel = koinViewModel<MainViewModel>()
-        val mainState by mainViewModel.mainState.collectAsStateWithLifecycle(initialValue = MainState())
 
-        println("USERNAME: ${mainState.hasUsername}")
-        println("HAS ACTIVE SESSION: ${mainState.isSessionActive}")
+  /*      println("USERNAME: ${mainState.hasUsername}")
+        println("HAS ACTIVE SESSION: ${mainState.isSessionActive}")*/
 
         // No login credentials => show login screen
         // login credentials and expired => pin prompt screen
         // login credentials and not expired => dashboard screen
         // navigate from widget => dashboard screen open transactions
 
-        if(mainState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
+        val mainState by mainViewModel.mainState.collectAsStateWithLifecycle(initialValue = MainState.Loading)
+
+        when(val status = mainState) {
+           MainState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        }
-        else {
-            NavHost(
-                navController = navController,
-                startDestination = if(mainState.isSessionActive) Route.DashboardGraph else Route.AuthenticationGraph
-            ) {
+            is MainState.Success -> {
+                NavHost(
+                    navController = navController,
+                    startDestination = if(status.isSessionActive) Route.DashboardGraph else Route.AuthenticationGraph
+                ) {
 
-                this.authentication(navController)
+                    this.authentication(navController)
 
-                this.dashboardGraph(navController)
+                    this.dashboardGraph(navController)
 
-                this.settingsGraph(navController)
+                    this.settingsGraph(navController)
+                }
             }
         }
     }

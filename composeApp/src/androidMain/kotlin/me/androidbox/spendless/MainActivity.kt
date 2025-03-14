@@ -22,11 +22,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val shouldNavigateFromWidget = intent.extras?.getBoolean("WIDGET") ?: false
-        println("onCreate $shouldNavigateFromWidget")
-
         setContent {
-            App(shouldNavigateOnWidget = shouldNavigateFromWidget)
+            App()
         }
     }
 }

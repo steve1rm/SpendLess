@@ -1,7 +1,9 @@
 package me.androidbox.spendless
 
-data class MainState(
-    val hasUsername: Boolean = false,
-    val isSessionActive: Boolean = false,
-    val isLoading: Boolean = false
-)
+sealed class MainState {
+    data class Success(
+        val hasUsername: Boolean = false,
+        val isSessionActive: Boolean = false) : MainState()
+
+    data object Loading : MainState()
+}

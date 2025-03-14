@@ -2,6 +2,7 @@ package me.androidbox.spendless
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
@@ -14,7 +15,7 @@ class MainViewModel(
 ) : ViewModel() {
     private var hasCompleted = false
 
-    val _mainState = MutableStateFlow<MainState>(MainState())
+    private val _mainState = MutableStateFlow<MainState>(MainState.Loading)
     val mainState = _mainState.asStateFlow()
         .onStart {
             if(!hasCompleted) {
@@ -25,23 +26,20 @@ class MainViewModel(
 
     private fun getLoginCredentials() {
         viewModelScope.launch {
-            _mainState.update { state -> state.copy(isLoading = true) }
+            _mainState.value = MainState.Loading
             val username = spendLessPreference.getUsername()
+            delay(3_000L)
 
             username?.let { _ ->
-                _mainState.update { state ->
-                    state.copy(
-                        isSessionActive = hasActiveSession(spendLessPreference.getTimeStamp()),
-                        isLoading = false)
-                }
+                _mainState.value = MainState.Success(
+                    isSessionActive = hasActiveSession(spendLessPreference.getTimeStamp()),
+                    hasUsername = true
+                )
             } ?: run {
-                _mainState.update { mainState ->
-                    mainState.copy(
-                        hasUsername = false,
-                        isSessionActive = false,
-                        isLoading = false
-                    )
-                }
+                _mainState.value = MainState.Success(
+                    isSessionActive = false,
+                    hasUsername = false
+                )
             }
         }
     }

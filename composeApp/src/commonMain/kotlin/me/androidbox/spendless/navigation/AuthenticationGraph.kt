@@ -133,6 +133,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
             val authenticationSharedViewModel = it.sharedViewModel<AuthenticationSharedViewModel>(navController)
 
             ObserveAsEvents(pinViewModel.pinChannel) { createPinEvent ->
+
                 when (createPinEvent) {
                     is CreatePinEvent.PinEntryEvent -> {
                         println("ObserveEvent ${createPinEvent.isValid}")
