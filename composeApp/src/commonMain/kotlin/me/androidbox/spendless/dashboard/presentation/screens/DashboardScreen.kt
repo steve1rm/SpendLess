@@ -107,7 +107,7 @@ fun DashboardScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 title = {
                     Text(
-                        text = "Steve Mason",
+                        text = dashboardState.username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W600,
                         color = OnPrimary

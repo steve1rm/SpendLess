@@ -27,6 +27,7 @@ class MainViewModel(
     private fun getLoginCredentials() {
         viewModelScope.launch {
             _mainState.value = MainState.Loading
+
             val username = spendLessPreference.getUsername()
             delay(3_000L)
 

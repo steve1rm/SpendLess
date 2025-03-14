@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
+import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
@@ -25,7 +26,8 @@ class DashBoardViewModel(
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
-    private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase
+    private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase,
+    private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
 
     private var hasFetched = false
@@ -34,6 +36,7 @@ class DashBoardViewModel(
     val dashboardState = _dashboardState.asStateFlow()
         .onStart {
             if(!hasFetched) {
+                fetchActiveUser()
                 fetchTransactions()
                 fetchLargestTransaction()
                 fetchTotalSpentPreviousWeek()
@@ -46,6 +49,16 @@ class DashBoardViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DashboardState()
         )
+
+    private fun fetchActiveUser() {
+        viewModelScope.launch {
+            _dashboardState.update { state ->
+                state.copy(
+                    username = spendLessPreference.getUsername() ?: ""
+                )
+            }
+        }
+    }
 
     private fun fetchMostPopularCategory() {
         viewModelScope.launch {

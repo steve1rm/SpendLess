@@ -4,6 +4,7 @@ import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 
 data class DashboardState(
+    val username: String = "",
     val showTransactionBottomSheet: Boolean = false,
     val transaction: Transaction = Transaction(),
     val largestTransaction: Transaction = Transaction(),
