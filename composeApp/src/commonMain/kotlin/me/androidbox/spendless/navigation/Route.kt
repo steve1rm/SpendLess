@@ -29,7 +29,7 @@ sealed interface Route {
     data object PreferenceOnBoardingScreen : Route
 
     @Serializable
-    data object DashboardScreen : Route
+    data class DashboardScreen(val openTransaction: Boolean) : Route
 
     @Serializable
     data object AllTransactionsScreen : Route

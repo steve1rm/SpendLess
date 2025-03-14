@@ -82,7 +82,7 @@ object TransactionCallback : ActionCallback {
         parameters: ActionParameters
     ) {
         println("TRANSACTION CALLBACK")
-        val deepLinkUri = "spendless://dashboard".toUri()
+        val deepLinkUri = "spendless://dashboard/1".toUri()
 
         val intent = Intent(Intent.ACTION_VIEW, deepLinkUri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

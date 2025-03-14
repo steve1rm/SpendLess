@@ -62,6 +62,7 @@ kotlin {
 
             implementation(libs.kotlinx.serialization)
 
+
             implementation(libs.crypto)
             // Koin
             api(libs.koin.core)

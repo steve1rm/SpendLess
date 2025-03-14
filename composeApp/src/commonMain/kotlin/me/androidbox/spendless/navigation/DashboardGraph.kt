@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScreen
@@ -20,8 +21,11 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController, shouldNavigateO
 
         composable<Route.DashboardScreen>(
             deepLinks = listOf(navDeepLink {
-                uriPattern = "spendLess://dashboard"
+                uriPattern = "spendLess://dashboard/{openTransaction}"
             })) {
+
+      //      val openTransaction = it.arguments?.getString("openTransaction")
+        //    println("OPEN-TRANSACTION $openTransaction")
 
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
