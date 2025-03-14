@@ -26,6 +26,8 @@ interface SpendLessPreference {
 
     suspend fun setTimeStamp(value: Long)
     suspend fun getTimeStamp(): Long?
+
+    suspend fun clearAll()
 }
 
 expect class SpendLessPreferenceImp : SpendLessPreference {
@@ -33,4 +35,5 @@ expect class SpendLessPreferenceImp : SpendLessPreference {
     override suspend fun getUsername(): String?
     override suspend fun setTimeStamp(value: Long)
     override suspend fun getTimeStamp(): Long?
+    override suspend fun clearAll()
 }

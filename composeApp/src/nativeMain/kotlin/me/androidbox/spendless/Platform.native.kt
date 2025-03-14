@@ -31,4 +31,8 @@ actual class SpendLessPreferenceImp : SpendLessPreference {
     actual override fun getTimeStamp(key: String): Long? {
         TODO("Not yet implemented")
     }
+
+    actual override suspend fun clearAll() {
+        TODO("Not yet implemented")
+    }
 }

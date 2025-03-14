@@ -29,7 +29,7 @@ class MainViewModel(
             _mainState.value = MainState.Loading
 
             val username = spendLessPreference.getUsername()
-            delay(3_000L)
+            delay(1_000L)
 
             username?.let { _ ->
                 _mainState.value = MainState.Success(

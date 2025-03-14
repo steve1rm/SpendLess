@@ -62,4 +62,8 @@ actual class SpendLessPreferenceImp(context: Context) : SpendLessPreference {
     actual override suspend fun getTimeStamp(): Long? {
         return store.long("TIMESTAMP")
     }
+
+    actual override suspend fun clearAll() {
+        store.clear()
+    }
 }

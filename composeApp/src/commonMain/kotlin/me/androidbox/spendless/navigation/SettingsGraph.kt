@@ -2,17 +2,23 @@ package me.androidbox.spendless.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import kotlinx.coroutines.GlobalScope
+import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
 import me.androidbox.spendless.onboarding.screens.components.PreferenceContent
 import me.androidbox.spendless.settings.presentation.PreferenceSettingsScreen
 import me.androidbox.spendless.settings.presentation.SecurityScreen
 import me.androidbox.spendless.settings.presentation.SettingsScreen
+import me.androidbox.spendless.settings.presentation.SettingsViewModel
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.settingsGraph(navController: NavController) {
@@ -21,6 +27,8 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         startDestination = Route.SettingsScreen) {
 
         composable<Route.SettingsScreen> {
+            val settingsViewModel = koinViewModel<SettingsViewModel>()
+
             SettingsScreen(
                 onPreferenceClicked = {
                     navController.navigate(Route.PreferenceSettingsScreen)
@@ -29,7 +37,8 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                     navController.navigate(Route.SecurityScreen)
                 },
                 onLogoutClicked = {
-
+                    settingsViewModel.clearPreferences()
+                    navController.navigate(Route.AuthenticationGraph)
                 },
                 onBackClicked = {
                     navController.popBackStack()

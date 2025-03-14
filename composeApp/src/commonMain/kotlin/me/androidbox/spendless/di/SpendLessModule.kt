@@ -21,6 +21,7 @@ import me.androidbox.spendless.authentication.domain.imp.ValidateUserUseCaseImp
 import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
 import me.androidbox.spendless.settings.domain.InsertPreferenceUseCase
 import me.androidbox.spendless.settings.domain.imp.InsertPreferenceUseCaseImp
+import me.androidbox.spendless.settings.presentation.SettingsViewModel
 import me.androidbox.spendless.transactions.TransactionViewModel
 import me.androidbox.spendless.transactions.data.RepositoryImp
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
@@ -44,6 +45,7 @@ val spendLessModule = module {
     viewModelOf(::RegisterViewModel)
     viewModelOf(::PreferenceViewModel)
     viewModelOf(::MainViewModel)
+    viewModelOf(::SettingsViewModel)
 
     viewModel {
         AuthenticationSharedViewModel(

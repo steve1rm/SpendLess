@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package me.androidbox.spendless.settings.presentation
 
 import androidx.compose.foundation.background

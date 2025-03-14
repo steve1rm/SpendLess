@@ -83,6 +83,6 @@ fun hasActiveSession(sessionTime: Long?): Boolean {
 
         val duration = currentTime - expiryTime
         println("DURATION $duration")
-        duration <= 1.minutes
+        duration <= 5.minutes
     }
 }
