@@ -14,30 +14,24 @@ import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScre
 import me.androidbox.spendless.dashboard.presentation.screens.DashboardScreen
 import org.koin.compose.viewmodel.koinViewModel
 
-fun NavGraphBuilder.dashboardGraph(navController: NavController, shouldNavigateOnWidget: Boolean = false) {
+fun NavGraphBuilder.dashboardGraph(navController: NavController) {
     this.navigation<Route.DashboardGraph>(
-        startDestination = Route.DashboardScreen
+        startDestination = Route.DashboardScreen(openTransaction = 0)
     ) {
 
         composable<Route.DashboardScreen>(
-            deepLinks = listOf(navDeepLink {
+           deepLinks = listOf(navDeepLink {
                 uriPattern = "spendLess://dashboard/{openTransaction}"
             })) {
 
-      //      val openTransaction = it.arguments?.getString("openTransaction")
-        //    println("OPEN-TRANSACTION $openTransaction")
-
+            val shouldOpenTransaction = it.toRoute<Route.DashboardScreen>().openTransaction
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
             dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
-            /*  if(shouldNavigateOnWidget) {
-                  dashBoardViewModel.onAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
-              }*/
-
             DashboardScreen(
-                shouldNavigateOnWidget = shouldNavigateOnWidget,
+                shouldNavigateOnWidget = shouldOpenTransaction == 1,
                 dashboardState = dashboardState,
                 dashboardAction = { dashboardAction ->
                     when(dashboardAction) {

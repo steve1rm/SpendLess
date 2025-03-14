@@ -47,19 +47,19 @@ actual class SpendLessPreferenceImp(context: Context) : SpendLessPreference {
 
     private val store = KVault(context, "SpendLess")
 
-    actual override fun setUsername(value: String) {
+    actual override suspend fun setUsername(value: String) {
         store.set("USERNAME", value)
     }
 
-    actual override fun getUsername(): String? {
+    actual override suspend fun getUsername(): String? {
         return store.string("USERNAME")
     }
 
-    actual override fun setTimeStamp(value: Long) {
+    actual override suspend fun setTimeStamp(value: Long) {
         store.set("TIMESTAMP", value)
     }
 
-    actual override fun getTimeStamp(): Long? {
+    actual override suspend fun getTimeStamp(): Long? {
         return store.long("TIMESTAMP")
     }
 }

@@ -73,11 +73,16 @@ fun String.formatMoney(currency: Currency, expensesFormat: ExpensesFormat): Stri
     }
 }
 
-fun hasActiveSession(sessionTime: Long): Boolean {
-    val expiryTime = Instant.fromEpochMilliseconds(sessionTime)
-    val currentTime = Clock.System.now()
+fun hasActiveSession(sessionTime: Long?): Boolean {
+    return if(sessionTime == null) {
+        false
+    }
+    else {
+        val expiryTime = Instant.fromEpochMilliseconds(sessionTime)
+        val currentTime = Clock.System.now()
 
-    val duration = currentTime - expiryTime
-    println("DURATION $duration")
-    return duration <= 1.minutes
+        val duration = currentTime - expiryTime
+        println("DURATION $duration")
+        duration <= 1.minutes
+    }
 }

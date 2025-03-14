@@ -2,6 +2,7 @@ package me.androidbox.spendless.navigation
 
 import kotlinx.serialization.Serializable
 
+@Serializable
 sealed interface Route {
 
     @Serializable
@@ -29,7 +30,7 @@ sealed interface Route {
     data object PreferenceOnBoardingScreen : Route
 
     @Serializable
-    data class DashboardScreen(val openTransaction: Boolean) : Route
+    data class DashboardScreen(val openTransaction: Int) : Route
 
     @Serializable
     data object AllTransactionsScreen : Route

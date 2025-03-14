@@ -21,16 +21,16 @@ expect fun Long.formatMoney(
 
 
 interface SpendLessPreference {
-    fun setUsername(value: String)
-    fun getUsername(): String?
+    suspend fun setUsername(value: String)
+    suspend fun getUsername(): String?
 
-    fun setTimeStamp(value: Long)
-    fun getTimeStamp(): Long?
+    suspend fun setTimeStamp(value: Long)
+    suspend fun getTimeStamp(): Long?
 }
 
 expect class SpendLessPreferenceImp : SpendLessPreference {
-    override fun setUsername(value: String)
-    override fun getUsername(): String?
-    override fun setTimeStamp(value: Long)
-    override fun getTimeStamp(): Long?
+    override suspend fun setUsername(value: String)
+    override suspend fun getUsername(): String?
+    override suspend fun setTimeStamp(value: Long)
+    override suspend fun getTimeStamp(): Long?
 }

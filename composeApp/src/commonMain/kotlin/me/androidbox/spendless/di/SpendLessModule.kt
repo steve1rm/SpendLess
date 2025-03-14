@@ -1,5 +1,6 @@
 package me.androidbox.spendless.di
 
+import me.androidbox.spendless.MainViewModel
 import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.presentation.AuthenticationSharedViewModel
@@ -42,6 +43,7 @@ val spendLessModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
     viewModelOf(::PreferenceViewModel)
+    viewModelOf(::MainViewModel)
 
     viewModel {
         AuthenticationSharedViewModel(
