@@ -15,21 +15,20 @@ actual fun Long.formatMoney(
     TODO("Not yet implemented")
 }
 
-
 actual class SpendLessPreferenceImp : SpendLessPreference {
-    actual override fun setUsername(value: String) {
+    actual override fun setUsername(key: String, value: String) {
         TODO("Not yet implemented")
     }
 
-    actual override fun getUsername(): String? {
+    actual override fun getUsername(key: String): String? {
         TODO("Not yet implemented")
     }
 
-    actual override fun setTimeStamp(value: Long) {
+    actual override fun setTimeStamp(key: String, value: Long) {
         TODO("Not yet implemented")
     }
 
-    actual override fun getTimeStamp(): Long? {
+    actual override fun getTimeStamp(key: String): Long? {
         TODO("Not yet implemented")
     }
 }

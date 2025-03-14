@@ -10,7 +10,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 @Composable
 fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (event: T) -> Unit) {
@@ -68,4 +71,13 @@ fun String.formatMoney(currency: Currency, expensesFormat: ExpensesFormat): Stri
             append(")")
         }
     }
+}
+
+fun hasActiveSession(sessionTime: Long): Boolean {
+    val expiryTime = Instant.fromEpochMilliseconds(sessionTime)
+    val currentTime = Clock.System.now()
+
+    val duration = currentTime - expiryTime
+    println("DURATION $duration")
+    return duration <= 1.minutes
 }
