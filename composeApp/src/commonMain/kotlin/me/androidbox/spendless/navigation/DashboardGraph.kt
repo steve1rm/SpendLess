@@ -38,6 +38,9 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                         DashboardAction.OnShowAllClicked -> {
                             navController.navigate(route = Route.AllTransactionsScreen)
                         }
+                        DashboardAction.OpenSettings -> {
+                            navController.navigate(route = Route.SettingsGraph)
+                        }
                         else -> {
                             dashBoardViewModel.onAction(dashboardAction)
                         }
