@@ -28,9 +28,6 @@ fun App() {
         val navController = rememberNavController()
         val mainViewModel = koinViewModel<MainViewModel>()
 
-  /*      println("USERNAME: ${mainState.hasUsername}")
-        println("HAS ACTIVE SESSION: ${mainState.isSessionActive}")*/
-
         // No login credentials => show login screen
         // login credentials and expired => pin prompt screen
         // login credentials and not expired => dashboard screen

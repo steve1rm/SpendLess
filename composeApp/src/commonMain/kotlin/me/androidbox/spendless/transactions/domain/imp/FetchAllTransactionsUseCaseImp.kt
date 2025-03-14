@@ -7,6 +7,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import me.androidbox.spendless.core.data.SpendLessDataSource
 import me.androidbox.spendless.core.presentation.TransactionItems
+import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.dashboard.AllTransactions
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
@@ -17,7 +18,7 @@ class FetchAllTransactionsUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : FetchAllTransactionsUseCase {
     override fun execute(): Flow<List<AllTransactions>> {
-        return populate().map { transactionList ->
+        return spendLessDataSource.getAllTransaction().map { transactionList ->
             transactionList
                 .sortedByDescending { it.createAt }
                 .groupBy { it.createAt }
@@ -26,30 +27,25 @@ class FetchAllTransactionsUseCaseImp(
                 .map { mapOfTransactions ->
                     AllTransactions(
                         createdAt = mapOfTransactions.key,
-                        transactions = mapOfTransactions.value
+                        transactions = mapOfTransactions.value.map { transactionTable ->
+                            Transaction(
+                                id = transactionTable.id,
+                                name = transactionTable.name,
+                                type = TransactionType.entries[transactionTable.type],
+                                counterParty = transactionTable.counterParty,
+                                category = TransactionItems.entries[transactionTable.category],
+                                note = transactionTable.note,
+                                createAt = transactionTable.createAt,
+                                amount = transactionTable.amount
+                            )
+                        }
                     )
                 }
         }
-
-        /*spendLessDataSource.getAllTransaction().map {
-            it.map { transactionTable ->
-                Transaction(
-                    name = transactionTable.name,
-                    type = TransactionType.entries[transactionTable.type],
-                    counterParty = transactionTable.counterParty,
-                    category = TransactionItems.entries[transactionTable.category],
-                    note = transactionTable.note,
-                    createAt = transactionTable.createAt,
-                    amount = transactionTable.amount
-                )
-            }
-        }*/
     }
 }
 
-
 fun populate(): Flow<List<Transaction>> {
-
     println("POPULATE")
     val today = Clock.System.now().toEpochMilliseconds()
 
