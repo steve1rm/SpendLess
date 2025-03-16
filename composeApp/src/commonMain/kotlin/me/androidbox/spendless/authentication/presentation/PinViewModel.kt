@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.presentation.CreatePinEvent.*
@@ -184,7 +185,7 @@ class PinViewModel(
                                         }
                                     }
                                     else {
-                                        // _pinChannel.send()
+                                        spendLessPreference.setTimeStamp(Clock.System.now().toEpochMilliseconds())
                                         _pinChannel.send(CreatePinEvent.IsAuthenticated(isAuthenticated = true))
                                     }
                                 }
