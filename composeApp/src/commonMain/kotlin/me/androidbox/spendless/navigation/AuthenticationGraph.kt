@@ -154,6 +154,10 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                             )
                         }
                     }
+
+                    is CreatePinEvent.IsAuthenticated -> {
+                        /** no-op */
+                    }
                 }
             }
 
@@ -178,6 +182,20 @@ fun NavGraphBuilder.authentication(navController: NavController) {
             val pin = it.toRoute<Route.PinPromptScreen>().pin
 
             println("PIN $pin")
+
+            ObserveAsEvents(
+                flow = pinViewModel.pinChannel,
+                onEvent = { event ->
+                    when(event) {
+                        is CreatePinEvent.IsAuthenticated -> {
+                            navController.navigate(route = Route.DashboardGraph)
+                        }
+                        is CreatePinEvent.PinEntryEvent -> {
+                            /* no-op */
+                        }
+                    }
+                }
+            )
 
             PinPromptScreen(
                 createPinState = pinState,

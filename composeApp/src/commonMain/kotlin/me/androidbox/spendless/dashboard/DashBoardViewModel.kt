@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -56,6 +59,9 @@ class DashBoardViewModel(
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = DashboardState()
         )
+
+    private val _dashboardEvent = Channel<DashboardEvents>()
+    val dashboardEvents = _dashboardEvent.receiveAsFlow()
 
     private fun fetchActiveUser() {
         viewModelScope.launch {
@@ -139,28 +145,8 @@ class DashBoardViewModel(
      * Correct Open transaction sheet
      *
      * */
-
-    private fun canShowTransactionScreen(): Boolean {
-        val result = viewModelScope.async {
-            val isSessionActive = hasActiveSession(spendLessPreference.getTimeStamp())
-
-            if(isSessionActive) {
-                true
-            }
-            else {
-                /** Get the active user */
-                val username = spendLessPreference.getUsername()
-                if(username == null) {
-                    false
-                }
-                else {
-                    /** Get the active user table from the room db */
-                    getUserUseCase.execute(username) != null
-                }
-            }
-        }
-
-        return result.await()
+    private suspend fun canShowTransactionScreen(): Boolean {
+        return hasActiveSession(spendLessPreference.getTimeStamp())
     }
 
     fun onAction(action: DashboardAction) {
@@ -175,10 +161,16 @@ class DashBoardViewModel(
                  * Correct Open transaction sheet
                  *
                  * */
-
-
-                _dashboardState.update { dashboardState ->
-                    dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
+                viewModelScope.launch {
+                    if(canShowTransactionScreen()) {
+                        _dashboardState.update { dashboardState ->
+                            dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
+                        }
+                    }
+                    else {
+                        // Open PinPrompt screen - send event
+                        _dashboardEvent.send(DashboardEvents.OpenPinPromptScreen(pin = "12346"))
+                    }
                 }
             }
 

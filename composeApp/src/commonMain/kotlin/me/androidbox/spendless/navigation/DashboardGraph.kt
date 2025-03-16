@@ -10,8 +10,10 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
+import me.androidbox.spendless.core.presentation.ObserveAsEvents
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.DashboardEvents
 import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScreen
 import me.androidbox.spendless.dashboard.presentation.screens.DashboardScreen
 import org.koin.compose.viewmodel.koinViewModel
@@ -31,6 +33,16 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
             dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
+
+            ObserveAsEvents(
+                flow = dashBoardViewModel.dashboardEvents,
+                onEvent = { event: DashboardEvents ->
+                    when(event) {
+                        is DashboardEvents.OpenPinPromptScreen -> {
+                            navController.navigate(route = Route.PinPromptScreen(pin = event.pin))
+                        }
+                    }
+                })
 
             DashboardScreen(
                 shouldNavigateOnWidget = shouldOpenTransaction == 1,

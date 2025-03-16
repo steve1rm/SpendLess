@@ -80,7 +80,7 @@ class LoginViewModel(
     private fun getLoginCredentials() {
         viewModelScope.launch {
             try {
-                val pin = generatePinDigest(loginState.value.username, loginState.value.pin)
+                val pin = generatePinDigest(loginState.value.pin)
 
                 when(validateUserUseCase.execute(loginState.value.username, pin)) {
                     null -> {

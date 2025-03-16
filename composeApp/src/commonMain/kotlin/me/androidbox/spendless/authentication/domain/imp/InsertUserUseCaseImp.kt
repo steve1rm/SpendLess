@@ -9,7 +9,7 @@ class InsertUserUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : InsertUserUseCase {
     override suspend fun execute(user: User){
-        val pinHash: String = generatePinDigest(user.username, user.pin)
+        val pinHash: String = generatePinDigest(user.pin)
         println("PINHASH: $pinHash")
 
         val securedUser = User(
