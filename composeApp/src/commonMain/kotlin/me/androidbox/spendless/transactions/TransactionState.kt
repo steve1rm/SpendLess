@@ -1,8 +1,7 @@
 package me.androidbox.spendless.transactions
 
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.transactions.domain.TransactionModel
+import me.androidbox.spendless.transactions.data.Transaction
 
 data class TransactionState(
     val name: String = "",

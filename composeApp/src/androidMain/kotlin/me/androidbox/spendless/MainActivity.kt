@@ -14,8 +14,8 @@ import me.androidbox.spendless.authentication.presentation.components.KeyPad
 import me.androidbox.spendless.authentication.presentation.components.PinDots
 import me.androidbox.spendless.authentication.presentation.screens.CreatePinScreen
 import me.androidbox.spendless.core.presentation.KeyButtons
-import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import me.androidbox.spendless.transactions.data.Transaction
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

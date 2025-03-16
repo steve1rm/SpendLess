@@ -18,7 +18,7 @@ sealed interface Route {
     data object PinCreateScreen : Route
 
     @Serializable
-    data object PinPromptScreen : Route
+    data class PinPromptScreen(val pin: String) : Route
 
     @Serializable
     data object LoginScreen : Route

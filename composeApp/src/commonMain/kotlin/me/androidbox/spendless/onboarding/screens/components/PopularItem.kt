@@ -1,7 +1,6 @@
 package me.androidbox.spendless.onboarding.screens.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,8 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
-import me.androidbox.spendless.core.presentation.TransactionItems
-import me.androidbox.spendless.dashboard.Transaction
+import me.androidbox.spendless.transactions.data.Transaction
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

@@ -65,10 +65,10 @@ import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
-import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.dashboard.AllTransactions
 import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import me.androidbox.spendless.transactions.data.AllTransactions
+import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -188,6 +188,16 @@ fun DashboardScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
+                    /**
+                     * Check if session is still active
+                     * if not active
+                     * get username from sharedpreferences
+                     * get get PIN from user table
+                     * show the PIN prompt screen
+                     * Correct Open transaction sheet
+                     *
+                     * */
+
                     dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
                 },
                 containerColor = SecondaryContainer,

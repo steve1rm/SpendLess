@@ -3,6 +3,7 @@ package me.androidbox.spendless.dashboard
 import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import me.androidbox.spendless.SpendLessPreference
+import me.androidbox.spendless.authentication.domain.GetUserUseCase
+import me.androidbox.spendless.core.presentation.hasActiveSession
+import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
@@ -27,6 +31,7 @@ class DashBoardViewModel(
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
     private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase,
+    private val getUserUseCase: GetUserUseCase,
     private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
 
@@ -123,9 +128,62 @@ class DashBoardViewModel(
         }
     }
 
+    /**
+     * Check if session is still active
+     * if not active
+     * get username from sharedpreferences
+     * get get PIN from user table
+     * show the PIN prompt screen
+     * Correct Open transaction sheet
+     *
+     * */
+
+    private fun canShowTransactionScreen(): Boolean {
+        val result = viewModelScope.async {
+            val isSessionActive = hasActiveSession(spendLessPreference.getTimeStamp())
+
+            if(isSessionActive) {
+                true
+            }
+            else {
+                /** Get the active user */
+                val username = spendLessPreference.getUsername()
+                if(username == null) {
+                    false
+                }
+                else {
+                    /** Get the active user table from the room db */
+                    val user = getUserUseCase.execute(username)
+                    if(user == null) {
+                        false
+                    }
+                    else {
+                        val pin = user.pin
+                    }
+                }
+            }
+
+
+            true
+        }
+
+        return true
+    }
+
     fun onAction(action: DashboardAction) {
         when(action) {
             is DashboardAction.OpenNewTransaction -> {
+                /**
+                 * Check if session is still active
+                 * if not active
+                 * get username from sharedpreferences
+                 * get get PIN from user table
+                 * show the PIN prompt screen
+                 * Correct Open transaction sheet
+                 *
+                 * */
+
+
                 _dashboardState.update { dashboardState ->
                     dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
                 }
@@ -193,6 +251,10 @@ class DashBoardViewModel(
                         transaction = transactionState.transaction.copy(category = action.category)
                     )
                 }
+            }
+
+            is DashboardAction.OpenPinPromptScreen -> {
+                /** No-op - handled in the composable nav graph */
             }
         }
     }

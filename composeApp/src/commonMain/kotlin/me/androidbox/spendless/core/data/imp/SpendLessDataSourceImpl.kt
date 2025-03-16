@@ -10,9 +10,9 @@ import me.androidbox.spendless.core.data.SpendLessDataSource
 import me.androidbox.spendless.core.domain.DataError
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.dashboard.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.settings.data.PreferenceTable
+import me.androidbox.spendless.transactions.data.Transaction
 import kotlin.coroutines.cancellation.CancellationException
 
 class SpendLessDataSourceImpl(

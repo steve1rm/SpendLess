@@ -4,10 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.Navigator
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScreen
@@ -40,6 +42,11 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                         }
                         DashboardAction.OpenSettings -> {
                             navController.navigate(route = Route.SettingsGraph)
+                        }
+                        is DashboardAction.OpenPinPromptScreen -> {
+                            navController.navigate(
+                                route = Route.PinPromptScreen(dashboardAction.pin),
+                            )
                         }
                         else -> {
                             dashBoardViewModel.onAction(dashboardAction)

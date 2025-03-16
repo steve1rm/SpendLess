@@ -29,6 +29,7 @@ import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.navigation.toRoute
 import me.androidbox.spendless.authentication.presentation.LoginEvent
 import me.androidbox.spendless.authentication.presentation.RegisterAction
 import me.androidbox.spendless.onboarding.screens.PreferenceAction
@@ -174,6 +175,9 @@ fun NavGraphBuilder.authentication(navController: NavController) {
         composable<Route.PinPromptScreen> {
             val pinViewModel = koinViewModel<PinViewModel>()
             val pinState by pinViewModel.createPinState.collectAsStateWithLifecycle()
+            val pin = it.toRoute<Route.PinPromptScreen>().pin
+
+            println("PIN $pin")
 
             PinPromptScreen(
                 createPinState = pinState,

@@ -23,6 +23,7 @@ class PreferenceViewModel(
             preferenceState.distinctUntilChangedBy { it.decimalSeparator },
             preferenceState.distinctUntilChangedBy { it.thousandsSeparator }) { decimalSeparator, thousandSeparator ->
             _preferenceState.update { onboardingPreferenceState ->
+                /** Only enabled the button when the decimal and thousands are not the same */
                 onboardingPreferenceState.copy(
                     isEnabled = decimalSeparator.decimalSeparator.type != thousandSeparator.thousandsSeparator.type
                 )

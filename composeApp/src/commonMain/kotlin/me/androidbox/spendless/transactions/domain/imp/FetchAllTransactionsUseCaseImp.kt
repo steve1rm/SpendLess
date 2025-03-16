@@ -8,8 +8,8 @@ import kotlinx.datetime.Instant
 import me.androidbox.spendless.core.data.SpendLessDataSource
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.dashboard.AllTransactions
+import me.androidbox.spendless.transactions.data.AllTransactions
+import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.days

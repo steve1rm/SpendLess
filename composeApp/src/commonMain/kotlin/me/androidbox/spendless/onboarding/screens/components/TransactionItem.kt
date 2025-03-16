@@ -24,7 +24,7 @@ import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.Success
-import me.androidbox.spendless.dashboard.Transaction
+import me.androidbox.spendless.transactions.data.Transaction
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
