@@ -3,6 +3,7 @@ package me.androidbox.spendless.dashboard
 import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,6 +26,7 @@ import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCa
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class DashBoardViewModel(
     private val insertTransactionUseCase: InsertTransactionUseCase,
     private val fetchAllTransactionsUseCase: FetchAllTransactionsUseCase,
@@ -153,21 +155,12 @@ class DashBoardViewModel(
                 }
                 else {
                     /** Get the active user table from the room db */
-                    val user = getUserUseCase.execute(username)
-                    if(user == null) {
-                        false
-                    }
-                    else {
-                        val pin = user.pin
-                    }
+                    getUserUseCase.execute(username) != null
                 }
             }
-
-
-            true
         }
 
-        return true
+        return result.await()
     }
 
     fun onAction(action: DashboardAction) {
