@@ -146,7 +146,7 @@ class DashBoardViewModel(
         return !hasActiveSession(spendLessPreference.getTimeStamp())
     }
 
-    private suspend fun checkForActiveSession(activeSessionAction: () -> Unit) {
+    private suspend fun checkForActiveSession(activeSessionAction: suspend () -> Unit) {
         if(hasActiveSession(spendLessPreference.getTimeStamp())) {
             activeSessionAction()
         }
@@ -180,7 +180,13 @@ class DashBoardViewModel(
             }
 
             DashboardAction.OpenSettings -> {
-                println("OpenSettings Screen")
+                viewModelScope.launch {
+                    checkForActiveSession(
+                        activeSessionAction = {
+                            _dashboardEvent.send(DashboardEvents.OpenSettingsScreen)
+                        }
+                    )
+                }
             }
 
             DashboardAction.OnCreateClicked -> {
@@ -236,9 +242,7 @@ class DashBoardViewModel(
                 viewModelScope.launch {
                     checkForActiveSession(
                         activeSessionAction = {
-                            launch {
-                                _dashboardEvent.send(DashboardEvents.OpenAllTransactionsScreen)
-                            }
+                            _dashboardEvent.send(DashboardEvents.OpenAllTransactionsScreen)
                         }
                     )
                 }
