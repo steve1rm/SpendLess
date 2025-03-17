@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.serialization)
+    id("io.kotzilla.kotzilla-plugin")
 }
 
 kotlin {
@@ -68,7 +69,7 @@ kotlin {
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-
+            implementation("io.kotzilla:kotzilla-sdk:1.0.1")
             implementation(libs.kotlinx.datetime)
 
             implementation(libs.navigation.compose)
