@@ -66,10 +66,12 @@ fun PreferenceSettingsScreen(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                    onClick = {}
+                    onClick = {
+
+                    }
                 ) {
                     Text(
-                        text = "Start Tracking",
+                        text = "Save",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W600,
                         color = OnPrimary
