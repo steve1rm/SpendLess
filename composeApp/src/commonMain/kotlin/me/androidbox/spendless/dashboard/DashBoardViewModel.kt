@@ -1,17 +1,14 @@
 package me.androidbox.spendless.dashboard
 
-import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -145,8 +142,18 @@ class DashBoardViewModel(
      * Correct Open transaction sheet
      *
      * */
-    private suspend fun canShowTransactionScreen(): Boolean {
-        return hasActiveSession(spendLessPreference.getTimeStamp())
+    private suspend fun showPinPromptAuthentication(): Boolean {
+        return !hasActiveSession(spendLessPreference.getTimeStamp())
+    }
+
+    private suspend fun checkForActiveSession(activeSessionAction: () -> Unit) {
+        if(hasActiveSession(spendLessPreference.getTimeStamp())) {
+            activeSessionAction()
+        }
+        else {
+            // Open PinPrompt screen - send event
+            _dashboardEvent.send(DashboardEvents.OpenPinPromptScreen(pin = "12346"))
+        }
     }
 
     fun onAction(action: DashboardAction) {
@@ -162,15 +169,13 @@ class DashBoardViewModel(
                  *
                  * */
                 viewModelScope.launch {
-                    if(canShowTransactionScreen()) {
-                        _dashboardState.update { dashboardState ->
-                            dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
+                    checkForActiveSession(
+                        activeSessionAction = {
+                            _dashboardState.update { dashboardState ->
+                                dashboardState.copy(showTransactionBottomSheet = action.shouldOpen)
+                            }
                         }
-                    }
-                    else {
-                        // Open PinPrompt screen - send event
-                        _dashboardEvent.send(DashboardEvents.OpenPinPromptScreen(pin = "12346"))
-                    }
+                    )
                 }
             }
 
@@ -228,6 +233,15 @@ class DashBoardViewModel(
 
             DashboardAction.OnShowAllClicked -> {
                 /** Go to all transactions */
+                viewModelScope.launch {
+                    checkForActiveSession(
+                        activeSessionAction = {
+                            launch {
+                                _dashboardEvent.send(DashboardEvents.OpenAllTransactionsScreen)
+                            }
+                        }
+                    )
+                }
             }
 
             is DashboardAction.OnTransactionCategoryChanged -> {

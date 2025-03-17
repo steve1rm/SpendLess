@@ -41,6 +41,10 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                         is DashboardEvents.OpenPinPromptScreen -> {
                             navController.navigate(route = Route.PinPromptScreen(pin = event.pin))
                         }
+
+                        DashboardEvents.OpenAllTransactionsScreen -> {
+                            navController.navigate(route = Route.AllTransactionsScreen)
+                        }
                     }
                 })
 
@@ -49,9 +53,6 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                 dashboardState = dashboardState,
                 dashboardAction = { dashboardAction ->
                     when(dashboardAction) {
-                        DashboardAction.OnShowAllClicked -> {
-                            navController.navigate(route = Route.AllTransactionsScreen)
-                        }
                         DashboardAction.OpenSettings -> {
                             navController.navigate(route = Route.SettingsGraph)
                         }
@@ -64,7 +65,7 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
                             dashBoardViewModel.onAction(dashboardAction)
                         }
                     }
-                },
+                }
             )
         }
 
