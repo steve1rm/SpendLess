@@ -44,7 +44,8 @@ import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 fun PreferenceSettingsScreen(
     modifier: Modifier = Modifier,
     preferenceContent: @Composable () -> Unit,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onSavedClicked: () -> Unit
 ) {
     SpendLessTheme(
         modifier = modifier,
@@ -67,7 +68,7 @@ fun PreferenceSettingsScreen(
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                     onClick = {
-
+                        onSavedClicked()
                     }
                 ) {
                     Text(

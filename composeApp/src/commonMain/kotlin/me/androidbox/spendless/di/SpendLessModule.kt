@@ -19,7 +19,9 @@ import me.androidbox.spendless.transactions.domain.imp.InsertTransactionUseCaseI
 import me.androidbox.spendless.authentication.domain.imp.InsertUserUseCaseImp
 import me.androidbox.spendless.authentication.domain.imp.ValidateUserUseCaseImp
 import me.androidbox.spendless.onboarding.screens.PreferenceViewModel
+import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
 import me.androidbox.spendless.settings.domain.InsertPreferenceUseCase
+import me.androidbox.spendless.settings.domain.imp.FetchPreferenceUseCaseImp
 import me.androidbox.spendless.settings.domain.imp.InsertPreferenceUseCaseImp
 import me.androidbox.spendless.settings.presentation.SettingsViewModel
 import me.androidbox.spendless.transactions.TransactionViewModel
@@ -68,6 +70,10 @@ val spendLessModule = module {
 
     factory<InsertPreferenceUseCase> {
         InsertPreferenceUseCaseImp(get<SpendLessDataSource>())
+    }
+
+    factory<FetchPreferenceUseCase> {
+        FetchPreferenceUseCaseImp(get<SpendLessDataSource>())
     }
 
     factory<InsertTransactionUseCase> {

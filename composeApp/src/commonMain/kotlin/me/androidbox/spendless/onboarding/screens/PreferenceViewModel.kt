@@ -70,6 +70,7 @@ class PreferenceViewModel(
         viewModelScope.launch {
             insertPreferenceUseCase.execute(
                 PreferenceTable(
+                    id = 1,
                     expensesFormat = preferenceState.value.expensesFormat.ordinal,
                     currency = preferenceState.value.currency.ordinal,
                     decimalSeparator = preferenceState.value.decimalSeparator.ordinal,

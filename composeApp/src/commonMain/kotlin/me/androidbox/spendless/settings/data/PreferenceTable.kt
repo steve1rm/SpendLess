@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class PreferenceTable(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val expensesFormat: Int,
     val currency: Int,
     val decimalSeparator: Int,

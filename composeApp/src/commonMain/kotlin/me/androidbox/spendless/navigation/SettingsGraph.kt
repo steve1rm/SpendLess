@@ -92,6 +92,9 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                         preferenceState = onboardingPreferenceState,
                         action = preferenceViewModel::onAction
                     )
+                },
+                onSavedClicked = {
+                    preferenceViewModel.savePreferences()
                 }
             )
         }
