@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -115,7 +117,8 @@ fun LoginScreen(
                         else {
                             Color.Transparent
                         }
-                    },
+                    }
+                    .semantics { contentDescription = "inputUsername" },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedLabelColor = Color.Transparent,
@@ -143,7 +146,7 @@ fun LoginScreen(
                         fontWeight = FontWeight.W400
                     )
                 }
-            )
+                )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -158,7 +161,8 @@ fun LoginScreen(
                         else {
                             Color.Transparent
                         }
-                    },
+                    }
+                    .semantics { contentDescription = "inputPIN" },
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedLabelColor = Color.Transparent,
@@ -216,7 +220,8 @@ fun LoginScreen(
                     onClick = {
                         action(LoginAction.OnRegisterClicked)
                     }
-                ),
+                )
+                .semantics { contentDescription = "lnkRegister" },
                 text = "New to SpendLess?",
                 fontWeight = FontWeight.W600,
                 fontSize = 16.sp,

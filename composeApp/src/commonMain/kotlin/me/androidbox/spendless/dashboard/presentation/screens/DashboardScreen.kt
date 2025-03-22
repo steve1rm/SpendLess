@@ -174,7 +174,7 @@ fun DashboardScreen(
                 containerColor = SecondaryContainer,
                 content = {
                     Icon(imageVector = Icons.Default.Add,
-                        contentDescription = "Add new transaction",
+                        contentDescription = "btnNewTransaction",
                         tint = OnSecondaryContainer
                     )
                 }
