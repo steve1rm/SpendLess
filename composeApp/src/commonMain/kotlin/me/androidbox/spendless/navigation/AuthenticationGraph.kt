@@ -238,7 +238,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 isEnabled = onboardingPreferenceState.isEnabled,
                 onStartTrackingClicked = {
                     authenticationSharedViewModel.saveCredentials()
-                    preferenceViewModel.savePreferences()
+                 //   preferenceViewModel.savePreferences()
                     navController.navigate(Route.DashboardGraph) {
                         this.popUpTo(Route.AuthenticationGraph) {
                             inclusive = true

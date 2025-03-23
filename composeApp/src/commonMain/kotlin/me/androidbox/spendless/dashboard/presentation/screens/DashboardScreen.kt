@@ -62,7 +62,6 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
-import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
@@ -85,6 +84,8 @@ fun DashboardScreen(
     dashboardState: DashboardState,
     dashboardAction: (action: DashboardAction) -> Unit,
 ) {
+
+    /** TODO use disposable effect */
     LaunchedEffect(shouldNavigateOnWidget) {
         if(shouldNavigateOnWidget) {
             dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))

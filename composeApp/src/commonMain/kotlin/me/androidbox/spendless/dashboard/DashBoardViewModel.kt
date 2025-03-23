@@ -71,17 +71,17 @@ class DashBoardViewModel(
 
     private fun fetchPreferences() {
         viewModelScope.launch {
-            val preferences = fetchPreferenceUseCase.execute()
-
-            _dashboardState.update { dashboardState ->
-                dashboardState.copy(
-                    preferenceState = PreferenceState(
-                        decimalSeparator = DecimalSeparator.entries[preferences.decimalSeparator],
-                        thousandsSeparator = ThousandsSeparator.entries[preferences.thousandsSeparator],
-                        currency = Currency.entries[preferences.currency],
-                        expensesFormat = ExpensesFormat.entries[preferences.expensesFormat]
+            fetchPreferenceUseCase.execute().collectLatest { preferences ->
+                _dashboardState.update { dashboardState ->
+                    dashboardState.copy(
+                        preferenceState = PreferenceState(
+                            decimalSeparator = DecimalSeparator.entries[preferences.decimalSeparator],
+                            thousandsSeparator = ThousandsSeparator.entries[preferences.thousandsSeparator],
+                            currency = Currency.entries[preferences.currency],
+                            expensesFormat = ExpensesFormat.entries[preferences.expensesFormat]
+                        )
                     )
-                )
+                }
             }
         }
     }

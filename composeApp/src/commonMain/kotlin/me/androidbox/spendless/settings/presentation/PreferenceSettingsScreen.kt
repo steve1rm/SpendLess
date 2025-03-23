@@ -38,15 +38,18 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.Primary
+import me.androidbox.spendless.onboarding.screens.PreferenceAction
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable
 fun PreferenceSettingsScreen(
     modifier: Modifier = Modifier,
     preferenceContent: @Composable () -> Unit,
+    canSavePreferences: Boolean,
     onBackClicked: () -> Unit,
-    onSavedClicked: () -> Unit
-) {
+    action: (PreferenceAction) -> Unit) {
+
     SpendLessTheme(
         modifier = modifier,
         toolBarTitle = "Preferences",
@@ -60,6 +63,7 @@ fun PreferenceSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
+
                 preferenceContent()
 
                 Button(
@@ -68,8 +72,9 @@ fun PreferenceSettingsScreen(
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
                     onClick = {
-                        onSavedClicked()
-                    }
+                        action(PreferenceAction.OnSavePreferences)
+                    },
+                    enabled = canSavePreferences
                 ) {
                     Text(
                         text = "Save",

@@ -3,6 +3,7 @@ package me.androidbox.spendless.settings.data
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PreferenceDao {
@@ -11,5 +12,5 @@ interface PreferenceDao {
     suspend fun insertPreference(preferenceTable: PreferenceTable)
 
     @Query("SELECT * FROM PreferenceTable")
-    suspend fun getPreference(): PreferenceTable
+    fun getPreference(): Flow<PreferenceTable>
 }

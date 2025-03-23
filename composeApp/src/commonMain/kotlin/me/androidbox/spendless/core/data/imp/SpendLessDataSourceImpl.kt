@@ -5,14 +5,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import me.androidbox.spendless.authentication.data.User
-import me.androidbox.spendless.core.data.SpendLessDatabase
 import me.androidbox.spendless.core.data.SpendLessDataSource
-import me.androidbox.spendless.core.domain.DataError
+import me.androidbox.spendless.core.data.SpendLessDatabase
 import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.settings.data.PreferenceTable
 import me.androidbox.spendless.transactions.data.Transaction
+import me.androidbox.spendless.transactions.data.TransactionTable
 import kotlin.coroutines.cancellation.CancellationException
 
 class SpendLessDataSourceImpl(
@@ -34,7 +33,7 @@ class SpendLessDataSourceImpl(
         database.preferenceDao().insertPreference(preferenceTable)
     }
 
-    override suspend fun getPreference(): PreferenceTable {
+    override fun getPreference(): Flow<PreferenceTable> {
         return database.preferenceDao().getPreference()
     }
 

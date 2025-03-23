@@ -12,7 +12,7 @@ interface SpendLessDataSource {
     suspend fun validateUser(username: String, pin: String): User?
 
     suspend fun insertPreference(preferenceTable: PreferenceTable)
-    suspend fun getPreference(): PreferenceTable
+    fun getPreference(): Flow<PreferenceTable>
 
     suspend fun insertTransaction(transaction: TransactionTable)
     fun getAllTransaction(): Flow<List<TransactionTable>>
