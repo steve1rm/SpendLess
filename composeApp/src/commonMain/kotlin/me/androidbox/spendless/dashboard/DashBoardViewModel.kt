@@ -17,7 +17,14 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
+import me.androidbox.spendless.core.presentation.Currency
+import me.androidbox.spendless.core.presentation.DecimalSeparator
+import me.androidbox.spendless.core.presentation.ExpensesFormat
+import me.androidbox.spendless.core.presentation.PreferenceType
+import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.hasActiveSession
+import me.androidbox.spendless.onboarding.screens.PreferenceState
+import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
 import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
 import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
@@ -33,6 +40,7 @@ class DashBoardViewModel(
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
     private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase,
+    private val fetchPreferenceUseCase: FetchPreferenceUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
@@ -48,6 +56,7 @@ class DashBoardViewModel(
                 fetchLargestTransaction()
                 fetchTotalSpentPreviousWeek()
                 fetchMostPopularCategory()
+                fetchPreferences()
                 hasFetched = true
             }
         }
@@ -59,6 +68,23 @@ class DashBoardViewModel(
 
     private val _dashboardEvent = Channel<DashboardEvents>()
     val dashboardEvents = _dashboardEvent.receiveAsFlow()
+
+    private fun fetchPreferences() {
+        viewModelScope.launch {
+            val preferences = fetchPreferenceUseCase.execute()
+
+            _dashboardState.update { dashboardState ->
+                dashboardState.copy(
+                    preferenceState = PreferenceState(
+                        decimalSeparator = DecimalSeparator.entries[preferences.decimalSeparator],
+                        thousandsSeparator = ThousandsSeparator.entries[preferences.thousandsSeparator],
+                        currency = Currency.entries[preferences.currency],
+                        expensesFormat = ExpensesFormat.entries[preferences.expensesFormat]
+                    )
+                )
+            }
+        }
+    }
 
     private fun fetchActiveUser() {
         viewModelScope.launch {

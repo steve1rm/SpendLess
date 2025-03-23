@@ -62,9 +62,12 @@ import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
+import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
 import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
+import me.androidbox.spendless.formatMoney
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
 import me.androidbox.spendless.transactions.data.AllTransactions
 import me.androidbox.spendless.transactions.data.Transaction
@@ -142,7 +145,8 @@ fun DashboardScreen(
                     modifier = Modifier.weight(1f),
                     largestTransaction = dashboardState.largestTransaction,
                     totalPreviousSpent = dashboardState.totalPreviousSpent,
-                    popularTransaction = dashboardState.popularTransaction)
+                    popularTransaction = dashboardState.popularTransaction,
+                    preferenceState = dashboardState.preferenceState)
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
@@ -217,7 +221,9 @@ fun DashboardHeader(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
     popularTransaction: Transaction,
-    totalPreviousSpent: Float
+    totalPreviousSpent: Float,
+    preferenceState: PreferenceState,
+    money: Long = 1038245L
 ) {
 
     Column(modifier = modifier
@@ -226,7 +232,12 @@ fun DashboardHeader(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$10,382.45",
+            text = money.formatMoney(
+                currency = preferenceState.currency,
+                expensesFormat = preferenceState.expensesFormat,
+                thousandsSeparator = preferenceState.thousandsSeparator,
+                decimalSeparator = preferenceState.decimalSeparator
+            ),
             fontSize = 46.sp,
             fontWeight = FontWeight.W600,
             color = OnPrimary
