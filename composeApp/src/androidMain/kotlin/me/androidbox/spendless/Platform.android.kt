@@ -2,6 +2,11 @@ package me.androidbox.spendless
 
 import android.content.Context
 import android.os.Build
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import com.liftric.kvault.KVault
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
@@ -17,28 +22,48 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): String {
+actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): AnnotatedString {
     val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         this.groupingSeparator = thousandsSeparator.symbol
         this.decimalSeparator = decimalSeparator.symbol
     }
+    /** Check if the amount is negative */
+    val isNegative = this < 0
+    /** Display the money without the negative */
+    val amount = kotlin.math.abs(this)
 
     val decimalFormat = DecimalFormat("#,##0.##", symbols)
     decimalFormat.isDecimalSeparatorAlwaysShown = false
 
-    val formattedNumber: String = decimalFormat.format(this / 100.0)
+    /** Divide by 100 to show the decimal number */
+    val formattedNumber: String = decimalFormat.format(amount / 100.0)
 
-    return buildString {
-        when(expensesFormat) {
-            ExpensesFormat.BRACKET -> append("(")
-            ExpensesFormat.NEGATIVE -> append("-")
+    return buildAnnotatedString {
+        if(isNegative) {
+            when (expensesFormat) {
+                ExpensesFormat.BRACKET -> {
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append("(")
+                    }
+                }
+
+                ExpensesFormat.NEGATIVE -> {
+                    withStyle(style = SpanStyle(color = Color.Red)) {
+                        append("-")
+                    }
+                }
+            }
         }
 
         append(currency.symbol)
         append(formattedNumber)
 
         if(expensesFormat == ExpensesFormat.BRACKET) {
-            append(")")
+            if(isNegative) {
+                withStyle(style = SpanStyle(color = Color.Red)) {
+                    append(")")
+                }
+            }
         }
     }
 }

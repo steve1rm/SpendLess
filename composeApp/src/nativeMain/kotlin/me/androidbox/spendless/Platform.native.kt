@@ -1,5 +1,6 @@
 package me.androidbox.spendless
 
+import androidx.compose.ui.text.AnnotatedString
 import com.liftric.kvault.KVault
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
@@ -11,7 +12,7 @@ actual fun Long.formatMoney(
     expensesFormat: ExpensesFormat,
     thousandsSeparator: ThousandsSeparator,
     decimalSeparator: DecimalSeparator
-): String {
+): AnnotatedString {
     TODO("Not yet implemented")
 }
 

@@ -20,7 +20,6 @@ import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
-import me.androidbox.spendless.core.presentation.PreferenceType
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.onboarding.screens.PreferenceState
@@ -41,7 +40,6 @@ class DashBoardViewModel(
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
     private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase,
     private val fetchPreferenceUseCase: FetchPreferenceUseCase,
-    private val getUserUseCase: GetUserUseCase,
     private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
 

@@ -192,16 +192,6 @@ fun DashboardScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    /**
-                     * Check if session is still active
-                     * if not active
-                     * get username from sharedpreferences
-                     * get get PIN from user table
-                     * show the PIN prompt screen
-                     * Correct Open transaction sheet
-                     *
-                     * */
-
                     dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
                 },
                 containerColor = SecondaryContainer,
@@ -224,7 +214,7 @@ fun DashboardHeader(
     popularTransaction: Transaction,
     totalPreviousSpent: Float,
     preferenceState: PreferenceState,
-    money: Long = 1038245L
+    money: Long = -1038245L
 ) {
 
     Column(modifier = modifier

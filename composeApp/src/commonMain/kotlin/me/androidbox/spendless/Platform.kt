@@ -1,6 +1,6 @@
 package me.androidbox.spendless
 
-import com.liftric.kvault.KVault
+import androidx.compose.ui.text.AnnotatedString
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
@@ -17,7 +17,7 @@ expect fun Long.formatMoney(
     expensesFormat: ExpensesFormat,
     thousandsSeparator: ThousandsSeparator,
     decimalSeparator: DecimalSeparator
-): String
+): AnnotatedString
 
 
 interface SpendLessPreference {
