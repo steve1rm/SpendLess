@@ -114,10 +114,13 @@ class PreferenceViewModel(
             }
 
             PreferenceAction.OnSavePreferences -> {
-                applicationScope.launch {
-                    savePreferences()
-                    _preferenceChannel.send(PreferenceEvent.OnSavePreferences)
+                viewModelScope.launch {
+                    applicationScope.launch {
+                        savePreferences()
+                    }.join()
+
                     println("SEND CHANNEL DONE")
+                    _preferenceChannel.send(PreferenceEvent.OnSavePreferences)
                 }
             }
         }

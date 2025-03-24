@@ -195,9 +195,9 @@ fun CreateTransactionContent(
         ) {
             Text(
                 modifier = Modifier.weight(1f).padding(end = 2.dp),
-                text = "-$",
+                text = if(state.transaction.type == TransactionType.RECEIVER) "-${state.preferenceState.currency.symbol}" else state.preferenceState.currency.symbol ,
                 fontSize = 36.sp,
-                color = Error,
+                color = if(state.transaction.type == TransactionType.RECEIVER) Error else Color.Green,
                 fontWeight = FontWeight.W600,
                 textAlign = TextAlign.End
             )
