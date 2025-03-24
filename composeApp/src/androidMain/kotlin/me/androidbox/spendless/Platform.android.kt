@@ -36,7 +36,12 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
     decimalFormat.isDecimalSeparatorAlwaysShown = false
 
     /** Divide by 100 to show the decimal number */
-    val formattedNumber: String = decimalFormat.format(amount / 100.0)
+    val formattedNumber = if(amount > 90000) {
+        decimalFormat.format(amount / 100.0)
+    }
+    else {
+        decimalFormat.format(amount)
+    }
 
     return buildAnnotatedString {
         if(isNegative) {

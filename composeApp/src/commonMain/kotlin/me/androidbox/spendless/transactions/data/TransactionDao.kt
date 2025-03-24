@@ -25,7 +25,7 @@ interface TransactionDao {
     suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Long
 
     @Query("SELECT SUM(amount) FROM transactionTable")
-    fun getTotalTranactionAmount(): Flow<Long>
+    fun getTotalTransactionAmount(): Flow<Long>
 
     @Query("""
         SELECT *

@@ -60,7 +60,7 @@ class SpendLessDataSourceImpl(
     override suspend fun getTotalSpentPreviousWeek(
         startOfPreviousWeek: Long,
         endOfPreviousWeek: Long
-    ): Float {
+    ): Long {
         return database.transactionDao()
             .getTotalSpentPreviousWeek(startOfPreviousWeek, endOfPreviousWeek)
     }
@@ -102,6 +102,6 @@ class SpendLessDataSourceImpl(
     }
 
     override fun getTotalTransactionAmount(): Flow<Long> {
-        return database.transactionDao().getTotalTranactionAmount()
+        return database.transactionDao().getTotalTransactionAmount()
     }
 }

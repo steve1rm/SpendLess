@@ -213,7 +213,7 @@ fun DashboardHeader(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
     popularTransaction: Transaction,
-    totalPreviousSpent: Float,
+    totalPreviousSpent: Long,
     preferenceState: PreferenceState,
     totalAmount: Long
 ) {
@@ -428,7 +428,7 @@ fun LargestTransaction(
 @Composable
 fun PreviousTransaction(
     modifier: Modifier = Modifier,
-    totalPreviousSpent: Float
+    totalPreviousSpent: Long
 ) {
     Column(
         modifier = modifier

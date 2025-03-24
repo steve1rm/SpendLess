@@ -19,7 +19,7 @@ interface SpendLessDataSource {
     suspend fun getLargestTransaction(): Flow<Transaction>
     fun getTotalTransactionAmount(): Flow<Long>
 
-    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Float
+    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Long
     fun getMostPopularCategory(): Flow<Result<Transaction>>
 
 //    suspend fun getTransactionByCategory(title: String): List<Transaction>
