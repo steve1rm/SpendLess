@@ -25,10 +25,12 @@ import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.settings.data.PreferenceTable
 import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
 import me.androidbox.spendless.settings.domain.InsertPreferenceUseCase
+import me.androidbox.spendless.transactions.domain.FetchTotalTransactionAmountUseCase
 
 class PreferenceViewModel(
     private val insertPreferenceUseCase: InsertPreferenceUseCase,
     private val fetchPreferenceUseCase: FetchPreferenceUseCase,
+    private val fetchTotalTransactionAmountUseCase: FetchTotalTransactionAmountUseCase,
     private val spendLessPreference: SpendLessPreference,
     private val applicationScope: CoroutineScope
 ) : ViewModel() {
@@ -40,6 +42,7 @@ class PreferenceViewModel(
         .onStart {
             if(!hasFetched) {
                 fetchPreferences()
+                fetchTotalTransactionAmount()
                 hasFetched = true
             }
         }
@@ -63,6 +66,18 @@ class PreferenceViewModel(
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun fetchTotalTransactionAmount() {
+        viewModelScope.launch {
+            fetchTotalTransactionAmountUseCase.execute().collect { totalAmount ->
+                _preferenceState.update { dashboardState ->
+                    dashboardState.copy(
+                        money = totalAmount
+                    )
+                }
+            }
+        }
     }
 
     private fun fetchPreferences() {
