@@ -236,7 +236,7 @@ class DashBoardViewModel(
                                 name = dashboardState.value.transaction.name,
                                 counterParty = dashboardState.value.transaction.counterParty,
                                 note = dashboardState.value.transaction.note,
-                                amount = dashboardState.value.transaction.amount,
+                                amount = dashboardState.value.transaction.amount.toLongOrNull() ?: 0L,
                                 category = dashboardState.value.transaction.category.ordinal,
                                 createAt = Clock.System.now().toEpochMilliseconds(),
                                 type = dashboardState.value.transaction.type.ordinal

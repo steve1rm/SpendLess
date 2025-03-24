@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -39,7 +38,6 @@ import androidx.compose.ui.zIndex
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.Primary
 import me.androidbox.spendless.onboarding.screens.PreferenceAction
-import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable

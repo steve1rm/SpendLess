@@ -12,5 +12,5 @@ data class TransactionTable(
     val category: Int,
     val note: String,
     val createAt: Long,
-    val amount: String)
+    val amount: Long)
 
