@@ -18,11 +18,14 @@ interface TransactionDao {
     fun getLargestTransaction(): Flow<TransactionTable>
 
     @Query("""
-        SELECT SUM(CAST(amount AS REAL))
+        SELECT SUM(amount)
         FROM transactionTable
         WHERE createAt BETWEEN :startOfPreviousWeek AND :endOfPreviousWeek
     """)
-    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Float
+    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Long
+
+    @Query("SELECT SUM(amount) FROM transactionTable")
+    fun getTotalTranactionAmount(): Flow<Long>
 
     @Query("""
         SELECT *

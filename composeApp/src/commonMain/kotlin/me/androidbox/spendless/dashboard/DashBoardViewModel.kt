@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import me.androidbox.spendless.SpendLessPreference
-import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
@@ -30,6 +29,7 @@ import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
 import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
+import me.androidbox.spendless.transactions.domain.FetchTotalTransactionAmountUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -39,6 +39,7 @@ class DashBoardViewModel(
     private val fetchLargestTransactionUseCase: FetchLargestTransactionUseCase,
     private val fetchTotalSpentPreviousWeekUseCase: FetchTotalSpentPreviousWeekUseCase,
     private val fetchMostPopularCategoryUseCase: FetchMostPopularCategoryUseCase,
+    private val fetchTotalTransactionAmountUseCase: FetchTotalTransactionAmountUseCase,
     private val fetchPreferenceUseCase: FetchPreferenceUseCase,
     private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
@@ -55,6 +56,7 @@ class DashBoardViewModel(
                 fetchTotalSpentPreviousWeek()
                 fetchMostPopularCategory()
                 fetchPreferences()
+                fetchTotalTransactionAmount()
                 hasFetched = true
             }
         }
@@ -66,6 +68,18 @@ class DashBoardViewModel(
 
     private val _dashboardEvent = Channel<DashboardEvents>()
     val dashboardEvents = _dashboardEvent.receiveAsFlow()
+
+    private fun fetchTotalTransactionAmount() {
+        viewModelScope.launch {
+            fetchTotalTransactionAmountUseCase.execute().collect { totalAmount ->
+                _dashboardState.update { dashboardState ->
+                    dashboardState.copy(
+                        totalTransactionAmount = totalAmount
+                    )
+                }
+            }
+        }
+    }
 
     private fun fetchPreferences() {
         viewModelScope.launch {

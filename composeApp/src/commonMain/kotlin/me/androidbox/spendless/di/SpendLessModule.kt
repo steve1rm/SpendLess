@@ -31,12 +31,14 @@ import me.androidbox.spendless.transactions.domain.FetchAllTransactionsUseCase
 import me.androidbox.spendless.transactions.domain.FetchLargestTransactionUseCase
 import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
+import me.androidbox.spendless.transactions.domain.FetchTotalTransactionAmountUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
 import me.androidbox.spendless.transactions.domain.Repository
 import me.androidbox.spendless.transactions.domain.imp.FetchAllTransactionsUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.FetchLargestTransactionUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.FetchMostPopularCategoryUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.FetchTotalSpentPreviousWeekUseCaseImp
+import me.androidbox.spendless.transactions.domain.imp.FetchTotalTransactionAmountUseCaseImp
 import me.androidbox.spendless.transactions.domain.imp.InsertTransactionUseCaseImp
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -65,6 +67,10 @@ val spendLessModule = module {
 
     factory<InsertUserUseCase> {
         InsertUserUseCaseImp(get<SpendLessDataSource>())
+    }
+
+    factory<FetchTotalTransactionAmountUseCase> {
+        FetchTotalTransactionAmountUseCaseImp(get<SpendLessDataSource>())
     }
 
     factory<GetUserUseCase> {

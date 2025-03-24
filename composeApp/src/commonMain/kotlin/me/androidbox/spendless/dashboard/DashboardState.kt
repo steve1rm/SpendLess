@@ -11,10 +11,12 @@ data class DashboardState(
     val largestTransaction: Transaction = Transaction(),
     val popularTransaction: Transaction = Transaction(),
     val listOfTransactions: List<AllTransactions> = emptyList(),
-    val totalPreviousSpent: Float = 0.0f,
+    val totalPreviousSpent: Long = 0L,
     val showPinPromptScreen: Boolean = false,
+    val totalTransactionAmount: Long = 0L,
 
-    /** Preferences for currency, decimal formatting, etc */
+    /** Preferences for currency, decimal formatting, etc.
+     *  TODO Should this be here, check in the discord channel */
     val preferenceState: PreferenceState = PreferenceState()
 )
 

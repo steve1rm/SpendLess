@@ -147,7 +147,8 @@ fun DashboardScreen(
                     largestTransaction = dashboardState.largestTransaction,
                     totalPreviousSpent = dashboardState.totalPreviousSpent,
                     popularTransaction = dashboardState.popularTransaction,
-                    preferenceState = dashboardState.preferenceState)
+                    preferenceState = dashboardState.preferenceState,
+                    totalAmount = dashboardState.totalTransactionAmount)
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
@@ -214,7 +215,7 @@ fun DashboardHeader(
     popularTransaction: Transaction,
     totalPreviousSpent: Float,
     preferenceState: PreferenceState,
-    money: Long = -1038245L
+    totalAmount: Long
 ) {
 
     Column(modifier = modifier
@@ -223,7 +224,7 @@ fun DashboardHeader(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = money.formatMoney(
+            text = totalAmount.formatMoney(
                 currency = preferenceState.currency,
                 expensesFormat = preferenceState.expensesFormat,
                 thousandsSeparator = preferenceState.thousandsSeparator,

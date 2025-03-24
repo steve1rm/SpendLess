@@ -100,4 +100,8 @@ class SpendLessDataSourceImpl(
     override suspend fun insertTransaction(transaction: TransactionTable) {
         database.transactionDao().insertTransaction(transaction)
     }
+
+    override fun getTotalTransactionAmount(): Flow<Long> {
+        return database.transactionDao().getTotalTranactionAmount()
+    }
 }
