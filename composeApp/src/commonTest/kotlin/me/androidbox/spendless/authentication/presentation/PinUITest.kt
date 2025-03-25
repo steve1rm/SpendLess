@@ -11,6 +11,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.DefaultAsserter.assertEquals
 import kotlin.test.Test
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 
 
 class PinUITest {
@@ -42,6 +44,14 @@ class PinUITest {
                 onAction = pinViewModel::onAction
             )
         }
+        onNodeWithText("Your Name").assertExists()
+        onNodeWithText("1").performClick()
+        onNodeWithText("2").performClick()
+        onNodeWithText("3").performClick()
+        onNodeWithText("4").performClick()
+        onNodeWithText("5").performClick()
+//        onNodeWithText("Repeat your PIN").assertExists()
+
     }
 }
 

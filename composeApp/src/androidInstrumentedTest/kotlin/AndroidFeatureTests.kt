@@ -4,28 +4,28 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.runComposeUiTest
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import me.androidbox.spendless.App
+import me.androidbox.spendless.androidSpecificModule
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.authentication.data.UserDao
 import me.androidbox.spendless.authentication.domain.imp.generatePinDigest
 import me.androidbox.spendless.core.data.SpendLessDatabase
 import org.junit.After
 import org.junit.Before
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.test.inject
 import kotlin.test.Test
 
-class InstrumentedSampleTest {
+
+class InstrumentedSampleTest: KoinTest {
     private lateinit var user: User
     private lateinit var userDao: UserDao
-    private lateinit var database: SpendLessDatabase
 
     @Before
     fun setup() {
-        GlobalScope.launch(Dispatchers.Main) {
+        runBlocking {
             val pinHash = generatePinDigest("gg", "12345")
 
             user = User(
@@ -33,10 +33,15 @@ class InstrumentedSampleTest {
                 "gg",
                 pinHash
             )
-            database = Room.inMemoryDatabaseBuilder(
-                ApplicationProvider.getApplicationContext(),
-                SpendLessDatabase::class.java
-            ).allowMainThreadQueries().build()
+
+            startKoin {
+                modules(
+                    androidSpecificModule,
+                )
+            }
+            val database: SpendLessDatabase by inject()
+
+
             userDao = database.userDao()
 
             userDao.insertUser(user)
@@ -49,7 +54,12 @@ class InstrumentedSampleTest {
 
     @After
     fun teardown() {
+        runBlocking {
+            val successAfter = userDao.validateUser(user.username, user.pin)
+            println("@After test check for user: $successAfter")
+        }
         database.close()
+        stopKoin()
     }
 
     @OptIn(ExperimentalTestApi::class)
