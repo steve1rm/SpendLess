@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -37,7 +38,7 @@ class PinViewModel(
     val createPinState = _createPinState.asStateFlow()
 
     private val _pinChannel = Channel<CreatePinEvent>()
-    val pinChannel = _pinChannel.consumeAsFlow()
+    val pinChannel = _pinChannel.receiveAsFlow()
 
     private var tryAttempts = 0
 

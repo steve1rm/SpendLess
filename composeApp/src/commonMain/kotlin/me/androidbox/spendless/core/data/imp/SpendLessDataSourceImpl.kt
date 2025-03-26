@@ -117,10 +117,10 @@ class SpendLessDataSourceImpl(
     override fun getTotalTransactionAmount(): Flow<Long> {
         return database.transactionDao().getTotalTransactionAmount()
             .map {
-                0L
+                it
             }
             .catch {
-                emit(0)
+                emit(0L)
             }
 //        return database.transactionDao().getTotalTransactionAmount()
     }
