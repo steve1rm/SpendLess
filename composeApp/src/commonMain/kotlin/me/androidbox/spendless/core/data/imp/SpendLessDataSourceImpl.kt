@@ -3,6 +3,7 @@ package me.androidbox.spendless.core.data.imp
 import androidx.sqlite.SQLiteException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import me.androidbox.spendless.authentication.data.User
 import me.androidbox.spendless.core.data.SpendLessDataSource
@@ -35,6 +36,18 @@ class SpendLessDataSourceImpl(
 
     override fun getPreference(): Flow<PreferenceTable> {
         return database.preferenceDao().getPreference()
+            .map {
+                it
+            }
+            .catch {
+                emit(PreferenceTable(
+                    id = 0,
+                    0,
+                    0,
+                    0,
+                    0
+                ))
+            }
     }
 
     override fun getAllTransaction(): Flow<List<TransactionTable>> {
@@ -103,5 +116,12 @@ class SpendLessDataSourceImpl(
 
     override fun getTotalTransactionAmount(): Flow<Long> {
         return database.transactionDao().getTotalTransactionAmount()
+            .map {
+                0L
+            }
+            .catch {
+                emit(0)
+            }
+//        return database.transactionDao().getTotalTransactionAmount()
     }
 }
