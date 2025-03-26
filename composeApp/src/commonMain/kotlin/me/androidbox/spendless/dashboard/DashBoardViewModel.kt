@@ -20,6 +20,7 @@ import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
+import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
@@ -231,12 +232,18 @@ class DashBoardViewModel(
                 if(_dashboardState.value.transaction.name.count() in 4..14) {
                     println("Create transaction save to the database")
                     viewModelScope.launch {
+                        val amount = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) {
+                            - (dashboardState.value.transaction.amount.toLongOrNull() ?: 0L)
+                        } else {
+                            dashboardState.value.transaction.amount.toLongOrNull() ?: 0L
+                        }
+
                         insertTransactionUseCase.execute(
                             transaction = TransactionTable(
                                 name = dashboardState.value.transaction.name,
                                 counterParty = dashboardState.value.transaction.counterParty,
                                 note = dashboardState.value.transaction.note,
-                                amount = dashboardState.value.transaction.amount.toLongOrNull() ?: 0L,
+                                amount = amount,
                                 category = dashboardState.value.transaction.category.ordinal,
                                 createAt = Clock.System.now().toEpochMilliseconds(),
                                 type = dashboardState.value.transaction.type.ordinal
