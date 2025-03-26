@@ -260,7 +260,7 @@ fun DashboardHeader(
         LargestTransaction(
             modifier = Modifier.weight(1.6f),
             largestTransaction = largestTransaction,
-            hasTransactions = true
+            hasTransactions = largestTransaction.name.isNotEmpty()
         )
 
         PreviousTransaction(
