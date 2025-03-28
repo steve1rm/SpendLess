@@ -9,6 +9,7 @@ sealed interface DashboardAction {
     data object OnCreateClicked : DashboardAction
     data class OnTransactionTypeClicked(val transactionType: TransactionType) : DashboardAction
     data class OnTransactionNameEntered(val name: String) : DashboardAction
+    data class OnTransactionNoteEntered(val note: String) : DashboardAction
     data class OnTransactionAmountEntered(val amount: String) : DashboardAction
     data class OnTransactionCategoryChanged(val category: TransactionItems) : DashboardAction
     data object OnShowAllClicked : DashboardAction

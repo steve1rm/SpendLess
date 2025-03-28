@@ -274,6 +274,15 @@ class DashBoardViewModel(
                     )
                 }
             }
+
+            is DashboardAction.OnTransactionNoteEntered -> {
+                _dashboardState.update { transactionState ->
+                    transactionState.copy(
+                        transaction = transactionState.transaction.copy(note = action.note)
+                    )
+                }
+            }
+
             is DashboardAction.OnTransactionTypeClicked -> {
                 _dashboardState.update { transactionState ->
                     transactionState.copy(

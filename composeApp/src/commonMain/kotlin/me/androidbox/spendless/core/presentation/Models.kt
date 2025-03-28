@@ -95,7 +95,7 @@ enum class LockedDuration(override val type: String) : PreferenceType {
 }
 
 enum class ThousandsSeparator(override val type: String, val symbol: Char) : PreferenceType {
-    DOT("1.00", '.'),
-    COMMA("1,00", ','),
-    SPACE("1 00", ' ')
+    DOT("1.000", '.'),
+    COMMA("1,000", ','),
+    SPACE("1 000", ' ')
 }

@@ -37,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.OnPrimaryFixed
@@ -79,12 +82,21 @@ fun CreateTransactionContent(
     openTransaction: (shouldOpen: Boolean) -> Unit
 ) {
 
-    val focusRequester = remember {
+    val coroutineScope = rememberCoroutineScope()
+
+    val focusRequesterReceiverText = remember {
         FocusRequester()
     }
 
-    LaunchedEffect(focusRequester) {
-        focusRequester.requestFocus()
+    val focusRequesterAddNoteText = remember {
+        FocusRequester()
+    }
+    var shouldShowNote by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(focusRequesterReceiverText) {
+        focusRequesterReceiverText.requestFocus()
     }
 
     val density = LocalDensity.current
@@ -148,7 +160,7 @@ fun CreateTransactionContent(
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .focusRequester(focusRequester),
+                .focusRequester(focusRequesterReceiverText),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedLabelColor = Color.Transparent,
@@ -233,27 +245,77 @@ fun CreateTransactionContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(0.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = {
+        Column {
 
-                }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(0.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Default.Add,
-                    contentDescription = "Add notes",
-                    tint = OnSurface)
+
+                IconButton(
+                    onClick = {
+                        shouldShowNote = true
+                        coroutineScope.launch {
+                            delay(100)
+                            focusRequesterAddNoteText.requestFocus()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add notes",
+                        tint = OnSurface
+                    )
+                }
+
+                Text(
+                    text = "Add Note",
+                    fontSize = 16.sp,
+                    color = OnSurface.copy(alpha = 0.6f),
+                    fontWeight = FontWeight.W400
+                )
             }
 
-            Text(
-                text = "Add Note",
-                fontSize = 16.sp,
-                color = OnSurface.copy(alpha = 0.6f),
-                fontWeight = FontWeight.W400
-            )
+            if(shouldShowNote) {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequesterAddNoteText),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedLabelColor = Color.Transparent,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedLabelColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedTextColor = Color(0xffC1C3CE)
+                    ),
+                    onValueChange = { newNote ->
+                        action(DashboardAction.OnTransactionNoteEntered(newNote))
+                    },
+                    value = state.transaction.note,
+                    textStyle = TextStyle(
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W600,
+                        color = OnSurface,
+                        textAlign = TextAlign.Center
+                    ),
+                    placeholder = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = "Enter note here",
+                            fontSize = 16.sp,
+                            color = OnSurface.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.W600,
+                            textAlign = TextAlign.Center)
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    )
+                )
+            }
         }
 
         var shouldShowDropDown by remember {
