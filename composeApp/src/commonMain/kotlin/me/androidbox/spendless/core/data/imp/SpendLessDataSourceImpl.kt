@@ -65,7 +65,7 @@ class SpendLessDataSourceImpl(
                     category = TransactionItems.entries[transactionTable.category],
                     note = transactionTable.note,
                     createAt = transactionTable.createAt,
-                    amount = transactionTable.amount.toString()
+                    amount = transactionTable.amount
                 )
             }
     }
@@ -90,7 +90,7 @@ class SpendLessDataSourceImpl(
                         category = TransactionItems.entries[transactionTable.category],
                         note = transactionTable.note,
                         createAt = transactionTable.createAt,
-                        amount = transactionTable.amount.toString()
+                        amount = transactionTable.amount
                     )
                 )
             }

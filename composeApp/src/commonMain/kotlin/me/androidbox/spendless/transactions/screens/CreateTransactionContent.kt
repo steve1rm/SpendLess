@@ -213,7 +213,7 @@ fun CreateTransactionContent(
                 modifier = Modifier.weight(1.5f),
                 maxLines = 1,
                 singleLine = true,
-                value = state.transaction.amount,
+                value = state.transaction.amount.toString(),
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
                     action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
@@ -224,7 +224,7 @@ fun CreateTransactionContent(
                     color = OnSurface
                 ),
                 decorationBox = { innerTextField ->
-                    if (state.transaction.amount.isEmpty()) {
+                    if (state.transaction.amount.toString().isEmpty()) {
                         Text(
                             text = "00.00",
                             fontSize = 36.sp,

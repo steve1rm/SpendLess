@@ -233,9 +233,9 @@ class DashBoardViewModel(
                     println("Create transaction save to the database")
                     viewModelScope.launch {
                         val amount = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) {
-                            - (dashboardState.value.transaction.amount.toLongOrNull() ?: 0L)
+                            - (dashboardState.value.transaction.amount)
                         } else {
-                            dashboardState.value.transaction.amount.toLongOrNull() ?: 0L
+                            dashboardState.value.transaction.amount
                         }
 
                         insertTransactionUseCase.execute(
@@ -263,7 +263,7 @@ class DashBoardViewModel(
             is DashboardAction.OnTransactionAmountEntered -> {
                 _dashboardState.update { transactionState ->
                     transactionState.copy(
-                        transaction = transactionState.transaction.copy(amount = action.amount)
+                        transaction = transactionState.transaction.copy(amount = action.amount.toLongOrNull() ?: 0L)
                     )
                 }
             }

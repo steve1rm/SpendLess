@@ -23,12 +23,14 @@ import kotlinx.datetime.format.Padding
 import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import me.androidbox.spendless.core.presentation.Background
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 import me.androidbox.spendless.transactions.data.AllTransactions
 
 @Composable
 fun TransactionsListItems(
     modifier: Modifier = Modifier,
+    preferenceState: PreferenceState,
     listOfTransactions: List<AllTransactions>,
 ) {
     val currentDate = remember {
@@ -79,7 +81,8 @@ fun TransactionsListItems(
                 },
                 itemContent = { transaction ->
                     TransactionItem(
-                        transaction = transaction
+                        transaction = transaction,
+                        preferenceState = preferenceState
                     )
                 }
             )

@@ -76,6 +76,7 @@ fun NavGraphBuilder.dashboardGraph(navController: NavController) {
 
             AllTransactionScreen(
                 transactions = dashboardState.listOfTransactions,
+                preferenceState = dashboardState.preferenceState,
                 onNavigationClicked = {
                     navController.popBackStack()
                 }

@@ -153,6 +153,7 @@ fun DashboardScreen(
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
                     listOfTransactions = dashboardState.listOfTransactions,
+                    preferenceState = dashboardState.preferenceState ,
                     onShowAllClicked = {
                         dashboardAction(DashboardAction.OnShowAllClicked)
                     })
@@ -274,6 +275,7 @@ fun DashboardHeader(
 fun DashboardTransactions(
     modifier: Modifier = Modifier,
     listOfTransactions: List<AllTransactions>,
+    preferenceState: PreferenceState,
     onShowAllClicked: () -> Unit
 ) {
     if(listOfTransactions.isNotEmpty()) {
@@ -305,7 +307,8 @@ fun DashboardTransactions(
             }
 
             TransactionsListItems(
-                listOfTransactions = listOfTransactions)
+                listOfTransactions = listOfTransactions,
+                preferenceState = preferenceState)
         }
     }
     else {
@@ -362,7 +365,7 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = largestTransaction.amount,
+                    text = largestTransaction.amount.toString(),
                     maxLines = 2,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,

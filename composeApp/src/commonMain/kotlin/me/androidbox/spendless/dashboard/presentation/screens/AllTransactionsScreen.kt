@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 import me.androidbox.spendless.transactions.data.AllTransactions
 
@@ -11,6 +12,7 @@ import me.androidbox.spendless.transactions.data.AllTransactions
 fun AllTransactionScreen(
     modifier: Modifier = Modifier,
     transactions: List<AllTransactions>,
+    preferenceState: PreferenceState,
     onNavigationClicked: () -> Unit
 ) {
     SpendLessTheme(
@@ -22,7 +24,8 @@ fun AllTransactionScreen(
         content = { paddingValues ->
             TransactionsListItems(
                 modifier = modifier.padding(paddingValues),
-                listOfTransactions = transactions
+                listOfTransactions = transactions,
+                preferenceState = preferenceState
             )
         }
     )

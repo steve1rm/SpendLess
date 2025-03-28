@@ -24,6 +24,10 @@ import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.Success
+import me.androidbox.spendless.core.presentation.formatMoney
+import me.androidbox.spendless.formatMoney
+import me.androidbox.spendless.onboarding.screens.PreferenceState
+import me.androidbox.spendless.settings.data.PreferenceTable
 import me.androidbox.spendless.transactions.data.Transaction
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -34,7 +38,8 @@ import spendless.composeapp.generated.resources.notes
 @Composable
 fun TransactionItem(
     modifier: Modifier = Modifier,
-    transaction: Transaction
+    transaction: Transaction,
+    preferenceState: PreferenceState
 ) {
     Column(modifier = modifier.fillMaxWidth().background(color = Background)) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -97,7 +102,12 @@ fun TransactionItem(
                 }
 
                 Text(
-                    text = transaction.amount.toString(),
+                    text = transaction.amount.formatMoney(
+                        currency = preferenceState.currency,
+                        expensesFormat = preferenceState.expensesFormat,
+                        decimalSeparator = preferenceState.decimalSeparator,
+                        thousandsSeparator = preferenceState.thousandsSeparator
+                    ),
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
                     color = Success
