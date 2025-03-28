@@ -143,7 +143,7 @@ class PreferenceViewModel(
     }
 
     private suspend fun savePreferences() {
-        delay(10_000L)
+      //  delay(10_000L)
             insertPreferenceUseCase.execute(
                 PreferenceTable(
                     id = 1,
