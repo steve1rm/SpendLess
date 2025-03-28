@@ -131,6 +131,7 @@ class PreferenceViewModel(
             PreferenceAction.OnSavePreferences -> {
                 viewModelScope.launch {
                     applicationScope.launch {
+                        println("START SAVING")
                         savePreferences()
                     }.join()
 
@@ -142,7 +143,7 @@ class PreferenceViewModel(
     }
 
     private suspend fun savePreferences() {
-        delay(3_000L)
+        delay(10_000L)
             insertPreferenceUseCase.execute(
                 PreferenceTable(
                     id = 1,

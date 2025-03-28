@@ -40,6 +40,7 @@ import spendless.composeapp.generated.resources.settings
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
+    onAction: (action: SettingsAction) -> Unit,
     onSecurityClicked: () -> Unit,
     onPreferenceClicked: () -> Unit,
     onBackClicked: () -> Unit,
@@ -122,7 +123,7 @@ fun SettingsScreen(
                     },
                     text = "Log out",
                     onClicked = {
-
+                        onAction(SettingsAction.OnLogout)
                     }
                 )
             }

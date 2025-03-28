@@ -28,32 +28,12 @@ class SettingsViewModel(
         when(settingsAction) {
             SettingsAction.OnLogout -> {
                 viewModelScope.launch {
-                    clearPreferences()
+                    spendLessPreference.clearAll()
                     println("CLEAR HAS DONE")
                     _preferenceChannel.send(SettingsEvent.OnLogoutSuccess)
                     println("SEND HAS DONE")
                 }
             }
-            /*is SettingsAction.OnSavePreferenceSettings -> {
-                viewModelScope.launch {
-                    insertPreferenceUseCase.execute(
-                        preferenceTable = PreferenceTable(
-                            id = 0,
-                            expensesFormat = preferencesSettingsState.value.expensesFormat.ordinal,
-                            currency = preferencesSettingsState.value.currency.ordinal,
-                            decimalSeparator = preferencesSettingsState.value.decimalSeparator.ordinal,
-                            thousandsSeparator = preferencesSettingsState.value.thousandsSeparator.ordinal
-                        )
-                    )   
-                }
-            }*/
-        }
-    }
-
-    private fun clearPreferences() {
-        viewModelScope.launch {
-            spendLessPreference.clearAll()
-            delay(2_000)
         }
     }
 }
