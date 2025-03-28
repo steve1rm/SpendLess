@@ -51,20 +51,22 @@ fun TransactionItem(
                     tint = Color.Unspecified
                 )
 
-                Box(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(6.dp))
-                        .align(alignment = Alignment.BottomEnd)
-                ) {
-                    Icon(
+                if (transaction.note.isNotBlank()) {
+                    Box(
                         modifier = Modifier
-                            .size(14.dp)
-                            .align(alignment = Alignment.Center),
-                        imageVector = vectorResource(resource = Res.drawable.notes),
-                        contentDescription = "Expand note",
-                        tint = Color.Green
-                    )
+                            .size(20.dp)
+                            .background(color = Color.White, shape = RoundedCornerShape(6.dp))
+                            .align(alignment = Alignment.BottomEnd)
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .size(14.dp)
+                                .align(alignment = Alignment.Center),
+                            imageVector = vectorResource(resource = Res.drawable.notes),
+                            contentDescription = "Expand note",
+                            tint = Color.Green
+                        )
+                    }
                 }
             }
 

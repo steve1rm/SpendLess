@@ -91,9 +91,6 @@ fun CreateTransactionContent(
     val focusRequesterAddNoteText = remember {
         FocusRequester()
     }
-    var shouldShowNote by remember {
-        mutableStateOf(false)
-    }
 
     LaunchedEffect(focusRequesterReceiverText) {
         focusRequesterReceiverText.requestFocus()
@@ -255,7 +252,8 @@ fun CreateTransactionContent(
 
                 IconButton(
                     onClick = {
-                        shouldShowNote = true
+                        action(DashboardAction.ShouldShowTransactionNote(shouldShowNote = true))
+
                         coroutineScope.launch {
                             delay(100)
                             focusRequesterAddNoteText.requestFocus()
@@ -277,7 +275,7 @@ fun CreateTransactionContent(
                 )
             }
 
-            if(shouldShowNote) {
+            if(state.showInputNote) {
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()

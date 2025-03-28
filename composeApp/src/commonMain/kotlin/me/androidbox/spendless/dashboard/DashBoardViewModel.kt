@@ -310,8 +310,18 @@ class DashBoardViewModel(
                 }
             }
 
+
+
             is DashboardAction.OpenPinPromptScreen -> {
                 /** No-op - handled in the composable nav graph */
+            }
+
+            is DashboardAction.ShouldShowTransactionNote -> {
+                _dashboardState.update { dashboardState ->
+                    dashboardState.copy(
+                        showInputNote = true
+                    )
+                }
             }
         }
     }

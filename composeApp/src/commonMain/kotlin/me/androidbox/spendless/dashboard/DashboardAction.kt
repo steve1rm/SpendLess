@@ -13,5 +13,6 @@ sealed interface DashboardAction {
     data class OnTransactionAmountEntered(val amount: String) : DashboardAction
     data class OnTransactionCategoryChanged(val category: TransactionItems) : DashboardAction
     data object OnShowAllClicked : DashboardAction
+    data class ShouldShowTransactionNote(val shouldShowNote: Boolean) : DashboardAction
     data class OpenPinPromptScreen(val shouldOpen: Boolean, val pin: String) : DashboardAction
 }

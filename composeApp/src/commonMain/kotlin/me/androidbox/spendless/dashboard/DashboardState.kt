@@ -7,6 +7,7 @@ import me.androidbox.spendless.transactions.data.Transaction
 data class DashboardState(
     val username: String = "",
     val showTransactionBottomSheet: Boolean = false,
+    val showInputNote: Boolean = false,
     val transaction: Transaction = Transaction(),
     val largestTransaction: Transaction = Transaction(),
     val popularTransaction: Transaction = Transaction(),
