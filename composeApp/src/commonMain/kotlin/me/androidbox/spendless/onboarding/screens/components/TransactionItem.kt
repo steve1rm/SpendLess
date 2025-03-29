@@ -21,9 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.androidbox.spendless.core.presentation.Background
+import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.PrimaryFixed
 import me.androidbox.spendless.core.presentation.Success
+import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.formatMoney
 import me.androidbox.spendless.onboarding.screens.PreferenceState
@@ -33,6 +35,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendless.composeapp.generated.resources.Res
+import spendless.composeapp.generated.resources.cash
+import spendless.composeapp.generated.resources.cashbag
 import spendless.composeapp.generated.resources.notes
 
 @Composable
@@ -51,7 +55,7 @@ fun TransactionItem(
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    painter = painterResource(transaction.category.iconRes),
+                    painter = if(transaction.type == TransactionType.RECEIVER) painterResource(transaction.category.iconRes) else painterResource(resource = Res.drawable.cashbag),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
@@ -110,7 +114,7 @@ fun TransactionItem(
                     ),
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
-                    color = Success
+                    color = if(transaction.type == TransactionType.RECEIVER) Error else Color.Green
                 )
             }
         }
