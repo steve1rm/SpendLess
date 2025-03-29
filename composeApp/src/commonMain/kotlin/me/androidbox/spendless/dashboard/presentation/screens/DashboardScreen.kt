@@ -148,6 +148,7 @@ fun DashboardScreen(
                     totalPreviousSpent = dashboardState.totalPreviousSpent,
                     popularTransaction = dashboardState.popularTransaction,
                     preferenceState = dashboardState.preferenceState,
+                    hasPopularCategory = dashboardState.listOfTransactions.isNotEmpty(),
                     totalAmount = dashboardState.totalTransactionAmount)
 
                 DashboardTransactions(
@@ -216,6 +217,7 @@ fun DashboardHeader(
     popularTransaction: Transaction,
     totalPreviousSpent: Long,
     preferenceState: PreferenceState,
+    hasPopularCategory: Boolean,
     totalAmount: Long
 ) {
 
@@ -244,12 +246,14 @@ fun DashboardHeader(
         )
     }
 
-    PopularItem(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        popularCategory = popularTransaction
-    )
+    if(hasPopularCategory) {
+        PopularItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            popularCategory = popularTransaction
+        )
+    }
 
     Row(
         modifier = Modifier
@@ -261,6 +265,7 @@ fun DashboardHeader(
         LargestTransaction(
             modifier = Modifier.weight(1.6f),
             largestTransaction = largestTransaction,
+            preferenceState = preferenceState,
             hasTransactions = largestTransaction.name.isNotEmpty()
         )
 
@@ -339,6 +344,7 @@ fun DashboardTransactions(
 fun LargestTransaction(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
+    preferenceState: PreferenceState,
     hasTransactions: Boolean = false
 ) {
     if(hasTransactions) {
@@ -365,7 +371,12 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = largestTransaction.amount.toString(),
+                    text = largestTransaction.amount.formatMoney(
+                        currency = preferenceState.currency,
+                        expensesFormat = preferenceState.expensesFormat,
+                        thousandsSeparator = preferenceState.thousandsSeparator,
+                        decimalSeparator = preferenceState.decimalSeparator
+                    ),
                     maxLines = 2,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
