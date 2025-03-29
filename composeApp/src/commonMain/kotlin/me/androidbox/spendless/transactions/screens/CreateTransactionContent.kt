@@ -48,10 +48,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
@@ -68,6 +70,7 @@ import me.androidbox.spendless.core.presentation.components.GenericDropDownMenu
 import me.androidbox.spendless.core.presentation.components.TransactionDropDownItem
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
+import me.androidbox.spendless.formatMoney
 import me.androidbox.spendless.onboarding.screens.components.ButtonPanel
 import org.jetbrains.compose.resources.painterResource
 import spendless.composeapp.generated.resources.Res
@@ -200,37 +203,53 @@ fun CreateTransactionContent(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier.weight(1f).padding(end = 2.dp),
-                text = if(state.transaction.type == TransactionType.RECEIVER) "-${state.preferenceState.currency.symbol}" else state.preferenceState.currency.symbol ,
-                fontSize = 36.sp,
-                color = if(state.transaction.type == TransactionType.RECEIVER) Error else Color.Green,
-                fontWeight = FontWeight.W600,
-                textAlign = TextAlign.End
-            )
-
             BasicTextField(
-                modifier = Modifier.weight(1.5f),
+                modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
                 singleLine = true,
-                value = state.transaction.amount.toString(),
+                value = if(state.transaction.amount > 0) {
+                    val amount = state.transaction.amount.formatMoney(
+                    currency = state.preferenceState.currency,
+                    expensesFormat = state.preferenceState.expensesFormat,
+                    thousandsSeparator = state.preferenceState.thousandsSeparator,
+                    decimalSeparator = state.preferenceState.decimalSeparator)
+                    .toString()
+
+                    amount
+                } else "",
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
                     action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
                 },
                 textStyle = TextStyle(
+                    textAlign = TextAlign.Center,
                     fontSize = 36.sp,
                     fontWeight = FontWeight.W600,
                     color = OnSurface
                 ),
                 decorationBox = { innerTextField ->
-                    if (state.transaction.amount.toString().isEmpty()) {
-                        Text(
-                            text = "00.00",
-                            fontSize = 36.sp,
-                            color = OnSurface.copy(alpha = 0.6f),
-                            fontWeight = FontWeight.W600
-                        )
+                    if (state.transaction.amount == 0L) {
+                        Row(modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically) {
+
+                            Text(
+                                modifier = Modifier.padding(end = 2.dp),
+                                text = if(state.transaction.type == TransactionType.RECEIVER) "-${state.preferenceState.currency.symbol}" else state.preferenceState.currency.symbol ,
+                                fontSize = 36.sp,
+                                color = if(state.transaction.type == TransactionType.RECEIVER) Error else Color.Green,
+                                fontWeight = FontWeight.W600,
+                                textAlign = TextAlign.End
+                            )
+
+                            Text(
+                                text = "00.00",
+                                textAlign = TextAlign.Center,
+                                fontSize = 36.sp,
+                                color = OnSurface.copy(alpha = 0.6f),
+                                fontWeight = FontWeight.W600
+                            )
+                        }
                     }
                     innerTextField()
                 },
@@ -401,7 +420,7 @@ fun CreateTransactionContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Primary
             ),
