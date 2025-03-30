@@ -50,7 +50,7 @@ fun TransactionItem(
             Box(
                 modifier = Modifier
                     .size(44.dp)
-                    .background(color = PrimaryFixed, shape = RoundedCornerShape(12.dp)),
+                    .background(color = if(transaction.type == TransactionType.RECEIVER) PrimaryFixed else Color(0xffe5ea58), shape = RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -98,7 +98,7 @@ fun TransactionItem(
                     )
 
                     Text(
-                        text = transaction.category.title,
+                        text = if(transaction.type == TransactionType.RECEIVER) transaction.category.title else "Income",
                         fontWeight = FontWeight.W400,
                         fontSize = 12.sp,
                         color = OnSurface

@@ -1,6 +1,5 @@
 package me.androidbox.spendless.core.presentation
 
-import androidx.compose.runtime.snapshots.SnapshotApplyResult
 import androidx.compose.ui.graphics.Color
 
 val Primary = Color(0xFF5A00C8)
