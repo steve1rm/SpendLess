@@ -371,7 +371,7 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = largestTransaction.amount.formatMoney(
+                    text = largestTransaction.amount.toDouble().formatMoney(
                         currency = preferenceState.currency,
                         expensesFormat = preferenceState.expensesFormat,
                         thousandsSeparator = preferenceState.thousandsSeparator,

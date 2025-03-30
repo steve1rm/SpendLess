@@ -106,7 +106,7 @@ fun TransactionItem(
                 }
 
                 Text(
-                    text = transaction.amount.formatMoney(
+                    text = transaction.amount.toDouble().formatMoney(
                         currency = preferenceState.currency,
                         expensesFormat = preferenceState.expensesFormat,
                         decimalSeparator = preferenceState.decimalSeparator,

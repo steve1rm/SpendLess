@@ -36,7 +36,7 @@ class FetchAllTransactionsUseCaseImp(
                                 category = TransactionItems.entries[transactionTable.category],
                                 note = transactionTable.note,
                                 createAt = transactionTable.createAt,
-                                amount = transactionTable.amount
+                                amount = transactionTable.amount.toString()
                             )
                         }
                     )
@@ -44,6 +44,7 @@ class FetchAllTransactionsUseCaseImp(
         }
     }
 }
+/*
 
 fun populate(): Flow<List<Transaction>> {
     println("POPULATE")
@@ -135,6 +136,7 @@ fun populate(): Flow<List<Transaction>> {
         emit(listOfJournals)
     }
 }
+*/
 
 fun subtractDay(timestamp: Long, day: Int): Long {
     val instant = Instant.fromEpochMilliseconds(timestamp)

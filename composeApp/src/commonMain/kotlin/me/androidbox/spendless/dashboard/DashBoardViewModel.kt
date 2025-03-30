@@ -172,15 +172,6 @@ class DashBoardViewModel(
         }
     }
 
-    /**
-     * Check if session is still active
-     * if not active
-     * get username from sharedpreferences
-     * get get PIN from user table
-     * show the PIN prompt screen
-     * Correct Open transaction sheet
-     *
-     * */
     private suspend fun showPinPromptAuthentication(): Boolean {
         return !hasActiveSession(spendLessPreference.getTimeStamp())
     }
@@ -198,15 +189,6 @@ class DashBoardViewModel(
     fun onAction(action: DashboardAction) {
         when(action) {
             is DashboardAction.OpenNewTransaction -> {
-                /**
-                 * Check if session is still active
-                 * if not active
-                 * get username from sharedpreferences
-                 * get get PIN from user table
-                 * show the PIN prompt screen
-                 * Correct Open transaction sheet
-                 *
-                 * */
                 viewModelScope.launch {
                     checkForActiveSession(
                         activeSessionAction = {
@@ -233,9 +215,9 @@ class DashBoardViewModel(
                     println("Create transaction save to the database")
                     viewModelScope.launch {
                         val amount = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) {
-                            - (dashboardState.value.transaction.amount)
+                            - (dashboardState.value.transaction.amount.toDouble())
                         } else {
-                            dashboardState.value.transaction.amount
+                            dashboardState.value.transaction.amount.toDouble()
                         }
 
                         insertTransactionUseCase.execute(
@@ -263,10 +245,10 @@ class DashBoardViewModel(
             is DashboardAction.OnTransactionAmountEntered -> {
                 _dashboardState.update { transactionState ->
                     transactionState.copy(
-                        transaction = transactionState.transaction.copy(amount = action.amount.toDoubleOrNull() ?: 0.0)
+                        transaction = transactionState.transaction.copy(amount = action.amount)
                     )
                 }
-                println("action.amount: ${action.amount}")
+            //    println("action.amount: ${action.amount}")
             }
             is DashboardAction.OnTransactionNameEntered -> {
                 _dashboardState.update { transactionState ->
