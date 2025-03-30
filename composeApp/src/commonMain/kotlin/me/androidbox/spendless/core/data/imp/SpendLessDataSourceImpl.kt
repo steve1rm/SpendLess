@@ -65,7 +65,7 @@ class SpendLessDataSourceImpl(
                     category = TransactionItems.entries[transactionTable.category],
                     note = transactionTable.note,
                     createAt = transactionTable.createAt,
-                    amount = transactionTable.amount
+                    amount = transactionTable.amount.toString()
                 )
             }
     }
@@ -73,7 +73,7 @@ class SpendLessDataSourceImpl(
     override suspend fun getTotalSpentPreviousWeek(
         startOfPreviousWeek: Long,
         endOfPreviousWeek: Long
-    ): Long {
+    ): Double {
         return database.transactionDao()
             .getTotalSpentPreviousWeek(startOfPreviousWeek, endOfPreviousWeek)
     }
@@ -90,7 +90,7 @@ class SpendLessDataSourceImpl(
                         category = TransactionItems.entries[transactionTable.category],
                         note = transactionTable.note,
                         createAt = transactionTable.createAt,
-                        amount = transactionTable.amount
+                        amount = transactionTable.amount.toString()
                     )
                 )
             }
@@ -114,13 +114,13 @@ class SpendLessDataSourceImpl(
         database.transactionDao().insertTransaction(transaction)
     }
 
-    override fun getTotalTransactionAmount(): Flow<Long> {
+    override fun getTotalTransactionAmount(): Flow<Double> {
         return database.transactionDao().getTotalTransactionAmount()
             .map {
                 it
             }
             .catch {
-                emit(0L)
+                emit(0.0)
             }
 //        return database.transactionDao().getTotalTransactionAmount()
     }

@@ -11,5 +11,5 @@ data class PreferenceState(
     val currency: Currency = Currency.USD,
     val expensesFormat: ExpensesFormat = ExpensesFormat.NEGATIVE,
     val isEnabled: Boolean = false,
-    val money: Long = 0L
+    val money: Double = 0.0
 )

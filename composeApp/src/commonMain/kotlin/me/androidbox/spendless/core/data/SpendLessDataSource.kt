@@ -17,9 +17,9 @@ interface SpendLessDataSource {
     suspend fun insertTransaction(transaction: TransactionTable)
     fun getAllTransaction(): Flow<List<TransactionTable>>
     suspend fun getLargestTransaction(): Flow<Transaction>
-    fun getTotalTransactionAmount(): Flow<Long>
+    fun getTotalTransactionAmount(): Flow<Double>
 
-    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Long
+    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Double
     fun getMostPopularCategory(): Flow<Result<Transaction>>
 
 //    suspend fun getTransactionByCategory(title: String): List<Transaction>

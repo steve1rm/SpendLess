@@ -8,7 +8,7 @@ class FetchTotalTransactionAmountUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : FetchTotalTransactionAmountUseCase {
 
-    override fun execute(): Flow<Long> {
+    override fun execute(): Flow<Double> {
         return spendLessDataSource.getTotalTransactionAmount()
     }
 }

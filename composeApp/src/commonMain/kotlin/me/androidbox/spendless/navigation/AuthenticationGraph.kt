@@ -225,7 +225,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 preferenceContent = {
                     PreferenceContent(
                         preferenceState = onboardingPreferenceState.copy(
-                            money = 123456789
+                            money = 1234567.89
                         ),
                         action = preferenceViewModel::onAction
                     )

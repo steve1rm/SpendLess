@@ -1,5 +1,5 @@
 package me.androidbox.spendless.transactions.domain
 
 fun interface FetchTotalSpentPreviousWeekUseCase {
-    suspend fun execute(): Long
+    suspend fun execute(): Double
 }

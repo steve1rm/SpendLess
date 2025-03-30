@@ -12,9 +12,9 @@ data class DashboardState(
     val largestTransaction: Transaction = Transaction(),
     val popularTransaction: Transaction = Transaction(),
     val listOfTransactions: List<AllTransactions> = emptyList(),
-    val totalPreviousSpent: Long = 0L,
+    val totalPreviousSpent: Double = 0.0,
     val showPinPromptScreen: Boolean = false,
-    val totalTransactionAmount: Long = 0L,
+    val totalTransactionAmount: Double = 0.0,
 
     /** Preferences for currency, decimal formatting, etc.
      *  TODO Should this be here, check in the discord channel */

@@ -215,10 +215,10 @@ fun DashboardHeader(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
     popularTransaction: Transaction,
-    totalPreviousSpent: Long,
+    totalPreviousSpent: Double,
     preferenceState: PreferenceState,
     hasPopularCategory: Boolean,
-    totalAmount: Long
+    totalAmount: Double
 ) {
 
     Column(modifier = modifier
@@ -371,7 +371,7 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = largestTransaction.amount.formatMoney(
+                    text = largestTransaction.amount.toDouble().formatMoney(
                         currency = preferenceState.currency,
                         expensesFormat = preferenceState.expensesFormat,
                         thousandsSeparator = preferenceState.thousandsSeparator,
@@ -442,7 +442,7 @@ fun LargestTransaction(
 @Composable
 fun PreviousTransaction(
     modifier: Modifier = Modifier,
-    totalPreviousSpent: Long
+    totalPreviousSpent: Double
 ) {
     Column(
         modifier = modifier

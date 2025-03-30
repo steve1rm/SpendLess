@@ -22,26 +22,104 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): AnnotatedString {
+
+
+// Assuming these enums/classes exist:
+// enum class ExpensesFormat { NORMAL, NEGATIVE, BRACKET }
+// data class Currency(val symbol: String)
+// data class ThousandsSeparator(val symbol: Char)
+// data class DecimalSeparator(val symbol: Char)
+
+actual fun Double.formatMoney(
+    currency: Currency,
+    expensesFormat: ExpensesFormat,
+    thousandsSeparator: ThousandsSeparator,
+    decimalSeparator: DecimalSeparator
+): AnnotatedString {
+    val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
+        this.groupingSeparator = thousandsSeparator.symbol
+        this.decimalSeparator = decimalSeparator.symbol
+        // It's often better to let DecimalFormat handle the currency symbol
+        // based on locale or pattern, but we can force it if needed.
+        // this.currencySymbol = currency.symbol // Optional: if pattern uses '¤'
+    }
+
+    // Use a pattern that forces two decimal places and includes grouping separators.
+    // Include the currency symbol in the pattern for better spacing/locale handling.
+    // Use '\u00A4' for the generic currency symbol placeholder if DecimalFormatSymbols.currencySymbol is set,
+    // or hardcode currency.symbol if needed. Let's hardcode for simplicity here.
+    // Note: Placing symbol might differ by locale convention; this forces it at the start.
+    val pattern = "'${currency.symbol}'#,##0.00" // Example: $1,234.56 or €1.234,56
+    val decimalFormat = DecimalFormat(pattern, symbols)
+
+    val isNegative = this < 0
+    val amountToFormat = kotlin.math.abs(this)
+
+    // Format the absolute numeric value
+    val formattedNumberString = decimalFormat.format(amountToFormat)
+
+    return buildAnnotatedString {
+        // Determine color based on negativity
+        val numberColor = if (isNegative) Color.Red else Color.Unspecified // Use Color.Unspecified for default/theme color
+
+        // Handle negative sign/brackets based on preference
+        if (isNegative) {
+            when (expensesFormat) {
+                ExpensesFormat.BRACKET -> withStyle(style = SpanStyle(color = numberColor)) { append("(") }
+                ExpensesFormat.NEGATIVE -> {
+                    // Check if the format already added a minus (depends on locale/pattern)
+                    // If not, add it. Assuming our pattern doesn't add it.
+                    if (!formattedNumberString.startsWith("-")) {
+                        withStyle(style = SpanStyle(color = numberColor)) { append("-") }
+                    }
+                }
+                else -> {} // Handle other formats or default behavior
+            }
+        }
+
+        // Append the formatted number (which now includes currency symbol and decimals)
+        // Apply color to the whole thing
+        withStyle(style = SpanStyle(color = numberColor)) {
+            // If we added our own "-", remove any potential "-" from the formatted string itself
+            append(formattedNumberString.removePrefix("-"))
+        }
+
+        // Add closing bracket if needed
+        if (isNegative && expensesFormat == ExpensesFormat.BRACKET) {
+            withStyle(style = SpanStyle(color = numberColor)) { append(")") }
+        }
+    }
+}
+/*
+
+actual fun Double.formatMoney0ld(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): AnnotatedString {
     val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         this.groupingSeparator = thousandsSeparator.symbol
         this.decimalSeparator = decimalSeparator.symbol
     }
-    /** Check if the amount is negative */
+    */
+/** Check if the amount is negative *//*
+
     val isNegative = this < 0
-    /** Display the money without the negative */
+    */
+/** Display the money without the negative *//*
+
     val amount = kotlin.math.abs(this)
 
     val decimalFormat = DecimalFormat("#,##0.##", symbols)
     decimalFormat.isDecimalSeparatorAlwaysShown = false
 
-    /** Divide by 100 to show the decimal number */
-    val formattedNumber = if(amount > 90000) {
+    */
+/** Divide by 100 to show the decimal number *//*
+
+ */
+/*   val formattedNumber = if(amount > 90000) {
         decimalFormat.format(amount / 100.0)
     }
     else {
         decimalFormat.format(amount)
-    }
+    }*//*
+
 
     return buildAnnotatedString {
         if(isNegative) {
@@ -61,7 +139,7 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
         }
 
         append(currency.symbol)
-        append(formattedNumber)
+        append(amount.toString())
 
         if(expensesFormat == ExpensesFormat.BRACKET) {
             if(isNegative) {
@@ -72,6 +150,7 @@ actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, 
         }
     }
 }
+*/
 
 actual class SpendLessPreferenceImp(context: Context) : SpendLessPreference {
 

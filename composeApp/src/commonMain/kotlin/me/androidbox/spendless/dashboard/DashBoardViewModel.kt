@@ -21,6 +21,7 @@ import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.TransactionType
+import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
@@ -32,6 +33,7 @@ import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCa
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalTransactionAmountUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
+import me.androidbox.spendless.transactions.screens.toAmount
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashBoardViewModel(
@@ -172,15 +174,6 @@ class DashBoardViewModel(
         }
     }
 
-    /**
-     * Check if session is still active
-     * if not active
-     * get username from sharedpreferences
-     * get get PIN from user table
-     * show the PIN prompt screen
-     * Correct Open transaction sheet
-     *
-     * */
     private suspend fun showPinPromptAuthentication(): Boolean {
         return !hasActiveSession(spendLessPreference.getTimeStamp())
     }
@@ -198,15 +191,6 @@ class DashBoardViewModel(
     fun onAction(action: DashboardAction) {
         when(action) {
             is DashboardAction.OpenNewTransaction -> {
-                /**
-                 * Check if session is still active
-                 * if not active
-                 * get username from sharedpreferences
-                 * get get PIN from user table
-                 * show the PIN prompt screen
-                 * Correct Open transaction sheet
-                 *
-                 * */
                 viewModelScope.launch {
                     checkForActiveSession(
                         activeSessionAction = {
@@ -233,9 +217,9 @@ class DashBoardViewModel(
                     println("Create transaction save to the database")
                     viewModelScope.launch {
                         val amount = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) {
-                            - (dashboardState.value.transaction.amount)
+                            - (dashboardState.value.transaction.amount.toAmount())
                         } else {
-                            dashboardState.value.transaction.amount
+                            dashboardState.value.transaction.amount.toAmount()
                         }
 
                         insertTransactionUseCase.execute(
@@ -263,9 +247,10 @@ class DashBoardViewModel(
             is DashboardAction.OnTransactionAmountEntered -> {
                 _dashboardState.update { transactionState ->
                     transactionState.copy(
-                        transaction = transactionState.transaction.copy(amount = action.amount.toLongOrNull() ?: 0L)
+                        transaction = transactionState.transaction.copy(amount = action.amount)
                     )
                 }
+            //    println("action.amount: ${action.amount}")
             }
             is DashboardAction.OnTransactionNameEntered -> {
                 _dashboardState.update { transactionState ->
