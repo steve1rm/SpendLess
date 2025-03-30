@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -10,6 +9,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.serialization)
+    id("io.kotzilla.kotzilla-plugin")
 }
 
 kotlin {
@@ -42,6 +42,9 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.room.runtime.android)
             implementation(libs.crypto.provider)
+
+            implementation(libs.glance)
+            implementation(libs.glance.appwidget)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -51,6 +54,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
+            implementation("com.liftric:kvault:1.12.0")
 //            implementation(libs.spring.security)
 
             // Room
@@ -59,12 +63,13 @@ kotlin {
 
             implementation(libs.kotlinx.serialization)
 
+
             implementation(libs.crypto)
             // Koin
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-
+            implementation("io.kotzilla:kotzilla-sdk:1.0.1")
             implementation(libs.kotlinx.datetime)
 
             implementation(libs.navigation.compose)

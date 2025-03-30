@@ -10,4 +10,5 @@ sealed interface PreferenceAction {
     data class OnThousandsSeparatorSelected(val thousandsSeparator: ThousandsSeparator) : PreferenceAction
     data class OnExpensesFormat(val expensesFormat: ExpensesFormat) : PreferenceAction
     data class OnCurrency(val currency: Currency) : PreferenceAction
+    data object OnSavePreferences : PreferenceAction
 }

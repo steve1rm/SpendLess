@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import me.androidbox.spendless.SpendLessPreference
 import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.domain.ValidateUserUseCase
 import me.androidbox.spendless.core.domain.generatePinDigest
@@ -21,7 +23,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class LoginViewModel(
     private val getUserUseCase: GetUserUseCase,
-    private val validateUserUseCase: ValidateUserUseCase
+    private val validateUserUseCase: ValidateUserUseCase,
+    private val spendLessPreference: SpendLessPreference
 ) : ViewModel() {
     private val _loginState = MutableStateFlow<LoginState>(LoginState())
     val loginState = _loginState.asStateFlow()
@@ -77,7 +80,7 @@ class LoginViewModel(
     private fun getLoginCredentials() {
         viewModelScope.launch {
             try {
-                val pin = generatePinDigest(loginState.value.username, loginState.value.pin)
+                val pin = generatePinDigest(loginState.value.pin)
 
                 when(validateUserUseCase.execute(loginState.value.username, pin)) {
                     null -> {
@@ -85,6 +88,8 @@ class LoginViewModel(
                         _loginChannel.send(LoginEvent.OnLoginFailure)
                     }
                     else -> {
+                        spendLessPreference.setUsername(loginState.value.username)
+                        spendLessPreference.setTimeStamp(Clock.System.now().toEpochMilliseconds())
                         _loginChannel.send(LoginEvent.OnLoginSuccess)
                     }
                 }

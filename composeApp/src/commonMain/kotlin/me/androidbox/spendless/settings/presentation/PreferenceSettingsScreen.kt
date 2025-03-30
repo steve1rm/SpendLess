@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package me.androidbox.spendless.settings.presentation
 
 import androidx.compose.foundation.background
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -40,14 +37,17 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import me.androidbox.spendless.core.presentation.OnPrimary
 import me.androidbox.spendless.core.presentation.Primary
+import me.androidbox.spendless.onboarding.screens.PreferenceAction
 import me.androidbox.spendless.settings.presentation.components.SpendLessTheme
 
 @Composable
 fun PreferenceSettingsScreen(
     modifier: Modifier = Modifier,
     preferenceContent: @Composable () -> Unit,
-    onBackClicked: () -> Unit
-) {
+    canSavePreferences: Boolean,
+    onBackClicked: () -> Unit,
+    action: (PreferenceAction) -> Unit) {
+
     SpendLessTheme(
         modifier = modifier,
         toolBarTitle = "Preferences",
@@ -61,6 +61,7 @@ fun PreferenceSettingsScreen(
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
+
                 preferenceContent()
 
                 Button(
@@ -68,10 +69,13 @@ fun PreferenceSettingsScreen(
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Primary),
-                    onClick = {}
+                    onClick = {
+                        action(PreferenceAction.OnSavePreferences)
+                    },
+                    enabled = canSavePreferences
                 ) {
                     Text(
-                        text = "Start Tracking",
+                        text = "Save",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W600,
                         color = OnPrimary

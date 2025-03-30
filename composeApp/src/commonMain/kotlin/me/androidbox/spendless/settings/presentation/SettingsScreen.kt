@@ -6,12 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.captionBar
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -22,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -44,10 +40,10 @@ import spendless.composeapp.generated.resources.settings
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
+    onAction: (action: SettingsAction) -> Unit,
     onSecurityClicked: () -> Unit,
     onPreferenceClicked: () -> Unit,
-    onLogoutClicked: () -> Unit,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier
@@ -126,7 +122,9 @@ fun SettingsScreen(
                         )
                     },
                     text = "Log out",
-                    onClicked = onLogoutClicked
+                    onClicked = {
+                        onAction(SettingsAction.OnLogout)
+                    }
                 )
             }
         }

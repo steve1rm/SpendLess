@@ -6,4 +6,11 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.serialization) apply false
+}
+
+buildscript {
+    this.dependencies {
+        classpath("io.kotzilla:kotzilla-plugin:1.0.1")
+    }
 }

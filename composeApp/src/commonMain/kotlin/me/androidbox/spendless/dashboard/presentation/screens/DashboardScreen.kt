@@ -1,14 +1,14 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package me.androidbox.spendless.dashboard.presentation.screens
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,10 +65,12 @@ import me.androidbox.spendless.core.presentation.SecondaryContainer
 import me.androidbox.spendless.core.presentation.SecondaryFixed
 import me.androidbox.spendless.dashboard.DashboardAction
 import me.androidbox.spendless.dashboard.DashboardState
-import me.androidbox.spendless.dashboard.Transaction
-import me.androidbox.spendless.dashboard.AllTransactions
 import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
+import me.androidbox.spendless.formatMoney
+import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.onboarding.screens.components.PopularItem
+import me.androidbox.spendless.transactions.data.AllTransactions
+import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.screens.CreateTransactionContent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
@@ -77,10 +80,18 @@ import spendless.composeapp.generated.resources.settings
 
 @Composable
 fun DashboardScreen(
+    shouldNavigateOnWidget: Boolean,
     modifier: Modifier = Modifier,
     dashboardState: DashboardState,
     dashboardAction: (action: DashboardAction) -> Unit,
 ) {
+
+    /** TODO use disposable effect */
+    LaunchedEffect(shouldNavigateOnWidget) {
+        if(shouldNavigateOnWidget) {
+            dashboardAction(DashboardAction.OpenNewTransaction(shouldOpen = true))
+        }
+    }
 
     Scaffold(
         modifier = modifier
@@ -100,7 +111,7 @@ fun DashboardScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 title = {
                     Text(
-                        text = "Steve Mason",
+                        text = dashboardState.username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W600,
                         color = OnPrimary
@@ -136,11 +147,15 @@ fun DashboardScreen(
                     modifier = Modifier.weight(1f),
                     largestTransaction = dashboardState.largestTransaction,
                     totalPreviousSpent = dashboardState.totalPreviousSpent,
-                    popularTransaction = dashboardState.popularTransaction)
+                    popularTransaction = dashboardState.popularTransaction,
+                    preferenceState = dashboardState.preferenceState,
+                    hasPopularCategory = dashboardState.listOfTransactions.isNotEmpty(),
+                    totalAmount = dashboardState.totalTransactionAmount)
 
                 DashboardTransactions(
                     modifier = Modifier.weight(2f),
                     listOfTransactions = dashboardState.listOfTransactions,
+                    preferenceState = dashboardState.preferenceState ,
                     onShowAllClicked = {
                         dashboardAction(DashboardAction.OnShowAllClicked)
                     })
@@ -201,7 +216,10 @@ fun DashboardHeader(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
     popularTransaction: Transaction,
-    totalPreviousSpent: Float
+    totalPreviousSpent: Double,
+    preferenceState: PreferenceState,
+    hasPopularCategory: Boolean,
+    totalAmount: Double
 ) {
 
     Column(modifier = modifier
@@ -210,10 +228,15 @@ fun DashboardHeader(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$10,382.45",
+            text = totalAmount.formatMoney(
+                currency = preferenceState.currency,
+                expensesFormat = preferenceState.expensesFormat,
+                thousandsSeparator = preferenceState.thousandsSeparator,
+                decimalSeparator = preferenceState.decimalSeparator
+            ),
             fontSize = 46.sp,
             fontWeight = FontWeight.W600,
-            color = OnPrimary
+            color = Color.White
         )
 
         Text(
@@ -224,29 +247,33 @@ fun DashboardHeader(
         )
     }
 
-    PopularItem(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp),
-        popularCategory = popularTransaction
-    )
+    if(hasPopularCategory) {
+        PopularItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            popularCategory = popularTransaction
+        )
+    }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(align = Alignment.BottomCenter)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LargestTransaction(
             modifier = Modifier.weight(1.6f),
             largestTransaction = largestTransaction,
-            hasTransactions = true
+            preferenceState = preferenceState,
+            hasTransactions = largestTransaction.name.isNotEmpty()
         )
 
         PreviousTransaction(
             modifier = Modifier.weight(1f),
-            totalPreviousSpent = totalPreviousSpent
+            totalPreviousSpent = totalPreviousSpent,
+            preferenceState = preferenceState
         )
     }
 }
@@ -255,22 +282,27 @@ fun DashboardHeader(
 fun DashboardTransactions(
     modifier: Modifier = Modifier,
     listOfTransactions: List<AllTransactions>,
+    preferenceState: PreferenceState,
     onShowAllClicked: () -> Unit
 ) {
     if(listOfTransactions.isNotEmpty()) {
         /** Show transactions here */
         Column(
-            modifier = modifier.fillMaxWidth().background(color = Background)
+            modifier = modifier
+                .fillMaxWidth()
+                .background(color = Background, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = "Latest Transactions",
                     fontWeight = FontWeight.W600,
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
                     color = OnSurface
                 )
 
@@ -280,13 +312,16 @@ fun DashboardTransactions(
                     ),
                     text = "Show all",
                     fontWeight = FontWeight.W600,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     color = Primary
                 )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             TransactionsListItems(
-                listOfTransactions = listOfTransactions)
+                listOfTransactions = listOfTransactions,
+                preferenceState = preferenceState)
         }
     }
     else {
@@ -317,6 +352,7 @@ fun DashboardTransactions(
 fun LargestTransaction(
     modifier: Modifier = Modifier,
     largestTransaction: Transaction,
+    preferenceState: PreferenceState,
     hasTransactions: Boolean = false
 ) {
     if(hasTransactions) {
@@ -343,7 +379,12 @@ fun LargestTransaction(
 
                 Text(
                     textAlign = TextAlign.Center,
-                    text = largestTransaction.amount,
+                    text = largestTransaction.amount.toDouble().formatMoney(
+                        currency = preferenceState.currency,
+                        expensesFormat = preferenceState.expensesFormat,
+                        thousandsSeparator = preferenceState.thousandsSeparator,
+                        decimalSeparator = preferenceState.decimalSeparator
+                    ),
                     maxLines = 2,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
@@ -409,7 +450,8 @@ fun LargestTransaction(
 @Composable
 fun PreviousTransaction(
     modifier: Modifier = Modifier,
-    totalPreviousSpent: Float
+    totalPreviousSpent: Double,
+    preferenceState: PreferenceState
 ) {
     Column(
         modifier = modifier
@@ -421,7 +463,12 @@ fun PreviousTransaction(
     ) {
         Text(
             textAlign = TextAlign.Center,
-            text = totalPreviousSpent.toString(),
+            text = totalPreviousSpent.formatMoney(
+                currency = preferenceState.currency,
+                expensesFormat = preferenceState.expensesFormat,
+                thousandsSeparator = preferenceState.thousandsSeparator,
+                decimalSeparator = preferenceState.decimalSeparator
+            ),
             maxLines = 2,
             fontWeight = FontWeight.W600,
             fontSize = 20.sp,

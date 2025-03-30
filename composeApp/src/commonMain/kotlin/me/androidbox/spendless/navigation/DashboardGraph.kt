@@ -1,68 +1,86 @@
 package me.androidbox.spendless.navigation
 
-import androidx.compose.foundation.lazy.layout.getDefaultLazyLayoutKey
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.Navigator
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionListScreen
+import androidx.navigation.toRoute
+import me.androidbox.spendless.authentication.presentation.screens.PinPromptScreen
+import me.androidbox.spendless.core.presentation.ObserveAsEvents
 import me.androidbox.spendless.dashboard.DashBoardViewModel
 import me.androidbox.spendless.dashboard.DashboardAction
+import me.androidbox.spendless.dashboard.DashboardEvents
 import me.androidbox.spendless.dashboard.presentation.screens.AllTransactionScreen
 import me.androidbox.spendless.dashboard.presentation.screens.DashboardScreen
-import me.androidbox.spendless.transactions.TransactionViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.dashboardGraph(navController: NavController) {
     this.navigation<Route.DashboardGraph>(
-        startDestination = Route.DashboardScreen
+        startDestination = Route.DashboardScreen(openTransaction = 0)
     ) {
 
-        composable<Route.DashboardScreen> {
+        composable<Route.DashboardScreen>(
+           deepLinks = listOf(navDeepLink {
+                uriPattern = "spendLess://dashboard/{openTransaction}"
+            })) {
+
+            val shouldOpenTransaction = it.toRoute<Route.DashboardScreen>().openTransaction
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
-            val transactionViewModel = koinViewModel<TransactionViewModel>()
 
             dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
+            ObserveAsEvents(
+                flow = dashBoardViewModel.dashboardEvents,
+                onEvent = { event: DashboardEvents ->
+                    when(event) {
+                        is DashboardEvents.OpenPinPromptScreen -> {
+                            navController.navigate(route = Route.PinPromptScreen(pin = event.pin))
+                        }
+
+                        DashboardEvents.OpenAllTransactionsScreen -> {
+                            navController.navigate(route = Route.AllTransactionsScreen)
+                        }
+
+                        DashboardEvents.OpenSettingsScreen -> {
+                            navController.navigate(route = Route.SettingsGraph)
+                        }
+                    }
+                })
+
             DashboardScreen(
+                shouldNavigateOnWidget = shouldOpenTransaction == 1,
                 dashboardState = dashboardState,
                 dashboardAction = { dashboardAction ->
                     when(dashboardAction) {
-                        DashboardAction.OnShowAllClicked -> {
-                            navController.navigate(route = Route.AllTransactionsScreen)
+                        is DashboardAction.OpenPinPromptScreen -> {
+                            navController.navigate(
+                                route = Route.PinPromptScreen(dashboardAction.pin),
+                            )
                         }
                         else -> {
                             dashBoardViewModel.onAction(dashboardAction)
                         }
                     }
-                },
+                }
             )
         }
 
-        composable<Route.AllTransactionsScreen> {
+        composable<Route.AllTransactionsScreen>() {
             val dashBoardViewModel = koinViewModel<DashBoardViewModel>()
             val dashboardState by dashBoardViewModel.dashboardState.collectAsStateWithLifecycle()
 
             AllTransactionScreen(
                 transactions = dashboardState.listOfTransactions,
+                preferenceState = dashboardState.preferenceState,
                 onNavigationClicked = {
                     navController.popBackStack()
                 }
             )
-/*
-            val transactionViewModel = koinViewModel<TransactionViewModel>()
-            val transactionState by transactionViewModel.transactionState.collectAsStateWithLifecycle()
-*/
-
-
-/*
-            AllTransactionListScreen(
-                transactionState = transactionState
-            )
-*/
         }
     }
 }

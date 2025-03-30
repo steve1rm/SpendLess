@@ -13,9 +13,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import me.androidbox.spendless.SpendLessPreference
+import me.androidbox.spendless.authentication.domain.GetUserUseCase
 import me.androidbox.spendless.authentication.presentation.CreatePinEvent.*
+import me.androidbox.spendless.core.domain.generatePinDigest
 import me.androidbox.spendless.core.presentation.Authentication
 import me.androidbox.spendless.core.presentation.KeyButtons
 import me.androidbox.spendless.core.presentation.PinMode
@@ -24,13 +29,16 @@ import me.androidbox.spendless.core.presentation.showRedBannerForDuration
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-class PinViewModel : ViewModel() {
+class PinViewModel(
+    private val spendLessPreference: SpendLessPreference,
+    private val getUserUseCase: GetUserUseCase
+) : ViewModel() {
 
     private val _createPinState = MutableStateFlow<CreatePinState>(CreatePinState())
     val createPinState = _createPinState.asStateFlow()
 
     private val _pinChannel = Channel<CreatePinEvent>()
-    val pinChannel = _pinChannel.consumeAsFlow()
+    val pinChannel = _pinChannel.receiveAsFlow()
 
     private var tryAttempts = 0
 
@@ -68,16 +76,16 @@ class PinViewModel : ViewModel() {
             is CreatePinActions.OnPinNumberEntered -> {
                 when(createPinState.value.pinMode) {
                     PinMode.CREATE -> {
-                        if(createPinState.value.pinInputList.count() < 5) {
+                        if (createPinState.value.pinInputList.count() < 5) {
                             _createPinState.update { createPinState ->
                                 createPinState.copy(
                                     pinInputList = createPinState.pinInputList + action.pinNumber.key
                                 )
                             }
 
-                        //    println("PIN Entered ${createPinState.value.pinInputList}")
+                            //    println("PIN Entered ${createPinState.value.pinInputList}")
 
-                            if(createPinState.value.pinInputList.count() == 5) {
+                            if (createPinState.value.pinInputList.count() == 5) {
                                 println("Change mode to repeat ${createPinState.value.pinInputList}")
                                 _createPinState.update { createPinState ->
                                     createPinState.copy(
@@ -98,11 +106,19 @@ class PinViewModel : ViewModel() {
                                 )
                             }
 
-                            if(createPinState.value.pinInputList.count() == 5) {
-                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.pinInputList)
+                            if (createPinState.value.pinInputList.count() == 5) {
+                                val hasValidPinNumbers = pinEntryValid(
+                                    createPinState.value.secretPin,
+                                    createPinState.value.pinInputList
+                                )
 
                                 viewModelScope.launch {
-                                    _pinChannel.send(PinEntryEvent(isValid = hasValidPinNumbers, createPinState.value.pinInputList.joinToString("")))
+                                    _pinChannel.send(
+                                        PinEntryEvent(
+                                            isValid = hasValidPinNumbers,
+                                            createPinState.value.pinInputList.joinToString("")
+                                        )
+                                    )
                                 }
 
                                 _createPinState.update { createPinState ->
@@ -117,14 +133,16 @@ class PinViewModel : ViewModel() {
                     PinMode.AUTHENTICATION -> {
                         _createPinState.update { createPinState ->
                             createPinState.copy(
-                                authentication = Authentication.AUTHENTICATION_PROMPT)
+                                authentication = Authentication.AUTHENTICATION_PROMPT
+                            )
                         }
 
                         if (createPinState.value.pinInputList.count() < 5) {
                             /** Get this from the encrypted shared preferences */
-                            _createPinState.update {
+                            /* _createPinState.update {
                                 it.copy(secretPin = listOf(KeyButtons.ONE.key, KeyButtons.TWO.key, KeyButtons.THREE.key, KeyButtons.FOUR.key, KeyButtons.FIVE.key))
-                            }
+                            }*/
+
 
                             println("Authentication Secret PIN ${createPinState.value.secretPin}")
                             println("Authentication Entered repeated PIN ${action.pinNumber}")
@@ -135,28 +153,42 @@ class PinViewModel : ViewModel() {
                                 )
                             }
 
-                            if(createPinState.value.pinInputList.count() == 5) {
-                                val hasValidPinNumbers = pinEntryValid(createPinState.value.secretPin, createPinState.value.pinInputList)
+                            viewModelScope.launch {
+                                if (createPinState.value.pinInputList.count() == 5) {
+                                    val pin = getUserPin()
+                               //     val pinList = pin.map { it.toString() }
+                                    /*val hasValidPinNumbers = pinEntryValid(
+                                        pinList,
+                                        generatePinDigest(createPinState.value.pinInputList.joinToString())
+                                    )*/
+                                    val pinInput = createPinState.value.pinInputList.joinToString("")//generatePinDigest(createPinState.value.pinInputList.joinToString(""))
+                                    val inputEncrypted = generatePinDigest(pinInput)
+                                    val hasValidPinNumbers = pin == inputEncrypted
+                                    if (!hasValidPinNumbers) {
+                                        tryAttempts += 1
+                                        showRedBannerForDuration(2.seconds)
+                                            .onEach { showBanner ->
+                                                _createPinState.update { createPinState ->
+                                                    createPinState.copy(shouldShowRedBanner = showBanner)
+                                                }
+                                            }.launchIn(viewModelScope)
 
-                                if(!hasValidPinNumbers) {
-                                    tryAttempts += 1
-                                    showRedBannerForDuration(2.seconds)
-                                        .onEach { showBanner ->
-                                            _createPinState.update { createPinState ->
-                                                createPinState.copy(shouldShowRedBanner = showBanner)
-                                            }
-                                        }.launchIn(viewModelScope)
-                                }
-                                println("Authentication Valid repeated [ $tryAttempts ] PIN $hasValidPinNumbers")
+                                        println("Authentication Valid repeated [ $tryAttempts ] PIN $hasValidPinNumbers")
 
-                                if(tryAttempts == 3) {
-                                    disableKeyPadForDuration()
-                                }
+                                        if (tryAttempts == 3) {
+                                            disableKeyPadForDuration()
+                                        }
 
-                                _createPinState.update { createPinState ->
-                                    createPinState.copy(
-                                        pinInputList = emptyList(),
-                                    )
+                                        _createPinState.update { createPinState ->
+                                            createPinState.copy(
+                                                pinInputList = emptyList(),
+                                            )
+                                        }
+                                    }
+                                    else {
+                                        spendLessPreference.setTimeStamp(Clock.System.now().toEpochMilliseconds())
+                                        _pinChannel.send(CreatePinEvent.IsAuthenticated(isAuthenticated = true))
+                                    }
                                 }
                             }
                         }
@@ -203,6 +235,24 @@ class PinViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         println("onCleared PIN_VIEWMODEL")
+    }
+
+    private suspend fun getUserPin(): String {
+        /** Get the active user */
+        val username = spendLessPreference.getUsername()
+        return if(username == null) {
+            ""
+        }
+        else {
+            /** Get the active user table from the room db */
+            val user = getUserUseCase.execute(username)
+            if(user != null) {
+                return user.pin
+            }
+            else {
+                ""
+            }
+        }
     }
 }
 

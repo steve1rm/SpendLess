@@ -29,6 +29,7 @@ import me.androidbox.spendless.sharedViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.navigation.toRoute
 import me.androidbox.spendless.authentication.presentation.LoginEvent
 import me.androidbox.spendless.authentication.presentation.RegisterAction
 import me.androidbox.spendless.onboarding.screens.PreferenceAction
@@ -133,6 +134,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
             val authenticationSharedViewModel = it.sharedViewModel<AuthenticationSharedViewModel>(navController)
 
             ObserveAsEvents(pinViewModel.pinChannel) { createPinEvent ->
+
                 when (createPinEvent) {
                     is CreatePinEvent.PinEntryEvent -> {
                         println("ObserveEvent ${createPinEvent.isValid}")
@@ -151,6 +153,10 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                                 )
                             )
                         }
+                    }
+
+                    is CreatePinEvent.IsAuthenticated -> {
+                        /** no-op */
                     }
                 }
             }
@@ -173,6 +179,23 @@ fun NavGraphBuilder.authentication(navController: NavController) {
         composable<Route.PinPromptScreen> {
             val pinViewModel = koinViewModel<PinViewModel>()
             val pinState by pinViewModel.createPinState.collectAsStateWithLifecycle()
+            val pin = it.toRoute<Route.PinPromptScreen>().pin
+
+            println("PIN $pin")
+
+            ObserveAsEvents(
+                flow = pinViewModel.pinChannel,
+                onEvent = { event ->
+                    when(event) {
+                        is CreatePinEvent.IsAuthenticated -> {
+                            navController.navigate(route = Route.DashboardGraph)
+                        }
+                        is CreatePinEvent.PinEntryEvent -> {
+                            /* no-op */
+                        }
+                    }
+                }
+            )
 
             PinPromptScreen(
                 createPinState = pinState,
@@ -202,7 +225,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 preferenceContent = {
                     PreferenceContent(
                         preferenceState = onboardingPreferenceState.copy(
-                            money = 123456789
+                            money = 1234567.89
                         ),
                         action = preferenceViewModel::onAction
                     )
@@ -215,7 +238,7 @@ fun NavGraphBuilder.authentication(navController: NavController) {
                 isEnabled = onboardingPreferenceState.isEnabled,
                 onStartTrackingClicked = {
                     authenticationSharedViewModel.saveCredentials()
-                    preferenceViewModel.savePreferences()
+                 //   preferenceViewModel.savePreferences()
                     navController.navigate(Route.DashboardGraph) {
                         this.popUpTo(Route.AuthenticationGraph) {
                             inclusive = true

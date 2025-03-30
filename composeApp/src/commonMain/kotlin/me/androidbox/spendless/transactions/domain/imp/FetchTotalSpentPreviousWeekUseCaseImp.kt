@@ -14,7 +14,7 @@ import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUs
 class FetchTotalSpentPreviousWeekUseCaseImp(
     private val spendLessDataSource: SpendLessDataSource
 ) : FetchTotalSpentPreviousWeekUseCase {
-    override suspend fun execute(): Float {
+    override suspend fun execute(): Double {
         val currentDate = Clock.System.now()
             .toLocalDateTime(TimeZone.currentSystemDefault())
             .date

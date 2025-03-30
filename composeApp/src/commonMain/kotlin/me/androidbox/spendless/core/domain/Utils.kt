@@ -6,11 +6,11 @@ import kotlinx.io.bytestring.ByteString
 import kotlinx.io.bytestring.decodeToString
 import kotlinx.io.bytestring.encodeToByteString
 
-suspend fun generatePinDigest(username: String, pin: String): String {
+suspend fun generatePinDigest(pin: String): String {
     val hash: ByteString = CryptographyProvider.Default
         .get(SHA512)
         .hasher()
-        .hash((username+pin).encodeToByteString())
+        .hash((pin).encodeToByteString())
 
     return hash.decodeToString()
 }
