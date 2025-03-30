@@ -22,7 +22,7 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual fun Long.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): AnnotatedString {
+actual fun Double.formatMoney(currency: Currency, expensesFormat: ExpensesFormat, thousandsSeparator: ThousandsSeparator, decimalSeparator: DecimalSeparator): AnnotatedString {
     val symbols = DecimalFormatSymbols(Locale.getDefault()).apply {
         this.groupingSeparator = thousandsSeparator.symbol
         this.decimalSeparator = decimalSeparator.symbol

@@ -12,7 +12,7 @@ interface Platform {
 
 expect fun getPlatform(): Platform
 
-expect fun Long.formatMoney(
+expect fun Double.formatMoney(
     currency: Currency,
     expensesFormat: ExpensesFormat,
     thousandsSeparator: ThousandsSeparator,

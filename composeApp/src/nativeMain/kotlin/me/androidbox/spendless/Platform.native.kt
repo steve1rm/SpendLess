@@ -7,7 +7,7 @@ import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 
-actual fun Long.formatMoney(
+actual fun Double.formatMoney(
     currency: Currency,
     expensesFormat: ExpensesFormat,
     thousandsSeparator: ThousandsSeparator,

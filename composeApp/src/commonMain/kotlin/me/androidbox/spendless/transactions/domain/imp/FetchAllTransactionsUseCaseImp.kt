@@ -56,7 +56,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             createAt = today,
             category = TransactionItems.CLOTHING,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 1,
@@ -64,7 +64,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong Kong",
             createAt = today,
             category = TransactionItems.ENTERTAINMENT,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
          ),
         Transaction(
             id = 3,
@@ -72,7 +72,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong Kong",
             createAt = subtractDay(today, 1),
             category = TransactionItems.FOOD,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
          ),
         Transaction(
             id = 4,
@@ -80,7 +80,7 @@ fun populate(): Flow<List<Transaction>> {
             note= "Planning a trip to Hong Kong",
             createAt = subtractDay(today, 1),
             category = TransactionItems.ENTERTAINMENT,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 5,
@@ -88,7 +88,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong Kong",
             createAt = subtractDay(today, 2),
             category = TransactionItems.EDUCATION,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 2,
@@ -96,7 +96,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong Kong Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             createAt = today,
             category = TransactionItems.FOOD,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 6,
@@ -104,7 +104,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Planning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong KongPlanning a trip to Hong Kong",
             createAt = subtractDay(today, 3),
             category = TransactionItems.HEALTH,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 7,
@@ -112,7 +112,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Lets get this done today, and move all our stuff to another property. Lets Go...",
             createAt = subtractDay(today, 4),
             category = TransactionItems.CLOTHING,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 8,
@@ -120,7 +120,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Lets get this party started. Start planning and less day dreaming",
             createAt = subtractDay(today, 4),
             category = TransactionItems.HEALTH,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ),
         Transaction(
             id = 9,
@@ -128,7 +128,7 @@ fun populate(): Flow<List<Transaction>> {
             note = "Getting ready with flight and package of suitcases and other things",
             createAt = subtractDay(today, 4),
             category = TransactionItems.EDUCATION,
-            amount = Random.nextLong()
+            amount = Random.nextDouble()
         ))
 
     return flow {

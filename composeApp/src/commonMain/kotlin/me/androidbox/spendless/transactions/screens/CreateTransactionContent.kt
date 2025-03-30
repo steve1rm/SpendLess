@@ -228,7 +228,7 @@ fun CreateTransactionContent(
                     color = OnSurface
                 ),
                 decorationBox = { innerTextField ->
-                    if (state.transaction.amount == 0L) {
+                    if (state.transaction.amount == 0.0) {
                         Row(modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically) {

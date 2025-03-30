@@ -263,9 +263,10 @@ class DashBoardViewModel(
             is DashboardAction.OnTransactionAmountEntered -> {
                 _dashboardState.update { transactionState ->
                     transactionState.copy(
-                        transaction = transactionState.transaction.copy(amount = action.amount.toLongOrNull() ?: 0L)
+                        transaction = transactionState.transaction.copy(amount = action.amount.toDoubleOrNull() ?: 0.0)
                     )
                 }
+                println("action.amount: ${action.amount}")
             }
             is DashboardAction.OnTransactionNameEntered -> {
                 _dashboardState.update { transactionState ->

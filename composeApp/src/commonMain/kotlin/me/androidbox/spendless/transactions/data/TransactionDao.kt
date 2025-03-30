@@ -22,10 +22,10 @@ interface TransactionDao {
         FROM transactionTable
         WHERE createAt BETWEEN :startOfPreviousWeek AND :endOfPreviousWeek
     """)
-    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Long
+    suspend fun getTotalSpentPreviousWeek(startOfPreviousWeek: Long, endOfPreviousWeek: Long): Double
 
     @Query("SELECT SUM(amount) FROM transactionTable")
-    fun getTotalTransactionAmount(): Flow<Long>
+    fun getTotalTransactionAmount(): Flow<Double>
 
     @Query("""
         SELECT *
