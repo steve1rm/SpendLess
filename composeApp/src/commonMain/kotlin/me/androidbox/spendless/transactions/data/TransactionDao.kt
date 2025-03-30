@@ -14,7 +14,7 @@ interface TransactionDao {
     @Query("SELECT * FROM transactionTable")
     fun getAllTransactions(): Flow<List<TransactionTable>>
 
-    @Query("SELECT * FROM transactionTable WHERE amount = (SELECT MAX(amount) FROM transactionTable)")
+    @Query("SELECT * FROM transactionTable WHERE type = 0 ORDER BY amount ASC LIMIT 1")
     fun getLargestTransaction(): Flow<TransactionTable>
 
     @Query("""
