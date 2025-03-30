@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -250,7 +251,7 @@ fun DashboardHeader(
         PopularItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 16.dp),
             popularCategory = popularTransaction
         )
     }
@@ -259,7 +260,7 @@ fun DashboardHeader(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize(align = Alignment.BottomCenter)
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         LargestTransaction(
@@ -286,17 +287,21 @@ fun DashboardTransactions(
     if(listOfTransactions.isNotEmpty()) {
         /** Show transactions here */
         Column(
-            modifier = modifier.fillMaxWidth().background(color = Background)
+            modifier = modifier
+                .fillMaxWidth()
+                .background(color = Background, shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = "Latest Transactions",
                     fontWeight = FontWeight.W600,
-                    fontSize = 16.sp,
+                    fontSize = 20.sp,
                     color = OnSurface
                 )
 
@@ -306,10 +311,12 @@ fun DashboardTransactions(
                     ),
                     text = "Show all",
                     fontWeight = FontWeight.W600,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     color = Primary
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             TransactionsListItems(
                 listOfTransactions = listOfTransactions,

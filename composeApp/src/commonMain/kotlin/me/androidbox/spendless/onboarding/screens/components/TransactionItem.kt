@@ -24,18 +24,14 @@ import me.androidbox.spendless.core.presentation.Background
 import me.androidbox.spendless.core.presentation.Error
 import me.androidbox.spendless.core.presentation.OnSurface
 import me.androidbox.spendless.core.presentation.PrimaryFixed
-import me.androidbox.spendless.core.presentation.Success
 import me.androidbox.spendless.core.presentation.TransactionType
-import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.formatMoney
 import me.androidbox.spendless.onboarding.screens.PreferenceState
-import me.androidbox.spendless.settings.data.PreferenceTable
 import me.androidbox.spendless.transactions.data.Transaction
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import spendless.composeapp.generated.resources.Res
-import spendless.composeapp.generated.resources.cash
 import spendless.composeapp.generated.resources.cashbag
 import spendless.composeapp.generated.resources.notes
 
