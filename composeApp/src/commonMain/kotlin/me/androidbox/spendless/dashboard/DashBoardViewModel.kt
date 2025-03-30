@@ -21,6 +21,7 @@ import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
 import me.androidbox.spendless.core.presentation.TransactionType
+import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.core.presentation.hasActiveSession
 import me.androidbox.spendless.onboarding.screens.PreferenceState
 import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
@@ -32,6 +33,7 @@ import me.androidbox.spendless.transactions.domain.FetchMostPopularCategoryUseCa
 import me.androidbox.spendless.transactions.domain.FetchTotalSpentPreviousWeekUseCase
 import me.androidbox.spendless.transactions.domain.FetchTotalTransactionAmountUseCase
 import me.androidbox.spendless.transactions.domain.InsertTransactionUseCase
+import me.androidbox.spendless.transactions.screens.toAmount
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DashBoardViewModel(
@@ -215,9 +217,9 @@ class DashBoardViewModel(
                     println("Create transaction save to the database")
                     viewModelScope.launch {
                         val amount = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) {
-                            - (dashboardState.value.transaction.amount.toDouble())
+                            - (dashboardState.value.transaction.amount.toAmount())
                         } else {
-                            dashboardState.value.transaction.amount.toDouble()
+                            dashboardState.value.transaction.amount.toAmount()
                         }
 
                         insertTransactionUseCase.execute(

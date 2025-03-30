@@ -83,7 +83,7 @@ import spendless.composeapp.generated.resources.Res
 import spendless.composeapp.generated.resources.trending_down
 import spendless.composeapp.generated.resources.trending_up
 
-private fun String.toAmount(): Double {
+fun String.toAmount(): Double {
     val amount = this
         .filter { it.isDigit() }
         .ifEmpty { "0" }
