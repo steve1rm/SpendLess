@@ -207,7 +207,7 @@ fun CreateTransactionContent(
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
                 singleLine = true,
-                value = if(state.transaction.amount > 0) {
+                value = state.transaction.amount.toString()/*if(state.transaction.amount > 0) {
                     val amount = state.transaction.amount.formatMoney(
                     currency = state.preferenceState.currency,
                     expensesFormat = state.preferenceState.expensesFormat,
@@ -216,7 +216,7 @@ fun CreateTransactionContent(
                     .toString()
 
                     amount
-                } else "",
+                } else ""*/,
                 onValueChange = { newAmount ->
                     val amount = newAmount.filter { it.isLetterOrDigit() }
                     action(DashboardAction.OnTransactionAmountEntered(amount.trim()))
