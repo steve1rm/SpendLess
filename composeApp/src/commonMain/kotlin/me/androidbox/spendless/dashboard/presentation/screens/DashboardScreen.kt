@@ -236,7 +236,7 @@ fun DashboardHeader(
             ),
             fontSize = 46.sp,
             fontWeight = FontWeight.W600,
-            color = OnPrimary
+            color = Color.White
         )
 
         Text(

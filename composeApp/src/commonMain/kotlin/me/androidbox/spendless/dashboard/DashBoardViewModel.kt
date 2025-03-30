@@ -20,10 +20,13 @@ import me.androidbox.spendless.core.presentation.Currency
 import me.androidbox.spendless.core.presentation.DecimalSeparator
 import me.androidbox.spendless.core.presentation.ExpensesFormat
 import me.androidbox.spendless.core.presentation.ThousandsSeparator
+import me.androidbox.spendless.core.presentation.TransactionItems
 import me.androidbox.spendless.core.presentation.TransactionType
 import me.androidbox.spendless.core.presentation.formatMoney
 import me.androidbox.spendless.core.presentation.hasActiveSession
+import me.androidbox.spendless.dashboard.presentation.screens.components.TransactionsListItems
 import me.androidbox.spendless.onboarding.screens.PreferenceState
+import me.androidbox.spendless.onboarding.screens.components.TransactionItem
 import me.androidbox.spendless.settings.domain.FetchPreferenceUseCase
 import me.androidbox.spendless.transactions.data.Transaction
 import me.androidbox.spendless.transactions.data.TransactionTable
@@ -228,7 +231,7 @@ class DashBoardViewModel(
                                 counterParty = dashboardState.value.transaction.counterParty,
                                 note = dashboardState.value.transaction.note,
                                 amount = amount,
-                                category = dashboardState.value.transaction.category.ordinal,
+                                category = if(dashboardState.value.transaction.type == TransactionType.RECEIVER) dashboardState.value.transaction.category.ordinal else TransactionItems.INCOME.ordinal,
                                 createAt = Clock.System.now().toEpochMilliseconds(),
                                 type = dashboardState.value.transaction.type.ordinal
                             )
